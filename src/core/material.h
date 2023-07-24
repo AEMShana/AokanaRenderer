@@ -2,6 +2,7 @@
 
 #include "ray.h"
 #include "interaction.h"
+#include "texture.h"
 
 namespace Asuka {
     class SurfaceInteraction;
@@ -15,12 +16,13 @@ namespace Asuka {
 
     class Lambertian : public Material {
     public:
-        Lambertian(const color& a) : albedo(a) {}
+        Lambertian(const color& a) : albedo(std::make_shared<SolidColor>(a)) {}
+        Lambertian(std::shared_ptr<Texture> a) : albedo(a) {}
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             color& attenuation, Ray& scattered) const override;
     public:
-        color albedo;
+        std::shared_ptr<Texture> albedo;
     };
 
 

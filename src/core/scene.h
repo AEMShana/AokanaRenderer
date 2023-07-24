@@ -14,4 +14,5 @@ namespace Asuka {
     };
 
     std::shared_ptr<Scene> random_ball_scene();
+    std::shared_ptr<Scene> two_sphere_scene();
 }

@@ -4,8 +4,8 @@
 namespace Asuka {
     std::shared_ptr<Scene> random_ball_scene() {
         std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
-        auto ground_material = std::make_shared<Lambertian>(color(0.5, 0.5, 0.5));
-        objects->add(std::make_shared<Sphere>(point3(0, -1000, 0), 1000, ground_material));
+        auto checker = std::make_shared<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+        objects->add(std::make_shared<Sphere>(point3(0, -1000, 0), 1000, std::make_shared<Lambertian>(checker)));
 
         for (int a = -11; a < 11; a++) {
             for (int b = -11; b < 11; b++) {
@@ -53,6 +53,20 @@ namespace Asuka {
 
         return scene;
     }
+
+    std::shared_ptr<Scene> two_sphere_scene() {
+        std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
+        auto checker = std::make_shared<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+        objects->add(std::make_shared<Sphere>(point3(0, -10, 0), 10, std::make_shared<Lambertian>(checker)));
+        objects->add(std::make_shared<Sphere>(point3(0, 10, 0), 10, std::make_shared<Lambertian>(checker)));
+
+        std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+        scene->objects = objects;
+        scene->bvh = std::make_shared<BVHNode>(objects, 0.0, 1.0);
+
+        return scene;
+    }
+
 
 
 };

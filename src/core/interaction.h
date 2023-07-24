@@ -12,6 +12,8 @@ namespace Asuka {
         point3 p;
         vec3 normal;
         double t;
+        double u;
+        double v;
         bool front_face;
 
         void set_face_normal(const Ray& ray, const vec3& outward_normal) {

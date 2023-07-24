@@ -10,7 +10,7 @@ namespace Asuka {
             scatter_direction = hit_point.normal;
 
         scattered = Ray(hit_point.p, scatter_direction, ray_in.time());
-        attenuation = albedo;
+        attenuation = albedo->value(hit_point.u, hit_point.v, hit_point.p);
         return true;
     }
 

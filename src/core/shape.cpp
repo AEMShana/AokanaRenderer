@@ -64,6 +64,7 @@ namespace Asuka {
         hit_point.p = ray.at(hit_point.t);
         vec3 outward_normal = (hit_point.p - center) / radius;
         hit_point.set_face_normal(ray, outward_normal);
+        get_sphere_uv(outward_normal, hit_point.u, hit_point.v);
         hit_point.material = material;
 
         return true;
@@ -74,4 +75,10 @@ namespace Asuka {
         return true;
     }
 
+    void Sphere::get_sphere_uv(const point3& p, double& u, double& v) {
+        double theta = std::acos(-p.y());
+        double phi = std::atan2(-p.z(), p.x()) + pi;
+        u = phi / (2.0 * pi);
+        v = theta / pi;
+    }
 }

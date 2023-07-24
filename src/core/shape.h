@@ -45,6 +45,10 @@ namespace Asuka {
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
+
+    private:
+        static void get_sphere_uv(const point3& p, double& u, double& v);
+
     };
 
 }

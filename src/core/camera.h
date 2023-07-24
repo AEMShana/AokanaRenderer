@@ -82,7 +82,8 @@ namespace Asuka {
     };
 
     Camera default_camera();
-
+    Camera random_ball_scene_camera();
+    Camera two_sphere_scene_camera();
 }
 
 /*
