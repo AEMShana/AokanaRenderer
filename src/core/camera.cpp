@@ -10,7 +10,7 @@ namespace Asuka {
         auto dist_to_focus = 10.0;
         auto aperture = 0.1;
 
-        return Camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
+        return Camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
     }
 
 }

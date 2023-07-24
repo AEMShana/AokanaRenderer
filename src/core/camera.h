@@ -21,9 +21,11 @@ namespace Asuka {
             double vfov,
             double aspect_ratio,
             double aperture,
-            double focus_dist
+            double focus_dist,
+            double _time0 = 0,
+            double _time1 = 0
         ) {
-            set_parameters(cam_position, lookat, vup, vfov, aspect_ratio, aperture, focus_dist);
+            set_parameters(cam_position, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, _time0, _time1);
         }
 
         void set_parameters(
@@ -33,7 +35,9 @@ namespace Asuka {
             double vfov,
             double aspect_ratio,
             double aperture,
-            double focus_dist
+            double focus_dist,
+            double _time0,
+            double _time1
         ) {
             double theta = degree_to_radian(vfov);
             double h = tan(theta / 2.0);
@@ -49,6 +53,8 @@ namespace Asuka {
             vertical = focus_dist * viewport_height * v;
             lower_left_corner = (origin - horizontal / 2.0 - vertical / 2.0 + focus_dist * w);
             lens_radius = aperture / 2.0;
+            time0 = _time0;
+            time1 = _time1;
 
             film = std::make_shared<Film>(400, 400.0 / aspect_ratio);
         }
@@ -61,7 +67,7 @@ namespace Asuka {
         Ray get_ray(const Sample& sample) const {
             vec3 rd = lens_radius * random_in_unit_disk();
             vec3 offset = u * rd.x() + v * rd.y();
-            return Ray(origin + offset, lower_left_corner + sample.u * horizontal + sample.v * vertical - origin - offset);
+            return Ray(origin + offset, lower_left_corner + sample.u * horizontal + sample.v * vertical - origin - offset, random_double(time0, time1));
         }
 
         point3 position() const { return origin; }
@@ -72,6 +78,7 @@ namespace Asuka {
         vec3 lower_left_corner;
         vec3 u, v, w;
         double lens_radius;
+        double time0, time1;
     };
 
     Camera default_camera();

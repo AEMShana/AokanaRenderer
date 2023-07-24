@@ -11,7 +11,7 @@ int main() {
     Camera camera = default_camera();
     SamplerIntegrator integrator;
 
-    integrator.max_depth = 15;
+    integrator.max_depth = 20;
     integrator.sampler = std::make_shared<SimpleSampler>();
     integrator.sampler->samples_per_pixel = 50;
     integrator.scene = random_ball_scene();
@@ -31,7 +31,7 @@ int main() {
     // integrator.scene->objects = shapeList;
 
     integrator.Render(camera);
-    camera.save_image("D:/Code/AsukaRenderer/outputs/result.png");
+    camera.save_image("../../../../outputs/result.png");
 
 
     return 0;

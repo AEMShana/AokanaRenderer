@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "moving_sphere.h"
 
 namespace Asuka {
     std::shared_ptr<Scene> random_ball_scene() {
@@ -18,7 +19,8 @@ namespace Asuka {
                         // diffuse
                         auto albedo = color::random() * color::random();
                         sphere_material = std::make_shared<Lambertian>(albedo);
-                        objects->add(std::make_shared<Sphere>(center, 0.2, sphere_material));
+                        auto center2 = center + vec3(0, random_double(0, 0.5), 0);
+                        objects->add(std::make_shared<MovingSphere>(center, center2, 0.0, 1.0, 0.2, sphere_material));
                     }
                     else if (choose_mat < 0.95) {
                         // metal
