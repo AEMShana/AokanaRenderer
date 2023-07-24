@@ -1,5 +1,6 @@
 #include "integrator.h"
 #include <chrono>
+#include <thread>
 
 namespace Asuka {
 
@@ -54,6 +55,50 @@ namespace Asuka {
         auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
         std::cout << "[INFO] Render finished. Rendering take " << duration.count() << " seconds." << std::endl;
+
+    }
+
+    void SamplerIntegrator::RenderOneTile(const Camera& camera, const FilmTile& tile) {
+        std::shared_ptr<Film> film = camera.film;
+
+        for (int j = tile.v_min; j <= tile.v_max;++j) {
+            for (int i = tile.u_min;i <= tile.u_max;++i) {
+                color radiance;
+                auto samples = sampler->sample();
+                for (auto& sample : samples) {
+                    sample.u = static_cast<double>(i + sample.u) / static_cast<double>(film->image_width - 1);
+                    sample.v = static_cast<double>(j + sample.v) / static_cast<double>(film->image_height - 1);
+                    Ray ray = camera.get_ray(sample);
+                    color r = Li(ray, max_depth);
+                    radiance += r;
+                }
+                radiance /= static_cast<double>(sampler->samples_per_pixel);
+                radiance = clamp(radiance);
+                film->write_color(radiance, i, j);
+            }
+        }
+
+    }
+
+    void SamplerIntegrator::RenderWithMultithreading(const Camera& camera) {
+        auto start_time = std::chrono::system_clock::now();
+
+        std::shared_ptr<Film> film = camera.film;
+        std::vector<std::thread> threads_vec;
+
+        for (const auto& tile : film->tiles) {
+            threads_vec.push_back(std::thread(&SamplerIntegrator::RenderOneTile, this, camera, tile));
+        }
+
+        for (auto& thread : threads_vec)
+            thread.join();
+
+        auto end_time = std::chrono::system_clock::now();
+        // auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+        // std::cout << "[INFO] Render finished. Rendering take " << duration.count() << " seconds." << std::endl;
+
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout << "[INFO] Render finished. Rendering take " << duration.count() << " ms." << std::endl;
 
     }
 

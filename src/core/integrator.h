@@ -20,5 +20,7 @@ namespace Asuka {
     public:
         virtual color Li(const Ray& ray, int depth) override;
         virtual void Render(const Camera& camera) override;
+        void RenderOneTile(const Camera& camera, const FilmTile& tile);
+        void RenderWithMultithreading(const Camera& camera);
     };
 }

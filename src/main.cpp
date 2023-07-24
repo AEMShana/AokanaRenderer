@@ -14,8 +14,8 @@ int main() {
     integrator.max_depth = 20;
     integrator.sampler = std::make_shared<SimpleSampler>();
     integrator.sampler->samples_per_pixel = 50;
-    // integrator.scene = random_ball_scene();
-    integrator.scene = two_sphere_scene();
+    integrator.scene = random_ball_scene();
+    // integrator.scene = two_sphere_scene();
 
     // auto material_ground = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
     // auto material_center = std::make_shared<Lambertian>(color(0.1, 0.2, 0.5));
@@ -31,7 +31,8 @@ int main() {
     // shapeList->add(std::make_shared<Sphere>(point3(1.0, 0.0, 1.0), 0.5, material_right));
     // integrator.scene->objects = shapeList;
 
-    integrator.Render(camera);
+    // integrator.Render(camera);
+    integrator.RenderWithMultithreading(camera);
     camera.save_image("../../../../outputs/result.png");
 
 
