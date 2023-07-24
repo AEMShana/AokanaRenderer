@@ -1,4 +1,5 @@
 #include "integrator.h"
+#include <chrono>
 
 namespace Asuka {
 
@@ -6,7 +7,7 @@ namespace Asuka {
         if (depth <= 0) return color(0, 0, 0);
 
         SurfaceInteraction hit_point;
-        if (scene->objects->hitP(ray, hit_point)) {
+        if (scene->bvh->hitP(ray, hit_point)) {
             Ray scattered;
             color attenuation;
             if (hit_point.material->scatter(ray, hit_point, attenuation, scattered))
@@ -20,6 +21,8 @@ namespace Asuka {
     }
 
     void SamplerIntegrator::Render(const Camera& camera) {
+        auto start_time = std::chrono::system_clock::now();
+
         std::shared_ptr<Film> film = camera.film;
 
         const int total_pixel = film->image_width * film->image_height;
@@ -46,7 +49,12 @@ namespace Asuka {
                 }
             }
         }
-        std::cout << "[INFO] Render finished." << std::endl;
+
+        auto end_time = std::chrono::system_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+
+        std::cout << "[INFO] Render finished. Rendering take " << duration.count() << " seconds." << std::endl;
+
     }
 
 }

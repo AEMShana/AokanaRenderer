@@ -26,4 +26,10 @@ namespace Asuka {
         return distribution(generator);
     }
 
+    inline int random_int(int min, int max) {
+        static std::uniform_int_distribution<int> distribution(min, max);
+        static std::mt19937 generator;
+        return distribution(generator);
+    }
+
 }

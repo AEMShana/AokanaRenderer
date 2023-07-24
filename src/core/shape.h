@@ -3,13 +3,17 @@
 #include <memory>
 
 #include "ray.h"
+#include "aabb.h"
 #include "interaction.h"
 
 namespace Asuka {
+    class AABB;
+
     class Shape {
     public:
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const = 0;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const = 0;
+        virtual bool bounding_box(double time0, double time1, AABB& output_box) const = 0;
     };
 
     class ShapeList : public Shape {
@@ -22,6 +26,7 @@ namespace Asuka {
 
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
+        virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
 
     public:
         std::vector<std::shared_ptr<Shape>> shapes;
@@ -39,6 +44,7 @@ namespace Asuka {
 
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0, double t_max = inf) const override;
+        virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
     };
 
 }

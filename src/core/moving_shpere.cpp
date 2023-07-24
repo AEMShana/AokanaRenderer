@@ -33,12 +33,21 @@ namespace Asuka {
             if (root < t_min || t_max < root) return false;
         }
 
-        hit_point.time = root;
-        hit_point.p = ray.at(hit_point.time);
+        hit_point.t = root;
+        hit_point.p = ray.at(hit_point.t);
         vec3 outward_normal = (hit_point.p - center(ray.time())) / radius;
         hit_point.set_face_normal(ray, outward_normal);
         hit_point.material = material;
 
         return true;
     }
+
+    bool MovingSphere::bounding_box(double _time0, double _time1, AABB& output_box) const {
+        AABB box0(center(_time0) - vec3(radius), center(_time0) + vec3(radius));
+        AABB box1(center(_time1) - vec3(radius), center(_time1) + vec3(radius));
+        output_box = merge_box(box0, box1);
+        return true;
+    }
+
+
 }

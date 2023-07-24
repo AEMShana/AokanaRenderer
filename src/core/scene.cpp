@@ -49,6 +49,7 @@ namespace Asuka {
 
         std::shared_ptr<Scene> scene = std::make_shared<Scene>();
         scene->objects = objects;
+        scene->bvh = std::make_shared<BVHNode>(objects, 0.0, 1.0);
 
         return scene;
     }
