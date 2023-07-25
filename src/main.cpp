@@ -14,8 +14,26 @@ int main() {
     integrator.max_depth = 20;
     integrator.sampler = std::make_shared<SimpleSampler>();
     integrator.sampler->samples_per_pixel = 50;
-    integrator.scene = random_ball_scene();
-    // integrator.scene = two_sphere_scene();
+
+    int scene_id = 0;
+
+    std::cout << "[INFO] please input scene id:\n" <<
+        "0: random_ball_scene\n" <<
+        "1: two_spheres_scene\n" <<
+        "2: two_perlin_spheres_scene\n" <<
+        "3: earth_scene\n";
+
+    std::cin >> scene_id;
+
+    switch (scene_id) {
+    case 0: integrator.scene = random_ball_scene(); break;
+    case 1: integrator.scene = two_spheres_scene(); break;
+    case 2: integrator.scene = two_perlin_spheres_scene(); break;
+    case 3: integrator.scene = earth_scene(); break;
+    default: integrator.scene = random_ball_scene(); break;
+    }
+
+
 
     // auto material_ground = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
     // auto material_center = std::make_shared<Lambertian>(color(0.1, 0.2, 0.5));

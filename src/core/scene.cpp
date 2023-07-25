@@ -41,7 +41,8 @@ namespace Asuka {
         auto material1 = std::make_shared<Dielectric>(1.5);
         objects->add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, material1));
 
-        auto material2 = std::make_shared<Lambertian>(color(0.4, 0.2, 0.1));
+        auto earth_texture = std::make_shared<ImageTexture>("../../../../assets/textures/earthmap.jpg");
+        auto material2 = std::make_shared<Lambertian>(earth_texture);
         objects->add(std::make_shared<Sphere>(point3(-4, 1, 0), 1.0, material2));
 
         auto material3 = std::make_shared<Metal>(color(0.7, 0.6, 0.5), 0.0);
@@ -54,7 +55,7 @@ namespace Asuka {
         return scene;
     }
 
-    std::shared_ptr<Scene> two_sphere_scene() {
+    std::shared_ptr<Scene> two_spheres_scene() {
         std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
         auto checker = std::make_shared<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
         objects->add(std::make_shared<Sphere>(point3(0, -10, 0), 10, std::make_shared<Lambertian>(checker)));
@@ -67,6 +68,33 @@ namespace Asuka {
         return scene;
     }
 
+    std::shared_ptr<Scene> two_perlin_spheres_scene() {
+        std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
 
+        auto perlin_texture = std::make_shared<NoiseTexture>(4);
+        objects->add(std::make_shared<Sphere>(point3(0, -1000, 0), 1000, std::make_shared<Lambertian>(perlin_texture)));
+        objects->add(std::make_shared<Sphere>(point3(0, 2, 0), 2, std::make_shared<Lambertian>(perlin_texture)));
+
+        std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+        scene->objects = objects;
+        scene->bvh = std::make_shared<BVHNode>(objects, 0.0, 1.0);
+
+        return scene;
+    }
+
+    std::shared_ptr<Scene> earth_scene() {
+        std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
+
+        auto earth_texture = std::make_shared<ImageTexture>("../../../../assets/textures/earthmap.jpg");
+        auto earth_surface = std::make_shared<Lambertian>(earth_texture);
+        auto earth = std::make_shared<Sphere>(point3(0), 2, earth_surface);
+        objects->add(earth);
+
+        std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+        scene->objects = objects;
+        scene->bvh = std::make_shared<BVHNode>(objects, 0.0, 1.0);
+
+        return scene;
+    }
 
 };

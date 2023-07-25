@@ -56,7 +56,7 @@ namespace Asuka {
             time0 = _time0;
             time1 = _time1;
 
-            film = std::make_shared<Film>(400, 400.0 / aspect_ratio);
+            film = std::make_shared<Film>(800, 800.0 / aspect_ratio);
         }
 
 
