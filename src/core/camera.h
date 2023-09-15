@@ -84,6 +84,10 @@ namespace Asuka {
     Camera default_camera();
     Camera random_ball_scene_camera();
     Camera two_sphere_scene_camera();
+    Camera simple_light_scene_camera();
+    Camera bunny_scene_camera();
+    Camera coffee_maker_scene_camera();
+    Camera cornell_box_scene_camera();
 }
 
 /*

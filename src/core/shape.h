@@ -5,6 +5,7 @@
 #include "ray.h"
 #include "aabb.h"
 #include "interaction.h"
+#include "transform.h"
 
 namespace Asuka {
     class AABB;
@@ -27,9 +28,11 @@ namespace Asuka {
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
+        void load_obj(const std::string& filepath, std::shared_ptr<Material> material);
 
     public:
         std::vector<std::shared_ptr<Shape>> shapes;
+        Transform transform;
     };
 
     class Sphere : public Shape {
@@ -49,6 +52,23 @@ namespace Asuka {
     private:
         static void get_sphere_uv(const point3& p, double& u, double& v);
 
+    };
+
+    class Triangle : public Shape {
+    public:
+        Triangle(point3 _a, point3 _b, point3 _c, std::shared_ptr<Material> m) : a(_a), b(_b), c(_c), material(m) {}
+
+        virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
+        virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
+        virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
+    private:
+        // void get_uv(const point3& p, double& u, double& v) const;
+    public:
+        point3 a, b, c;
+        double u_a, v_a;
+        double u_b, v_b;
+        double u_c, v_c;
+        std::shared_ptr<Material> material;
     };
 
 }

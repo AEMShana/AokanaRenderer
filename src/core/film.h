@@ -21,7 +21,7 @@ namespace Asuka {
         const int image_width = 512;
         const int image_height = 512;
         const int channels = 3;
-        const int block_num = 16;
+        const int block_num = 2;
         std::vector<unsigned char> data;
         std::vector<FilmTile> tiles;
 

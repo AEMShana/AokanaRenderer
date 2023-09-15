@@ -9,6 +9,10 @@ namespace Asuka {
 
     class Material {
     public:
+        virtual color emitted(double u, double v, const point3& p) const {
+            return color(0, 0, 0);
+        }
+
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             color& attenuation, Ray& scattered) const = 0;
     };
@@ -50,5 +54,23 @@ namespace Asuka {
         double ir; // Index of Rafraction
     private:
         static double reflectance(double consine, double ref_idx);
+    };
+
+    class DiffuseLight : public Material {
+    public:
+        DiffuseLight(std::shared_ptr<Texture> tex) : emit(tex) {}
+        DiffuseLight(color c) : emit(std::make_shared<SolidColor>(c)) {}
+
+        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+            color& attenuation, Ray& scattered) const override {
+            return false;
+        }
+
+        virtual color emitted(double u, double v, const point3& p) const override {
+            return emit->value(u, v, p);
+        }
+
+    public:
+        std::shared_ptr<Texture> emit;
     };
 }

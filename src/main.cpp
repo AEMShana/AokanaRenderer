@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "core/integrator.h"
+#include "core/matrix.h"
 
 using namespace std;
 
@@ -11,9 +12,9 @@ int main() {
     Camera camera = default_camera();
     SamplerIntegrator integrator;
 
-    integrator.max_depth = 20;
+    integrator.max_depth = 5;
     integrator.sampler = std::make_shared<SimpleSampler>();
-    integrator.sampler->samples_per_pixel = 50;
+    integrator.sampler->samples_per_pixel = 10;
 
     int scene_id = 0;
 
@@ -21,15 +22,30 @@ int main() {
         "0: random_ball_scene\n" <<
         "1: two_spheres_scene\n" <<
         "2: two_perlin_spheres_scene\n" <<
-        "3: earth_scene\n";
+        "3: earth_scene\n" <<
+        "4: simple_light_scene\n" <<
+        "5: bunny_scene\n" <<
+        "6: coffee_maker_scene\n" <<
+        "7: cornell_box_scene\n";
+
 
     std::cin >> scene_id;
+
+    std::cout << "[INFO] please input max depth (default = 5):" << std::endl;
+    std::cin >> integrator.max_depth;
+
+    std::cout << "[INFO] please input samples per pixel (default = 10):" << std::endl;
+    std::cin >> integrator.sampler->samples_per_pixel;
 
     switch (scene_id) {
     case 0: integrator.scene = random_ball_scene(); break;
     case 1: integrator.scene = two_spheres_scene(); break;
     case 2: integrator.scene = two_perlin_spheres_scene(); break;
     case 3: integrator.scene = earth_scene(); break;
+    case 4: integrator.scene = simple_light_scene(); camera = simple_light_scene_camera(); break;
+    case 5: integrator.scene = bunny_scene(); camera = bunny_scene_camera(); break;
+    case 6: integrator.scene = coffee_maker_scene(); camera = coffee_maker_scene_camera(); break;
+    case 7: integrator.scene = cornell_box_scene(); camera = cornell_box_scene_camera(); break;
     default: integrator.scene = random_ball_scene(); break;
     }
 
@@ -51,7 +67,7 @@ int main() {
 
     // integrator.Render(camera);
     integrator.RenderWithMultithreading(camera);
-    camera.save_image("../../../../outputs/result.png");
+    camera.save_image("../../outputs/result.png");
 
 
     return 0;

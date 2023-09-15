@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.rpy": "plaintext",
         "cmath": "cpp",
         "array": "cpp",
         "atomic": "cpp",
@@ -46,6 +47,8 @@
         "chrono": "cpp",
         "ctime": "cpp",
         "ratio": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "cstring": "cpp",
+        "iomanip": "cpp"
     }
 }
