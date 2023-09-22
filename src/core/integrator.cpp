@@ -1,4 +1,6 @@
 #include "integrator.h"
+#include "thread_pool.h"
+
 #include <chrono>
 #include <thread>
 
@@ -98,15 +100,14 @@ namespace Asuka {
         std::cout << "[INFO] Rendering start." << std::endl;
         auto start_time = std::chrono::system_clock::now();
 
+        BS::thread_pool pool;
         std::shared_ptr<Film> film = camera.film;
-        std::vector<std::thread> threads_vec;
 
         for (const auto& tile : film->tiles) {
-            threads_vec.push_back(std::thread(&SamplerIntegrator::RenderOneTile, this, camera, tile));
+            pool.push_task(&SamplerIntegrator::RenderOneTile, this, camera, tile);
         }
 
-        for (auto& thread : threads_vec)
-            thread.join();
+        pool.wait_for_tasks();
 
         auto end_time = std::chrono::system_clock::now();
         // auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
