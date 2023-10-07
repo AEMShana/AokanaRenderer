@@ -1,6 +1,8 @@
 #include "integrator.h"
 #include "thread_pool.h"
 
+#include "ui/ui.h"
+
 #include <chrono>
 #include <thread>
 
@@ -96,18 +98,113 @@ namespace Asuka {
 
     }
 
-    void SamplerIntegrator::RenderWithMultithreading(const Camera& camera) {
+    void SamplerIntegrator::RenderWithMultithreading(const Camera& camera, bool enable_gui) {
         std::cout << "[INFO] Rendering start." << std::endl;
         auto start_time = std::chrono::system_clock::now();
 
         BS::thread_pool pool;
         std::shared_ptr<Film> film = camera.film;
 
-        for (const auto& tile : film->tiles) {
-            pool.push_task(&SamplerIntegrator::RenderOneTile, this, camera, tile);
+        if (enable_gui) {
+            GLFWwindow* window = UI::create_gui_window();
+            std::shared_ptr<UI::Image> image = std::make_shared<UI::Image>(film->image_width, film->image_height);
+
+            std::vector<int> flags(film->tiles.size());
+
+            int tile_index = 0;
+            for (const auto& tile : film->tiles) {
+                pool.push_task(
+                    [&](int index) {
+                        RenderOneTile(camera, tile);
+                        flags[index] = 1;
+                        printf("tile %d finish.\n", index);
+                    },
+                    tile_index++
+                );
+            }
+
+            glViewport(0, 0, image->width, image->height);
+            glfwSetWindowSize(window, image->width, image->height);
+
+            std::shared_ptr<std::vector<unsigned char>> data = std::make_shared<std::vector<unsigned char>>(image->width * image->height * 3);
+
+
+            while (!glfwWindowShouldClose(window)) {
+                glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+
+
+                bool modified = false;
+                for (int i = 0;i < flags.size();++i) {
+                    if (flags[i] == 1) {
+                        modified = true;
+                        auto u_min = static_cast<int>(film->tiles[i].u_min);
+                        auto v_min = static_cast<int>(film->tiles[i].v_min);
+                        auto u_max = static_cast<int>(film->tiles[i].u_max);
+                        auto v_max = static_cast<int>(film->tiles[i].v_max);
+                        int num = (u_max - u_min + 1) * (v_max - v_min + 1);
+
+                        // assert(u_max - u_min + 1 == film->tile_size);
+                        // assert(v_max - v_min + 1 == film->tile_size);
+
+                        int tile_width = u_max - u_min + 1;
+                        int tile_height = v_max - v_min + 1;
+
+                        // std::vector<unsigned char> image_data(num * 3);
+                        std::vector<unsigned char> image_data;
+                        for (int v = v_min, j = 0;v <= v_max;++v, ++j) {
+                            for (int u = u_min, i = 0;u <= u_max;++u, ++i) {
+                                image_data.push_back(film->data[(v * film->image_width + u) * 3 + 0]);
+                                image_data.push_back(film->data[(v * film->image_width + u) * 3 + 1]);
+                                image_data.push_back(film->data[(v * film->image_width + u) * 3 + 2]);
+
+                                (*data)[(v * film->image_width + u) * 3 + 0] = film->data[(v * film->image_width + u) * 3 + 0];
+                                (*data)[(v * film->image_width + u) * 3 + 1] = film->data[(v * film->image_width + u) * 3 + 1];
+                                (*data)[(v * film->image_width + u) * 3 + 2] = film->data[(v * film->image_width + u) * 3 + 2];
+                            }
+                        }
+                        // std::cout << u_min << " : " << v_min << " : " << u_max << " : " << v_max << std::endl;
+                        // image->modify_subimage(
+                        //     u_min,
+                        //     v_min,
+                        //     u_max,
+                        //     v_max,
+                        //     image_data);
+                        // flags[i] = 2;
+                        // break;
+                    }
+                }
+
+                if (modified) {
+                    image = std::make_shared<UI::Image>(film->image_width, film->image_height, data->data());
+                }
+
+                image->draw();
+                glfwSwapBuffers(window);
+                glfwPollEvents();
+            }
+            glfwTerminate();
+            pool.wait_for_tasks();
+
+            // UI::draw_gui(window, image);
+
+        }
+        else {
+            int tile_index = 0;
+            for (const auto& tile : film->tiles) {
+                pool.push_task(
+                    [&](int index) {
+                        RenderOneTile(camera, tile);
+                        printf("tile %d finish.\n", index);
+                    },
+                    tile_index++
+                );
+                // pool.push_task(&SamplerIntegrator::RenderOneTile, this, camera, tile);
+            }
+            pool.wait_for_tasks();
+
         }
 
-        pool.wait_for_tasks();
 
         auto end_time = std::chrono::system_clock::now();
         // auto duration = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);

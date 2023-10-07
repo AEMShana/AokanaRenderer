@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(src)
 
 # 添加外部依赖项
-add_subdirectory(external/glm)
+add_subdirectory(external)
 
 set_target_properties(AsukaRenderer PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build

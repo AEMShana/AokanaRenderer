@@ -49,6 +49,10 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cstring": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "mutex": "cpp",
+        "cinttypes": "cpp"
     }
 }

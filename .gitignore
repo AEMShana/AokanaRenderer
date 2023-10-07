@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # external packages
 external/
 build/
+outputs/result.png

@@ -5,8 +5,7 @@
 
 using namespace std;
 
-
-int main() {
+void Render() {
     using namespace Asuka;
 
     Camera camera = default_camera();
@@ -66,9 +65,13 @@ int main() {
     // integrator.scene->objects = shapeList;
 
     // integrator.Render(camera);
-    integrator.RenderWithMultithreading(camera);
-    camera.save_image("../../outputs/result.png");
+    integrator.RenderWithMultithreading(camera, true);
+    camera.save_image("./outputs/result.png");
+}
 
+
+int main() {
+    Render();
 
     return 0;
 }

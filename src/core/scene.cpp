@@ -43,7 +43,7 @@ namespace Asuka {
         auto material1 = std::make_shared<Dielectric>(1.5);
         objects->add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, material1));
 
-        auto earth_texture = std::make_shared<ImageTexture>("../../assets/textures/earthmap.jpg");
+        auto earth_texture = std::make_shared<ImageTexture>("./assets/textures/earthmap.jpg");
         auto material2 = std::make_shared<Lambertian>(earth_texture);
         objects->add(std::make_shared<Sphere>(point3(-4, 1, 0), 1.0, material2));
 
@@ -90,7 +90,7 @@ namespace Asuka {
     std::shared_ptr<Scene> earth_scene() {
         std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
 
-        auto earth_texture = std::make_shared<ImageTexture>("../../../../assets/textures/earthmap.jpg");
+        auto earth_texture = std::make_shared<ImageTexture>("./assets/textures/earthmap.jpg");
         auto earth_surface = std::make_shared<Lambertian>(earth_texture);
         auto earth = std::make_shared<Sphere>(point3(0), 2, earth_surface);
         objects->add(earth);
@@ -127,7 +127,7 @@ namespace Asuka {
 
     std::shared_ptr<Scene> bunny_scene() {
         std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
-        objects->load_obj("../../../../assets/models/bunny/bunny.obj", std::make_shared<Lambertian>(color(1.0, 0.1, 0.1)));
+        objects->load_obj("./assets/models/bunny/bunny.obj", std::make_shared<Lambertian>(color(1.0, 0.1, 0.1)));
 
         std::shared_ptr<Scene> scene = std::make_shared<Scene>();
         scene->objects = objects;
@@ -140,15 +140,15 @@ namespace Asuka {
         std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
 
         std::shared_ptr<ShapeList> yellow = std::make_shared<ShapeList>();
-        yellow->load_obj("../../../../assets/models/coffee_maker/Yellow.obj", std::make_shared<Lambertian>(color(0.96, 0.73, 0.11)));
+        yellow->load_obj("./assets/models/coffee_maker/Yellow.obj", std::make_shared<Lambertian>(color(0.96, 0.73, 0.11)));
         std::shared_ptr<ShapeList> black = std::make_shared<ShapeList>();
-        black->load_obj("../../../../assets/models/coffee_maker/Black.obj", std::make_shared<Metal>(color(0.05, 0.05, 0.05), 0.6));
+        black->load_obj("./assets/models/coffee_maker/Black.obj", std::make_shared<Metal>(color(0.05, 0.05, 0.05), 0.6));
         std::shared_ptr<ShapeList> glass = std::make_shared<ShapeList>();
-        glass->load_obj("../../../../assets/models/coffee_maker/Glass.obj", std::make_shared<Dielectric>(1.5));
+        glass->load_obj("./assets/models/coffee_maker/Glass.obj", std::make_shared<Dielectric>(1.5));
         std::shared_ptr<ShapeList> metal = std::make_shared<ShapeList>();
-        metal->load_obj("../../../../assets/models/coffee_maker/Metal.obj", std::make_shared<Metal>(color(0.9, 0.9, 0.9), 0.6));
+        metal->load_obj("./assets/models/coffee_maker/Metal.obj", std::make_shared<Metal>(color(0.9, 0.9, 0.9), 0.6));
         std::shared_ptr<ShapeList> ground_plane = std::make_shared<ShapeList>();
-        ground_plane->load_obj("../../../../assets/models/coffee_maker/Ground.obj", std::make_shared<Lambertian>(color(0.95)));
+        ground_plane->load_obj("./assets/models/coffee_maker/Ground.obj", std::make_shared<Lambertian>(color(0.95)));
 
         objects->add(yellow);
         objects->add(black);

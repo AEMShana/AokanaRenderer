@@ -48,7 +48,7 @@ namespace Asuka {
 
     Camera bunny_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(13, 3, 2);
+        point3 lookfrom(1, 3, 2);
         point3 lookat(0, 0, 0);
         vec3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
