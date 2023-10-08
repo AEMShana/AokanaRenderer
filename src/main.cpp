@@ -36,6 +36,10 @@ void Render() {
     std::cout << "[INFO] please input samples per pixel (default = 10):" << std::endl;
     std::cin >> integrator.sampler->samples_per_pixel;
 
+    std::cout<<"[INFO] Display GUI? (0/1)"<<std::endl;
+    int use_gui;
+    std::cin>>use_gui;
+
     switch (scene_id) {
     case 0: integrator.scene = random_ball_scene(); break;
     case 1: integrator.scene = two_spheres_scene(); break;
@@ -65,7 +69,7 @@ void Render() {
     // integrator.scene->objects = shapeList;
 
     // integrator.Render(camera);
-    integrator.RenderWithMultithreading(camera, true);
+    integrator.RenderWithMultithreading(camera, use_gui);
     camera.save_image("./outputs/result.png");
 }
 

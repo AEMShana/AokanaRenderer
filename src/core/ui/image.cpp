@@ -14,8 +14,8 @@ namespace Asuka::UI {
         create_texture(image_data.data(), width, height, channels);
         create_mesh();
         shader = std::make_shared<Shader>(
-            "F:/Project/AsukaRenderer/src/core/ui/shaders/ui_image_shader/ui_image_shader.vertex",
-            "F:/Project/AsukaRenderer/src/core/ui/shaders/ui_image_shader/ui_image_shader.fragment");
+            "./src/core/ui/shaders/ui_image_shader/ui_image_shader.vertex",
+            "./src/core/ui/shaders/ui_image_shader/ui_image_shader.fragment");
 
         shader->use();
         shader->setInt("texture1", 0);
@@ -30,8 +30,8 @@ namespace Asuka::UI {
         create_texture(data, width, height, channels);
         create_mesh();
         shader = std::make_shared<Shader>(
-            "F:/Project/AsukaRenderer/src/core/ui/shaders/ui_image_shader/ui_image_shader.vertex",
-            "F:/Project/AsukaRenderer/src/core/ui/shaders/ui_image_shader/ui_image_shader.fragment");
+            "./src/core/ui/shaders/ui_image_shader/ui_image_shader.vertex",
+            "./src/core/ui/shaders/ui_image_shader/ui_image_shader.fragment");
 
         shader->use();
         shader->setInt("texture1", 0);
@@ -52,8 +52,8 @@ namespace Asuka::UI {
         //     "shaders/ui_image_shader/ui_image_shader.fragment");
 
         shader = std::make_shared<Shader>(
-            "F:/Project/AsukaRenderer/src/ui/shaders/ui_image_shader/ui_image_shader.vertex",
-            "F:/Project/AsukaRenderer/src/ui/shaders/ui_image_shader/ui_image_shader.fragment");
+            "./src/ui/shaders/ui_image_shader/ui_image_shader.vertex",
+            "./src/ui/shaders/ui_image_shader/ui_image_shader.fragment");
 
         shader->use(); // don't forget to activate/use the shader before setting uniforms!
         shader->setInt("texture1", 0);
