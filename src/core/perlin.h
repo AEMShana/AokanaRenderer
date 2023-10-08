@@ -1,14 +1,14 @@
 #pragma once
 
-#include "vec3.h"
+#include "vec.h"
 
 namespace Asuka {
     class Perlin {
     public:
         Perlin() {
-            ranvec = new vec3[point_count];
+            ranvec = new Vector3[point_count];
             for (int i = 0;i < point_count;++i)
-                ranvec[i] = random_unit_vector();
+                ranvec[i] = Vector3::RandomUnitVector();
             perm_x = perlin_generate_perm();
             perm_y = perlin_generate_perm();
             perm_z = perlin_generate_perm();
@@ -21,15 +21,15 @@ namespace Asuka {
             delete[] perm_z;
         }
 
-        double noise(const point3& p) const {
-            auto u = p.x() - std::floor(p.x());
-            auto v = p.y() - std::floor(p.y());
-            auto w = p.z() - std::floor(p.z());
+        double noise(const Point3& p) const {
+            auto u = p.x - std::floor(p.x);
+            auto v = p.y - std::floor(p.y);
+            auto w = p.z - std::floor(p.z);
 
-            auto i = static_cast<int>(std::floor(p.x()));
-            auto j = static_cast<int>(std::floor(p.y()));
-            auto k = static_cast<int>(std::floor(p.z()));
-            vec3 c[2][2][2];
+            auto i = static_cast<int>(std::floor(p.x));
+            auto j = static_cast<int>(std::floor(p.y));
+            auto k = static_cast<int>(std::floor(p.z));
+            Vector3 c[2][2][2];
 
             for (int di = 0;di < 2;++di) {
                 for (int dj = 0;dj < 2;++dj) {
@@ -41,7 +41,7 @@ namespace Asuka {
             return trilinear_interp(c, u, v, w);
         }
 
-        double turb(const point3& p, int depth = 7) const {
+        double turb(const Point3& p, int depth = 7) const {
             auto accum = 0.0;
             auto temp_p = p;
             auto weight = 1.0;
@@ -57,7 +57,7 @@ namespace Asuka {
 
     private:
         static const int point_count = 256;
-        vec3* ranvec;
+        Vector3* ranvec;
         int* perm_x;
         int* perm_y;
         int* perm_z;
@@ -79,7 +79,7 @@ namespace Asuka {
             }
         }
 
-        static double trilinear_interp(vec3 c[2][2][2], double u, double v, double w) {
+        static double trilinear_interp(Vector3 c[2][2][2], double u, double v, double w) {
             auto uu = u * u * (3 - 2 * u);
             auto vv = v * v * (3 - 2 * v);
             auto ww = w * w * (3 - 2 * w);
@@ -88,11 +88,11 @@ namespace Asuka {
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 2; j++)
                     for (int k = 0; k < 2; k++) {
-                        vec3 weight_v(u - i, v - j, w - k);
+                        Vector3 weight_v(u - i, v - j, w - k);
                         accum += (i * uu + (1 - i) * (1 - uu))
                             * (j * vv + (1 - j) * (1 - vv))
                             * (k * ww + (1 - k) * (1 - ww))
-                            * dot(c[i][j][k], weight_v);
+                            * Dot(c[i][j][k], weight_v);
                     }
 
             return accum;

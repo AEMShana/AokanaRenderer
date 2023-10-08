@@ -4,14 +4,14 @@
 #include "../stb/stb_image_write.h"
 
 namespace Asuka {
-    void Film::write_color(color pixel_color, int u, int v) {
+    void Film::write_color(Color pixel_color, int u, int v) {
         v = image_height - 1 - v;
         int index = (v * image_width + u) * 3;
 
-        // Divide the color by the number of samples and gamma-correct for gamma=2.0.
-        double r = pixel_color.x();
-        double g = pixel_color.y();
-        double b = pixel_color.z();
+        // Divide the Color by the number of samples and gamma-correct for gamma=2.0.
+        double r = pixel_color.x;
+        double g = pixel_color.y;
+        double b = pixel_color.z;
 
         r = sqrt(r);
         g = sqrt(g);

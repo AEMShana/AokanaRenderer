@@ -2,12 +2,12 @@
 
 namespace Asuka {
     bool Lambertian::scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-        color& attenuation, Ray& scattered) const {
+        Color& attenuation, Ray& scattered) const {
 
-        vec3 scatter_direction = normalize(hit_point.normal + random_unit_vector());
+        Vector3 scatter_direction = Normalize(Vector3(hit_point.normal) + Vector3::RandomUnitVector());
 
         if (scatter_direction.near_zero())
-            scatter_direction = hit_point.normal;
+            scatter_direction = Vector3(hit_point.normal);
 
         scattered = Ray(hit_point.p, scatter_direction, ray_in.time());
         attenuation = albedo->value(hit_point.u, hit_point.v, hit_point.p);
@@ -15,28 +15,28 @@ namespace Asuka {
     }
 
     bool Metal::scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-        color& attenuation, Ray& scattered) const {
+        Color& attenuation, Ray& scattered) const {
 
-        vec3 reflected = reflect(normalize(ray_in.direction()), hit_point.normal);
-        scattered = Ray(hit_point.p, reflected + fuzz * random_in_unit_sphere(), ray_in.time());
+        Vector3 reflected = Reflect(Normalize(ray_in.direction()), hit_point.normal);
+        scattered = Ray(hit_point.p, reflected + fuzz * Vector3::RandomInUnitSphere(), ray_in.time());
         attenuation = albedo;
-        return (dot(scattered.direction(), hit_point.normal) > 0);
+        return (Dot(scattered.direction(), hit_point.normal) > 0);
     }
 
     bool Dielectric::scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-        color& attenuation, Ray& scattered) const {
+        Color& attenuation, Ray& scattered) const {
 
-        attenuation = color(1.0, 1.0, 1.0);
+        attenuation = Color(1.0, 1.0, 1.0);
         double refraction_ratio = hit_point.front_face ? (1.0 / ir) : ir;
-        vec3 unit_direction = normalize(ray_in.direction());
+        Vector3 unit_direction = Normalize(ray_in.direction());
 
-        double cos_theta = std::min(dot(-unit_direction, hit_point.normal), 1.0);
+        double cos_theta = std::min(Dot(-unit_direction, hit_point.normal), 1.0);
         double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
         bool cannot_refract = refraction_ratio * sin_theta > 1.0;
-        vec3 direction;
+        Vector3 direction;
 
-        if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double()) direction = reflect(unit_direction, hit_point.normal);
-        else direction = refract(unit_direction, hit_point.normal, refraction_ratio);
+        if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double()) direction = Reflect(unit_direction, hit_point.normal);
+        else direction = Refract(unit_direction, hit_point.normal, refraction_ratio);
 
         scattered = Ray(hit_point.p, direction, ray_in.time());
         return true;

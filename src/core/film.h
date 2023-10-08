@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "vec3.h"
+#include "vec.h"
 
 namespace Asuka {
 
@@ -46,7 +46,7 @@ namespace Asuka {
                 }
             }
         }
-        void write_color(color pixel_color, int u, int v);
+        void write_color(Color pixel_color, int u, int v);
         void save_image(std::string path) const;
     };
 }

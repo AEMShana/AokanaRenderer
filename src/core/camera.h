@@ -15,9 +15,9 @@ namespace Asuka {
         std::shared_ptr<Film> film;
 
         Camera(
-            point3 cam_position,
-            point3 lookat,
-            vec3 vup,
+            Point3 cam_position,
+            Point3 lookat,
+            Vector3 vup,
             double vfov,
             double aspect_ratio,
             double aperture,
@@ -29,9 +29,9 @@ namespace Asuka {
         }
 
         void set_parameters(
-            point3 cam_position,
-            point3 lookat,
-            vec3 vup,
+            Point3 cam_position,
+            Point3 lookat,
+            Vector3 vup,
             double vfov,
             double aspect_ratio,
             double aperture,
@@ -44,14 +44,14 @@ namespace Asuka {
             double viewport_height = 2.0 * h;
             double viewport_width = aspect_ratio * viewport_height;
 
-            w = normalize(lookat - cam_position);
-            u = normalize(cross(vup, w));
-            v = cross(w, u);
+            w = Normalize(lookat - cam_position);
+            u = Normalize(Cross(vup, w));
+            v = Cross(w, u);
 
             origin = cam_position;
             horizontal = focus_dist * viewport_width * u;
             vertical = focus_dist * viewport_height * v;
-            lower_left_corner = (origin - horizontal / 2.0 - vertical / 2.0 + focus_dist * w);
+            lower_left_corner = (Vector3(origin) - horizontal / 2.0 - vertical / 2.0 + focus_dist * w);
             lens_radius = aperture / 2.0;
             time0 = _time0;
             time1 = _time1;
@@ -65,18 +65,21 @@ namespace Asuka {
         }
 
         Ray get_ray(const Sample& sample) const {
-            vec3 rd = lens_radius * random_in_unit_disk();
-            vec3 offset = u * rd.x() + v * rd.y();
-            return Ray(origin + offset, lower_left_corner + sample.u * horizontal + sample.v * vertical - origin - offset, random_double(time0, time1));
+            Vector3 rd = lens_radius * Vector3::RandomInUnitDisk();
+            Vector3 offset = u * rd.x + v * rd.y;
+            return Ray(
+                origin + offset,
+                lower_left_corner + sample.u * horizontal + sample.v * vertical - Vector3(origin) - offset,
+                random_double(time0, time1));
         }
 
-        point3 position() const { return origin; }
+        Point3 position() const { return origin; }
     private:
-        point3 origin;
-        vec3 horizontal;
-        vec3 vertical;
-        vec3 lower_left_corner;
-        vec3 u, v, w;
+        Point3 origin;
+        Vector3 horizontal;
+        Vector3 vertical;
+        Vector3 lower_left_corner;
+        Vector3 u, v, w;
         double lens_radius;
         double time0, time1;
     };

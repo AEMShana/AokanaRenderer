@@ -1,13 +1,13 @@
 #pragma once
 
-#include "vec3.h"
 #include "matrix.h"
+#include "vec.h"
 
 namespace Asuka {
     class Transform {
     public:
         Transform() = default;
-        Transform(const Matrix4x4& _m) : m(_m), mInv(_m.inv()) {}
+        Transform(const Matrix4x4& _m) : m(_m), mInv(_m.Inv()) {}
         Transform(const Matrix4x4& _m, const Matrix4x4& _mInv) : m(_m), mInv(_mInv) {}
 
         Transform inv() const { return Transform(mInv, m); }
@@ -38,8 +38,8 @@ namespace Asuka {
             return trans;
         }
 
-        static Transform Translate(const vec3& v) {
-            return Translate(v.x(), v.y(), v.z());
+        static Transform Translate(const Vector3& v) {
+            return Translate(v.x, v.y, v.z);
         }
 
         static Transform Scale(double x, double y, double z) {
@@ -62,8 +62,8 @@ namespace Asuka {
             return trans;
         }
 
-        static Transform Scale(const vec3& v) {
-            return Scale(v.x(), v.y(), v.z());
+        static Transform Scale(const Vector3& v) {
+            return Scale(v.x, v.y, v.z);
         }
 
         static Transform RotateX(double degree) {
@@ -77,7 +77,7 @@ namespace Asuka {
                 0.0, s, c, 0.0,
                 0.0, 0.0, 0.0, 1.0
             );
-            trans.mInv = trans.m.transpose();
+            trans.mInv = trans.m.Transpose();
 
             return trans;
         }
@@ -93,7 +93,7 @@ namespace Asuka {
                 -s, 0.0, c, 0.0,
                 0.0, 0.0, 0.0, 1.0
             );
-            trans.mInv = trans.m.transpose();
+            trans.mInv = trans.m.Transpose();
 
             return trans;
         }
@@ -109,7 +109,7 @@ namespace Asuka {
                 0.0, 0.0, 1.0, 0.0,
                 0.0, 0.0, 0.0, 1.0
             );
-            trans.mInv = trans.m.transpose();
+            trans.mInv = trans.m.Transpose();
 
             return trans;
         }
@@ -118,8 +118,8 @@ namespace Asuka {
             return Transform::RotateX(x_degree) * Transform::RotateY(y_degree) * Transform::RotateZ(z_degree);
         }
 
-        static Transform Rotate(const vec3& v) {
-            return Rotate(v.x(), v.y(), v.z());
+        static Transform Rotate(const Vector3& v) {
+            return Rotate(v.x, v.y, v.z);
         }
 
     private:

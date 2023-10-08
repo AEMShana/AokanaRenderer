@@ -4,6 +4,7 @@ project(AsukaRenderer)
 # 设置 C++ 的标准版本
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(/NODEFAULTLIB:MSVCRT)
 
 # 添加源代码目录
 add_subdirectory(src)

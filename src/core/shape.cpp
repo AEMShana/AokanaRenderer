@@ -43,17 +43,17 @@ namespace Asuka {
         objLoader.LoadFile(filepath);
         for (auto& mesh : objLoader.LoadedMeshes) {
             for (int i = 2;i < mesh.Indices.size();i += 3) {
-                point3 a(
+                Point3 a(
                     mesh.Vertices[mesh.Indices[i - 2]].Position.X,
                     mesh.Vertices[mesh.Indices[i - 2]].Position.Y,
                     mesh.Vertices[mesh.Indices[i - 2]].Position.Z);
 
-                point3 b(
+                Point3 b(
                     mesh.Vertices[mesh.Indices[i - 1]].Position.X,
                     mesh.Vertices[mesh.Indices[i - 1]].Position.Y,
                     mesh.Vertices[mesh.Indices[i - 1]].Position.Z);
 
-                point3 c(
+                Point3 c(
                     mesh.Vertices[mesh.Indices[i]].Position.X,
                     mesh.Vertices[mesh.Indices[i]].Position.Y,
                     mesh.Vertices[mesh.Indices[i]].Position.Z);
@@ -65,19 +65,19 @@ namespace Asuka {
 
 
     bool Sphere::hit(const Ray& ray, double t_min, double t_max) const {
-        vec3 oc = ray.origin() - center;
-        double a = ray.direction().length_squared();
-        double half_b = dot(oc, ray.direction());
-        double c = oc.length_squared() - radius * radius;
+        Vector3 oc = ray.origin() - center;
+        double a = ray.direction().LengthSquare();
+        double half_b = Dot(oc, ray.direction());
+        double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
         return (discriminant > 0);
     }
 
     bool Sphere::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
-        vec3 oc = ray.origin() - center;
-        double a = ray.direction().length_squared();
-        double half_b = dot(oc, ray.direction());
-        double c = oc.length_squared() - radius * radius;
+        Vector3 oc = ray.origin() - center;
+        double a = ray.direction().LengthSquare();
+        double half_b = Dot(oc, ray.direction());
+        double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
 
         if (discriminant < 0) return false;
@@ -92,7 +92,7 @@ namespace Asuka {
 
         hit_point.t = root;
         hit_point.p = ray.at(hit_point.t);
-        vec3 outward_normal = (hit_point.p - center) / radius;
+        Normal3 outward_normal = Normal3((hit_point.p - center) / radius);
         hit_point.set_face_normal(ray, outward_normal);
         get_sphere_uv(outward_normal, hit_point.u, hit_point.v);
         hit_point.material = material;
@@ -101,13 +101,13 @@ namespace Asuka {
     }
 
     bool Sphere::bounding_box(double time0, double time1, AABB& output_box) const {
-        output_box = AABB(center - vec3(radius), center + vec3(radius));
+        output_box = AABB(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
         return true;
     }
 
-    void Sphere::get_sphere_uv(const point3& p, double& u, double& v) {
-        double theta = std::acos(-p.y());
-        double phi = std::atan2(-p.z(), p.x()) + pi;
+    void Sphere::get_sphere_uv(const Normal3& p, double& u, double& v) {
+        double theta = std::acos(-p.y);
+        double phi = std::atan2(-p.z, p.x) + pi;
         u = phi / (2.0 * pi);
         v = theta / pi;
     }
@@ -118,12 +118,12 @@ namespace Asuka {
         auto e1 = b - a;
         auto e2 = c - a;
         auto s = ray.origin() - a;
-        auto s1 = cross(ray.direction(), e2);
-        auto s2 = cross(s, e1);
-        auto div = 1.0 / dot(s1, e1);
-        auto t = div * dot(s2, e2);
-        auto p1 = div * dot(s1, s);
-        auto p2 = div * dot(s2, ray.direction());
+        auto s1 = Cross(ray.direction(), e2);
+        auto s2 = Cross(s, e1);
+        auto div = 1.0 / Dot(s1, e1);
+        auto t = div * Dot(s2, e2);
+        auto p1 = div * Dot(s1, s);
+        auto p2 = div * Dot(s2, ray.direction());
         auto p0 = 1.0 - p1 - p2;
 
         if (t < t_min || t > t_max) return false;
@@ -140,12 +140,12 @@ namespace Asuka {
         auto e1 = b - a;
         auto e2 = c - a;
         auto s = ray.origin() - a;
-        auto s1 = cross(ray.direction(), e2);
-        auto s2 = cross(s, e1);
-        auto div = 1.0 / dot(s1, e1);
-        auto t = div * dot(s2, e2);
-        auto p1 = div * dot(s1, s);
-        auto p2 = div * dot(s2, ray.direction());
+        auto s1 = Cross(ray.direction(), e2);
+        auto s2 = Cross(s, e1);
+        auto div = 1.0 / Dot(s1, e1);
+        auto t = div * Dot(s2, e2);
+        auto p1 = div * Dot(s1, s);
+        auto p2 = div * Dot(s2, ray.direction());
         auto p0 = 1.0 - p1 - p2;
 
         if (t < t_min || t > t_max) return false;
@@ -156,7 +156,7 @@ namespace Asuka {
         hit_point.u = p0 * u_a + p1 * u_b + p2 * u_c;
         hit_point.v = p0 * v_a + p1 * v_b + p2 * v_c;
         hit_point.material = material;
-        vec3 outward_normal = normalize(cross(b - a, c - a));
+        Normal3 outward_normal = Normal3(Normalize(Cross(b - a, c - a)));
         hit_point.set_face_normal(ray, outward_normal);
 
         return true;
@@ -164,14 +164,14 @@ namespace Asuka {
 
     bool Triangle::bounding_box(double time0, double time1, AABB& output_box) const {
         // add an offset, avoid the box become a plane
-        point3 small(
-            std::min({ a.x(), b.x(), c.x() }) - 0.0001,
-            std::min({ a.y(), b.y(), c.y() }) - 0.0001,
-            std::min({ a.z(), b.z(), c.z() }) - 0.0001);
-        point3 big(
-            std::max({ a.x(), b.x(), c.x() }) + 0.0001,
-            std::max({ a.y(), b.y(), c.y() }) + 0.0001,
-            std::max({ a.z(), b.z(), c.z() }) + 0.0001);
+        Point3 small(
+            std::min({ a.x, b.x, c.x }) - 0.0001,
+            std::min({ a.y, b.y, c.y }) - 0.0001,
+            std::min({ a.z, b.z, c.z }) - 0.0001);
+        Point3 big(
+            std::max({ a.x, b.x, c.x }) + 0.0001,
+            std::max({ a.y, b.y, c.y }) + 0.0001,
+            std::max({ a.z, b.z, c.z }) + 0.0001);
         output_box = AABB(small, big);
         return true;
     }

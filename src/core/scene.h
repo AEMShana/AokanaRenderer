@@ -11,7 +11,7 @@ namespace Asuka {
     public:
         std::shared_ptr<Shape> objects;
         std::shared_ptr<BVHNode> bvh;
-        color background;
+        Color background;
     };
 
     std::shared_ptr<Scene> random_ball_scene();

@@ -17,11 +17,11 @@ namespace Asuka {
         bytes_per_scanline = bytes_per_pixel * width;
     }
 
-    color ImageTexture::value(double u, double v, const point3& p) const {
+    Color ImageTexture::value(double u, double v, const Point3& p) const {
         // If we have no texture data, then return solid purple as a debugging aid.
-        if (data == nullptr) return color(1, 0, 1);
-        u = clamp(u, 0.0, 1.0);
-        v = 1.0 - clamp(v, 0.0, 1.0); // flip v to image coordinates
+        if (data == nullptr) return Color(1, 0, 1);
+        u = Clamp(u, 0.0, 1.0);
+        v = 1.0 - Clamp(v, 0.0, 1.0); // flip v to image coordinates
 
         auto i = static_cast<int>(u * width);
         auto j = static_cast<int>(v * height);
@@ -29,9 +29,9 @@ namespace Asuka {
         if (i >= width) i = width - 1;
         if (j >= height) j = height - 1;
 
-        const auto color_scale = 1.0 / 255.0;
+        const auto Color_scale = 1.0 / 255.0;
         auto pixel = data + j * bytes_per_scanline + i * bytes_per_pixel;
 
-        return color(color_scale * pixel[0], color_scale * pixel[1], color_scale * pixel[2]);
+        return Color(Color_scale * pixel[0], Color_scale * pixel[1], Color_scale * pixel[2]);
     }
 }

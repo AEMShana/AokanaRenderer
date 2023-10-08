@@ -9,22 +9,22 @@ namespace Asuka {
 
     class Material {
     public:
-        virtual color emitted(double u, double v, const point3& p) const {
-            return color(0, 0, 0);
+        virtual Color emitted(double u, double v, const Point3& p) const {
+            return Color(0, 0, 0);
         }
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-            color& attenuation, Ray& scattered) const = 0;
+            Color& attenuation, Ray& scattered) const = 0;
     };
 
 
     class Lambertian : public Material {
     public:
-        Lambertian(const color& a) : albedo(std::make_shared<SolidColor>(a)) {}
+        Lambertian(const Color& a) : albedo(std::make_shared<SolidColor>(a)) {}
         Lambertian(std::shared_ptr<Texture> a) : albedo(a) {}
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-            color& attenuation, Ray& scattered) const override;
+            Color& attenuation, Ray& scattered) const override;
     public:
         std::shared_ptr<Texture> albedo;
     };
@@ -32,13 +32,13 @@ namespace Asuka {
 
     class Metal : public Material {
     public:
-        Metal(const color& a, double f) :albedo(a), fuzz(f < 1 ? f : 1) {}
+        Metal(const Color& a, double f) :albedo(a), fuzz(f < 1 ? f : 1) {}
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-            color& attenuation, Ray& scattered) const override;
+            Color& attenuation, Ray& scattered) const override;
 
     public:
-        color albedo;
+        Color albedo;
         double fuzz;
     };
 
@@ -48,7 +48,7 @@ namespace Asuka {
         Dielectric(double index_of_refraction) : ir(index_of_refraction) {}
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-            color& attenuation, Ray& scattered) const override;
+            Color& attenuation, Ray& scattered) const override;
 
     public:
         double ir; // Index of Rafraction
@@ -59,14 +59,14 @@ namespace Asuka {
     class DiffuseLight : public Material {
     public:
         DiffuseLight(std::shared_ptr<Texture> tex) : emit(tex) {}
-        DiffuseLight(color c) : emit(std::make_shared<SolidColor>(c)) {}
+        DiffuseLight(Color c) : emit(std::make_shared<SolidColor>(c)) {}
 
         virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
-            color& attenuation, Ray& scattered) const override {
+            Color& attenuation, Ray& scattered) const override {
             return false;
         }
 
-        virtual color emitted(double u, double v, const point3& p) const override {
+        virtual Color emitted(double u, double v, const Point3& p) const override {
             return emit->value(u, v, p);
         }
 

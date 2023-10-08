@@ -8,34 +8,34 @@
 
 namespace Asuka {
 
-    // color SamplerIntegrator::Li(const Ray& ray, int depth) {
-    //     if (depth <= 0) return color(0, 0, 0);
+    // Color SamplerIntegrator::Li(const Ray& ray, int depth) {
+    //     if (depth <= 0) return Color(0, 0, 0);
 
     //     SurfaceInteraction hit_point;
     //     if (scene->bvh->hitP(ray, hit_point)) {
     //         Ray scattered;
-    //         color attenuation;
+    //         Color attenuation;
     //         if (hit_point.material->scatter(ray, hit_point, attenuation, scattered))
     //             return attenuation * Li(scattered, depth - 1);
-    //         return color(0, 0, 0);
+    //         return Color(0, 0, 0);
     //     }
 
     //     vec3 unit_dir = normalize(ray.dir);
     //     double t = 0.5 * (unit_dir.y() + 1.0);
-    //     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+    //     return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
     // }
 
-    color SamplerIntegrator::Li(const Ray& ray, const color& background, int depth) {
-        if (depth <= 0) return color(0, 0, 0);
+    Color SamplerIntegrator::Li(const Ray& ray, const Color& background, int depth) {
+        if (depth <= 0) return Color(0, 0, 0);
         SurfaceInteraction hit_point;
         if (!scene->bvh->hitP(ray, hit_point)) return background;
         Ray scattered;
-        color attenuation;
-        color emitted = hit_point.material->emitted(hit_point.u, hit_point.v, hit_point.p);
+        Color attenuation;
+        Color emitted = hit_point.material->emitted(hit_point.u, hit_point.v, hit_point.p);
         if (!hit_point.material->scatter(ray, hit_point, attenuation, scattered))
             return emitted;
 
-        return emitted + attenuation * Li(scattered, background, depth - 1);
+        return emitted + PairwiseMul(attenuation, Li(scattered, background, depth - 1));
     }
 
 
@@ -48,17 +48,17 @@ namespace Asuka {
 
         for (int j = 0; j < film->image_height;++j) {
             for (int i = 0;i < film->image_width;++i) {
-                color radiance;
+                Color radiance;
                 auto samples = sampler->sample();
                 for (auto& sample : samples) {
                     sample.u = static_cast<double>(i + sample.u) / static_cast<double>(film->image_width - 1);
                     sample.v = static_cast<double>(j + sample.v) / static_cast<double>(film->image_height - 1);
                     Ray ray = camera.get_ray(sample);
-                    color r = Li(ray, scene->background, max_depth);
+                    Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
                 radiance /= static_cast<double>(sampler->samples_per_pixel);
-                radiance = clamp(radiance);
+                radiance = Clamp(radiance);
                 film->write_color(radiance, i, j);
 
                 int index = j * film->image_width + i;
@@ -81,17 +81,17 @@ namespace Asuka {
 
         for (int j = tile.v_min; j <= tile.v_max;++j) {
             for (int i = tile.u_min;i <= tile.u_max;++i) {
-                color radiance;
+                Color radiance;
                 auto samples = sampler->sample();
                 for (auto& sample : samples) {
                     sample.u = static_cast<double>(i + sample.u) / static_cast<double>(film->image_width - 1);
                     sample.v = static_cast<double>(j + sample.v) / static_cast<double>(film->image_height - 1);
                     Ray ray = camera.get_ray(sample);
-                    color r = Li(ray, scene->background, max_depth);
+                    Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
                 radiance /= static_cast<double>(sampler->samples_per_pixel);
-                radiance = clamp(radiance);
+                radiance = Clamp(radiance);
                 film->write_color(radiance, i, j);
             }
         }

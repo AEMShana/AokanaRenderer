@@ -37,12 +37,12 @@ namespace Asuka {
 
     class Sphere : public Shape {
     public:
-        point3 center;
+        Point3 center;
         double radius;
         std::shared_ptr<Material> material;
 
         Sphere() : center(0, 0, 0), radius(0.5) {}
-        Sphere(point3 center, double radius, std::shared_ptr<Material> m)
+        Sphere(Point3 center, double radius, std::shared_ptr<Material> m)
             : center(center), radius(radius), material(m) {}
 
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
@@ -50,21 +50,21 @@ namespace Asuka {
         virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
 
     private:
-        static void get_sphere_uv(const point3& p, double& u, double& v);
+        static void get_sphere_uv(const Normal3& p, double& u, double& v);
 
     };
 
     class Triangle : public Shape {
     public:
-        Triangle(point3 _a, point3 _b, point3 _c, std::shared_ptr<Material> m) : a(_a), b(_b), c(_c), material(m) {}
+        Triangle(Point3 _a, Point3 _b, Point3 _c, std::shared_ptr<Material> m) : a(_a), b(_b), c(_c), material(m) {}
 
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, AABB& output_box) const override;
     private:
-        // void get_uv(const point3& p, double& u, double& v) const;
+        // void get_uv(const Point3& p, double& u, double& v) const;
     public:
-        point3 a, b, c;
+        Point3 a, b, c;
         double u_a, v_a;
         double u_b, v_b;
         double u_c, v_c;

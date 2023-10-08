@@ -4,9 +4,9 @@
 namespace Asuka {
     Camera default_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(13, 2, -3);
-        point3 lookat(0, 0, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(13, 2, -3);
+        Point3 lookat(0, 0, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.1;
 
@@ -15,9 +15,9 @@ namespace Asuka {
 
     Camera random_ball_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(13, 2, -3);
-        point3 lookat(0, 0, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(13, 2, -3);
+        Point3 lookat(0, 0, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.1;
 
@@ -26,9 +26,9 @@ namespace Asuka {
 
     Camera two_sphere_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(13, 2, -3);
-        point3 lookat(0, 0, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(13, 2, -3);
+        Point3 lookat(0, 0, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.1;
 
@@ -37,9 +37,9 @@ namespace Asuka {
 
     Camera simple_light_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(26, 3, -6);
-        point3 lookat(0, 2, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(26, 3, -6);
+        Point3 lookat(0, 2, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.02;
 
@@ -48,9 +48,9 @@ namespace Asuka {
 
     Camera bunny_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(1, 3, 2);
-        point3 lookat(0, 0, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(1, 3, 2);
+        Point3 lookat(0, 0, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.02;
 
@@ -59,9 +59,9 @@ namespace Asuka {
 
     Camera coffee_maker_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(1.5, 0.4, -0.5);
-        point3 lookat(0, 0.2, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(1.5, 0.4, -0.5);
+        Point3 lookat(0, 0.2, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.005;
 
@@ -70,9 +70,9 @@ namespace Asuka {
 
     Camera cornell_box_scene_camera() {
         double aspect_ratio = 16.0 / 9.0;
-        point3 lookfrom(278, 278, 800);
-        point3 lookat(278, 278, 0);
-        vec3 vup(0, 1, 0);
+        Point3 lookfrom(278, 278, 800);
+        Point3 lookat(278, 278, 0);
+        Vector3 vup(0, 1, 0);
         auto dist_to_focus = 10.0;
         auto aperture = 0.05;
 

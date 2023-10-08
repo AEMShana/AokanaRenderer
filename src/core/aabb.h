@@ -2,6 +2,7 @@
 
 #include "shape.h"
 #include "ray.h"
+#include "vec.h"
 #include <memory>
 
 namespace Asuka {
@@ -10,18 +11,18 @@ namespace Asuka {
     class AABB {
     public:
         AABB() = default;
-        AABB(const point3& a, const point3& b) {
+        AABB(const Point3& a, const Point3& b) {
             minimum = a;
             maximum = b;
         }
 
-        point3 min() const { return minimum; }
-        point3 max() const { return maximum; }
+        Point3 min() const { return minimum; }
+        Point3 max() const { return maximum; }
 
         bool hit(const Ray& r, double t_min, double t_max) const;
 
-        point3 minimum;
-        point3 maximum;
+        Point3 minimum;
+        Point3 maximum;
     };
 
     /// @brief merge the box0 and box1
