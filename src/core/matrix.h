@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "vec.h"
 
 namespace Asuka {
     class Matrix4x4 {
@@ -18,6 +19,8 @@ namespace Asuka {
         double& operator()(int x, int y) { return mat[x][y]; }
 
         Matrix4x4 operator*(const Matrix4x4& rhs) const;
+        Point3 operator*(const Point3& rhs) const;
+        Vector3 operator*(const Vector3& rhs) const;
 
         static Matrix4x4 Identity();
         static Matrix4x4 Zeros();

@@ -7,21 +7,19 @@ namespace Asuka {
 
     class Ray {
     public:
-        Ray() : tm(0) {}
-        Ray(const Point3& origin, const Vector3& direction, double time = 0.0) :
-            orig(origin), dir(Normalize(direction)), tm(time) {}
+        Ray() : time(0), tMax(inf) {}
+        Ray(const Point3& origin, const Vector3& direction, double time = 0.0, double tMax = inf) :
+            orig(origin), dir(Normalize(direction)), time(time), tMax(inf) {}
 
         Point3 origin() const { return orig; }
         Vector3 direction() const { return dir; }
-        double time() const { return tm; }
-
         Point3 at(double t) const { return orig + t * dir; }
 
     public:
         Point3 orig;
         Vector3 dir;
-    private:
-        double tm;
+        double time;
+        mutable double tMax;
     };
 
     class RayDifferential : public Ray {

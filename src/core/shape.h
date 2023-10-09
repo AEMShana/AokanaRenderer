@@ -10,9 +10,32 @@
 namespace Asuka {
     class Shape {
     public:
+        Shape() = default;
+        Shape(const Transform *object_to_world, const Transform *world_to_object, bool reverse_orientation) :
+            object_to_world(object_to_world),
+            world_to_object(world_to_object),
+            reverse_orientation(reverse_orientation),
+            transform_swaps_handedness(object_to_world->SwapsHandedness()) {}
+
         virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const = 0;
         virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const = 0;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const = 0;
+        
+        virtual bool Intersect(const Ray& r, double *t_hit, SurfaceInteraction *isect, bool test_alpha_texture = true) const = 0;        
+        virtual bool IntersectP(const Ray& r, bool test_alpha_texture = true) const = 0;        
+        
+        virtual Bounds3 ObjectBound() const = 0;   // 物体空间的边界框
+        virtual Bounds3 WorldBound() const {       // 世界空间的边界框
+            return object_to_world->Apply(ObjectBound());
+        }
+
+        virtual double area() const = 0;
+
+    public:
+        const Transform *object_to_world;
+        const Transform *world_to_object;
+        const bool reverse_orientation;          // 法线方向是否与默认的相反
+        const bool transform_swaps_handedness;    // 变换是否改变了惯用手
     };
 
     class ShapeList : public Shape {

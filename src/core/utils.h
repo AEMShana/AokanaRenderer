@@ -10,6 +10,9 @@ namespace Asuka {
     const double inf = std::numeric_limits<double>::max();
     const double pi = acos(-1.0);
 
+    inline double Radians(double degree) {
+        return degree * pi / 180.0;
+    }
     inline double degree_to_radian(double degree) {
         return degree * pi / 180.0;
     }

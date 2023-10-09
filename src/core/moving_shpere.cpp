@@ -7,7 +7,7 @@ namespace Asuka {
     }
 
     bool MovingSphere::hit(const Ray& ray, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center(ray.time());
+        Vector3 oc = ray.origin() - center(ray.time);
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
         double c = oc.LengthSquare() - radius * radius;
@@ -17,7 +17,7 @@ namespace Asuka {
 
 
     bool MovingSphere::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center(ray.time());
+        Vector3 oc = ray.origin() - center(ray.time);
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
         double c = oc.LengthSquare() - radius * radius;
@@ -35,7 +35,7 @@ namespace Asuka {
 
         hit_point.t = root;
         hit_point.p = ray.at(hit_point.t);
-        Normal3 outward_normal = Normal3(hit_point.p - center(ray.time())) / radius;
+        Normal3 outward_normal = Normal3(hit_point.p - center(ray.time)) / radius;
         hit_point.set_face_normal(ray, outward_normal);
         hit_point.material = material;
 

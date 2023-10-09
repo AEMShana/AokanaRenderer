@@ -2,6 +2,8 @@
 
 #include "matrix.h"
 #include "vec.h"
+#include "bounds.h"
+#include "ray.h"
 
 namespace Asuka {
     class Transform {
@@ -16,6 +18,30 @@ namespace Asuka {
 
         Transform operator*(const Transform& rhs) const {
             return Transform(this->m * rhs.m, rhs.mInv * this->mInv);
+        }
+
+        bool SwapsHandedness() const {
+            double det = 
+                m(0, 0) * (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) -
+                m(0, 1) * (m(1, 0) * m(2, 2) - m(1, 2) * m(2, 0)) +
+                m(0, 2) * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0));
+            return det < 0;
+        }
+
+        Point3 Apply(const Point3& p) {
+            return m * p;
+        }
+
+        Vector3 Apply(const Vector3& v) {
+            return m * v;
+        }
+
+        Bounds3 Apply(const Bounds3& b) {
+            return Bounds3(m * b.min(), m * b.max());
+        }
+
+        Ray Apply(const Ray& ray) {
+            return Ray(Apply(ray.origin()), Apply(ray.direction()));
         }
 
         static Transform Translate(double x, double y, double z) {

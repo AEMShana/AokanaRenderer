@@ -24,6 +24,33 @@ namespace Asuka {
         return res;
     }
 
+    Point3 Matrix4x4::operator*(const Point3& rhs) const {
+        double v[4] = {rhs.x, rhs.y, rhs.z, 1.0};
+        double temp[4]{};
+
+        for(int i = 0; i < 4; ++i) {
+            for(int j = 0; j < 4; ++j) {
+                temp[i] += mat[i][j] * v[j];
+            }
+        }
+
+        double inv = 1.0 / temp[3];
+        return Point3(temp[0] * inv, temp[1] * inv, temp[2] * inv);
+    }
+
+    Vector3 Matrix4x4::operator*(const Vector3& rhs) const {
+        double v[3] = {rhs.x, rhs.y, rhs.z};
+        double temp[3]{};
+
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 3; ++j) {
+                temp[i] += mat[i][j] * v[j];
+            }
+        }
+
+        return Vector3(temp[0], temp[1], temp[2]);
+    }
+
     Matrix4x4 Matrix4x4::Identity() {
         Matrix4x4 res;
         for (int i = 0;i < 4;++i)

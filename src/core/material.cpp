@@ -9,7 +9,7 @@ namespace Asuka {
         if (scatter_direction.near_zero())
             scatter_direction = Vector3(hit_point.normal);
 
-        scattered = Ray(hit_point.p, scatter_direction, ray_in.time());
+        scattered = Ray(hit_point.p, scatter_direction, ray_in.time);
         attenuation = albedo->value(hit_point.u, hit_point.v, hit_point.p);
         return true;
     }
@@ -18,7 +18,7 @@ namespace Asuka {
         Color& attenuation, Ray& scattered) const {
 
         Vector3 reflected = Reflect(Normalize(ray_in.direction()), hit_point.normal);
-        scattered = Ray(hit_point.p, reflected + fuzz * Vector3::RandomInUnitSphere(), ray_in.time());
+        scattered = Ray(hit_point.p, reflected + fuzz * Vector3::RandomInUnitSphere(), ray_in.time);
         attenuation = albedo;
         return (Dot(scattered.direction(), hit_point.normal) > 0);
     }
@@ -38,7 +38,7 @@ namespace Asuka {
         if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double()) direction = Reflect(unit_direction, hit_point.normal);
         else direction = Refract(unit_direction, hit_point.normal, refraction_ratio);
 
-        scattered = Ray(hit_point.p, direction, ray_in.time());
+        scattered = Ray(hit_point.p, direction, ray_in.time);
         return true;
     }
 
