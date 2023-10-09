@@ -42,10 +42,10 @@ namespace Asuka {
         return true;
     }
 
-    bool MovingSphere::bounding_box(double _time0, double _time1, AABB& output_box) const {
-        AABB box0(center(_time0) - Vector3(radius, radius, radius), center(_time0) + Vector3(radius, radius, radius));
-        AABB box1(center(_time1) - Vector3(radius, radius, radius), center(_time1) + Vector3(radius, radius, radius));
-        output_box = merge_box(box0, box1);
+    bool MovingSphere::bounding_box(double _time0, double _time1, Bounds3& output_box) const {
+        Bounds3 box0(center(_time0) - Vector3(radius, radius, radius), center(_time0) + Vector3(radius, radius, radius));
+        Bounds3 box1(center(_time1) - Vector3(radius, radius, radius), center(_time1) + Vector3(radius, radius, radius));
+        output_box = Bounds3::merge(box0, box1);
         return true;
     }
 

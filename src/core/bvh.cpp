@@ -3,7 +3,7 @@
 
 namespace Asuka {
 
-    bool BVHNode::bounding_box(double time0, double time1, AABB& output_box) const {
+    bool BVHNode::bounding_box(double time0, double time1, Bounds3& output_box) const {
         output_box = box;
         return true;
     }
@@ -53,11 +53,11 @@ namespace Asuka {
             right = std::make_shared<BVHNode>(objects, mid, end, time0, time1);
         }
 
-        AABB box_left, box_right;
+        Bounds3 box_left, box_right;
 
         if (!left->bounding_box(time0, time1, box_left) || !right->bounding_box(time0, time1, box_right))
             std::cerr << "[ERROR] No bounding box in bvh_node constructor.\n";
 
-        box = merge_box(box_left, box_right);
+        box = Bounds3::merge(box_left, box_right);
     }
 }

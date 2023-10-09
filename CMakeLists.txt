@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(/NODEFAULTLIB:MSVCRT)
 
+if(WIN32)
+    add_compile_options(/W4)
+    add_compile_options(/wd4819)
+endif()
+
 # 添加源代码目录
 add_subdirectory(src)
 

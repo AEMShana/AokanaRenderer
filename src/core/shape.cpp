@@ -25,14 +25,14 @@ namespace Asuka {
         return hit_anything;
     }
 
-    bool ShapeList::bounding_box(double time0, double time1, AABB& output_box) const {
+    bool ShapeList::bounding_box(double time0, double time1, Bounds3& output_box) const {
         if (shapes.empty()) return false;
-        AABB temp_box;
+        Bounds3 temp_box;
         bool first_box = true;
 
         for (const auto& shape : shapes) {
             if (!shape->bounding_box(time0, time1, temp_box)) return false;
-            output_box = first_box ? temp_box : merge_box(output_box, temp_box);
+            output_box = first_box ? temp_box : Bounds3::merge(output_box, temp_box);
             first_box = false;
         }
         return true;
@@ -100,8 +100,8 @@ namespace Asuka {
         return true;
     }
 
-    bool Sphere::bounding_box(double time0, double time1, AABB& output_box) const {
-        output_box = AABB(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
+    bool Sphere::bounding_box(double time0, double time1, Bounds3& output_box) const {
+        output_box = Bounds3(center - Vector3(radius, radius, radius), center + Vector3(radius, radius, radius));
         return true;
     }
 
@@ -162,7 +162,7 @@ namespace Asuka {
         return true;
     }
 
-    bool Triangle::bounding_box(double time0, double time1, AABB& output_box) const {
+    bool Triangle::bounding_box(double time0, double time1, Bounds3& output_box) const {
         // add an offset, avoid the box become a plane
         Point3 small(
             std::min({ a.x, b.x, c.x }) - 0.0001,
@@ -172,7 +172,7 @@ namespace Asuka {
             std::max({ a.x, b.x, c.x }) + 0.0001,
             std::max({ a.y, b.y, c.y }) + 0.0001,
             std::max({ a.z, b.z, c.z }) + 0.0001);
-        output_box = AABB(small, big);
+        output_box = Bounds3(small, big);
         return true;
     }
 

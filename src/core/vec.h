@@ -456,6 +456,19 @@ namespace Asuka {
             return Point3(rhs * x, rhs * y, rhs * z);
         }
 
+        Point3 operator/(double rhs) const {
+            double inv = 1.0 / rhs;
+            return Point3(rhs * inv, rhs * inv, rhs * inv);
+        }
+
+        Point3& operator/=(double rhs) {
+            double inv = 1.0 / rhs;
+            this->x *= inv;
+            this->y *= inv;
+            this->z *= inv;
+            return *this;
+        }
+
         Point3& operator*=(double rhs) {
             x *= rhs;
             y *= rhs;
@@ -518,6 +531,10 @@ namespace Asuka {
 
     inline double DistanceSquare(const Point3& p1, const Point3& p2) {
         return (p1 - p2).LengthSquare();
+    }
+
+    inline double Lerp(double t, double p0, double p1) {
+        return (1.0 - t) * p0 + t * p1;
     }
 
     inline Point2 Lerp(double t, const Point2& p0, const Point2& p1) {
