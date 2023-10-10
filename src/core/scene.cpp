@@ -192,9 +192,19 @@ namespace Asuka {
         objects->add(std::make_shared<Triangle>(Point3(213, 555, -227), Point3(343, 555, -332), Point3(343, 555, -227), light));
 
         auto small_box = std::make_shared<ShapeList>();
-        small_box->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(165, 0, 0), Point3(165, 165, 0), white));
-        small_box->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(165, 165, 0), Point3(0, 165, 0), white));
+        auto trans1 = Transform::Translate(50, 0, -200);
 
+        small_box->add(std::make_shared<Triangle>(
+            trans1.Apply(Point3(0, 0, 0)),
+            trans1.Apply(Point3(165, 0, 0)),
+            trans1.Apply(Point3(165, 165, 0)),
+            white));
+        small_box->add(std::make_shared<Triangle>(
+            trans1.Apply(Point3(0, 0, 0)),
+            trans1.Apply(Point3(165, 165, 0)),
+            trans1.Apply(Point3(0, 165, 0)),
+            white));
+        objects->add(small_box);
 
         std::shared_ptr<Scene> scene = std::make_shared<Scene>();
         scene->objects = objects;

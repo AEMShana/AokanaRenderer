@@ -33,11 +33,13 @@ namespace Asuka {
     };
 
 
-    class Aggregate : public Primitive {
+    class PrimitiveList : Primitive {
     public:
-
-
-
+        virtual Bounds3 WorldBound() const override;
+        virtual bool Intersect(const Ray& r, SurfaceInteraction*) const override;
+        virtual bool IntersectP(const Ray& r) const override;
+    public:
+        std::vector<std::shared_ptr<Shape>> shapes;
     };
 }
 
