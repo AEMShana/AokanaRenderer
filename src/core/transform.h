@@ -21,7 +21,7 @@ namespace Asuka {
         }
 
         bool SwapsHandedness() const {
-            double det = 
+            double det =
                 m(0, 0) * (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) -
                 m(0, 1) * (m(1, 0) * m(2, 2) - m(1, 2) * m(2, 0)) +
                 m(0, 2) * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0));
@@ -42,6 +42,10 @@ namespace Asuka {
 
         Ray Apply(const Ray& ray) {
             return Ray(Apply(ray.origin()), Apply(ray.direction()));
+        }
+
+        static Transform Identity() {
+            return Transform();
         }
 
         static Transform Translate(double x, double y, double z) {

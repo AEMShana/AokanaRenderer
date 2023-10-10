@@ -195,7 +195,6 @@ namespace Asuka {
         small_box->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(165, 0, 0), Point3(165, 165, 0), white));
         small_box->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(165, 165, 0), Point3(0, 165, 0), white));
 
-        small_box->transform = Transform::Translate(0.0, 0.0, 100.0);
 
         std::shared_ptr<Scene> scene = std::make_shared<Scene>();
         scene->objects = objects;

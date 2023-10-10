@@ -31,7 +31,7 @@ namespace Asuka {
         if (!scene->bvh->hitP(ray, hit_point)) return background;
         Ray scattered;
         Color attenuation;
-        Color emitted = hit_point.material->emitted(hit_point.u, hit_point.v, hit_point.p);
+        Color emitted = hit_point.material->emitted(hit_point.uv.x, hit_point.uv.y, hit_point.p);
         if (!hit_point.material->scatter(ray, hit_point, attenuation, scattered))
             return emitted;
 

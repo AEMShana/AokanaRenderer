@@ -33,8 +33,8 @@ namespace Asuka {
             if (root < t_min || t_max < root) return false;
         }
 
-        hit_point.t = root;
-        hit_point.p = ray.at(hit_point.t);
+        hit_point.time = root;
+        hit_point.p = ray.at(hit_point.time);
         Normal3 outward_normal = Normal3(hit_point.p - center(ray.time)) / radius;
         hit_point.set_face_normal(ray, outward_normal);
         hit_point.material = material;
@@ -49,5 +49,11 @@ namespace Asuka {
         return true;
     }
 
-
+    Bounds3 MovingSphere::WorldBound() const {
+        double _time0 = 0.0;
+        double _time1 = 0.0;
+        Bounds3 box0(center(_time0) - Vector3(radius, radius, radius), center(_time0) + Vector3(radius, radius, radius));
+        Bounds3 box1(center(_time1) - Vector3(radius, radius, radius), center(_time1) + Vector3(radius, radius, radius));
+        return Bounds3::merge(box0, box1);
+    }
 }

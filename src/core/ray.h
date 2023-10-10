@@ -24,8 +24,8 @@ namespace Asuka {
 
     class RayDifferential : public Ray {
     public:
-        RayDifferential(){ hasDifferentials = false; }
-        RayDifferential(const Point3& origin, const Vector3& direction, double time=0.0) : Ray(origin, direction, time) {
+        RayDifferential() { hasDifferentials = false; }
+        RayDifferential(const Point3& origin, const Vector3& direction, double time = 0.0) : Ray(origin, direction, time) {
             hasDifferentials = false;
         }
         RayDifferential(const Ray& ray) : Ray(ray) {
@@ -34,8 +34,8 @@ namespace Asuka {
         void ScaleDifferentials(double s) {
             rxOrigin = orig + (rxOrigin - orig) * s;
             ryOrigin = orig + (ryOrigin - orig) * s;
-            rxDirection = dir +(rxDirection - dir) * s;
-            ryDirection = dir +(ryDirection - dir) * s;
+            rxDirection = dir + (rxDirection - dir) * s;
+            ryDirection = dir + (ryDirection - dir) * s;
         }
     public:
         bool hasDifferentials;

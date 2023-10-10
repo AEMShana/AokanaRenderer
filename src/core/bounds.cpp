@@ -77,18 +77,18 @@ namespace Asuka {
 
     bool Bounds3::inside(const Point3& p, const Bounds3& b) {
         return (
-            p.x >= b.min().x && p.x <=b.max().x && 
-            p.y >= b.min().y && p.y <=b.max().y && 
-            p.z >= b.min().z && p.z <=b.max().z
-        );
+            p.x >= b.min().x && p.x <= b.max().x &&
+            p.y >= b.min().y && p.y <= b.max().y &&
+            p.z >= b.min().z && p.z <= b.max().z
+            );
     }
 
     bool Bounds3::inside_exclusive(const Point3& p, const Bounds3& b) {
         return (
-            p.x >= b.min().x && p.x < b.max().x && 
-            p.y >= b.min().y && p.y < b.max().y && 
+            p.x >= b.min().x && p.x < b.max().x &&
+            p.y >= b.min().y && p.y < b.max().y &&
             p.z >= b.min().z && p.z < b.max().z
-        );
+            );
     }
 
     Bounds3 Bounds3::expand(const Bounds3& b, double delta) {

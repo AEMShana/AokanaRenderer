@@ -1,4 +1,5 @@
 #include "material.h"
+#include "interaction.h"
 
 namespace Asuka {
     bool Lambertian::scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
@@ -10,7 +11,7 @@ namespace Asuka {
             scatter_direction = Vector3(hit_point.normal);
 
         scattered = Ray(hit_point.p, scatter_direction, ray_in.time);
-        attenuation = albedo->value(hit_point.u, hit_point.v, hit_point.p);
+        attenuation = albedo->value(hit_point.uv.x, hit_point.uv.y, hit_point.p);
         return true;
     }
 

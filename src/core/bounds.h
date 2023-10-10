@@ -23,22 +23,22 @@ namespace Asuka {
 
         const Point3& operator[](int index) const {
             assert(0 <= index && index <= 1);
-            if(index == 0) return pMin;
+            if (index == 0) return pMin;
             return pMax;
         }
 
         Point3& operator[](int index) {
             assert(0 <= index && index <= 1);
-            if(index == 0) return pMin;
+            if (index == 0) return pMin;
             return pMax;
         }
 
         Point3 min() const { return pMin; }
         Point3 max() const { return pMax; }
         Point3 corner(int index) const;
-        
+
         Vector3 diagonal() const { return pMax - pMin; }
-        
+
         double surface_area() const {
             auto d = diagonal();
             return 2.0 * (d.x * d.y + d.x * d.z + d.y * d.z);
@@ -51,8 +51,8 @@ namespace Asuka {
 
         int maximum_extent() const { // 返回最长轴的索引
             auto d = diagonal();
-            if(d.x > d.y && d.x > d.z) return 0;
-            if(d.y > d.z) return 1;
+            if (d.x > d.y && d.x > d.z) return 0;
+            if (d.y > d.z) return 1;
             return 2;
         }
 
@@ -64,15 +64,15 @@ namespace Asuka {
             );
         }
 
-        Vector3 offset(const Point3&p) const {
+        Vector3 offset(const Point3& p) const {
             Vector3 o = p - pMin;
-            if(pMax.x > pMin.x) o.x/= pMax.x - pMin.x;
-            if(pMax.y > pMin.y) o.y/= pMax.y - pMin.y;
-            if(pMax.z > pMin.z) o.z/= pMax.z - pMin.z;
+            if (pMax.x > pMin.x) o.x /= pMax.x - pMin.x;
+            if (pMax.y > pMin.y) o.y /= pMax.y - pMin.y;
+            if (pMax.z > pMin.z) o.z /= pMax.z - pMin.z;
             return o;
         }
 
-        void bounding_sphere(Point3 *center, double* radius) const {
+        void bounding_sphere(Point3* center, double* radius) const {
             *center = (pMin + pMax) / 2;
             *radius = inside(*center, *this) ? Distance(*center, pMax) : 0;
         }
