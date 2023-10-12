@@ -7,18 +7,24 @@ namespace Asuka {
 
     class Ray {
     public:
-        Ray() : time(0), tMax(inf) {}
-        Ray(const Point3& origin, const Vector3& direction, double time = 0.0, double tMax = inf) :
-            orig(origin), dir(Normalize(direction)), time(time), tMax(inf) {}
+        Ray() : time(inf), tMax(inf) {}
+        Ray(const Point3& origin, const Vector3& direction, double time = 0.0, double tMin = 0.0, double tMax = inf) :
+            orig(origin), dir(Normalize(direction)), time(time), tMin(tMin), tMax(inf) {}
 
         Point3 origin() const { return orig; }
         Vector3 direction() const { return dir; }
         Point3 at(double t) const { return orig + t * dir; }
 
+        bool operator<(const Ray& rhs) const {
+            if(time < rhs.time) return true;
+            return false;
+        }
+
     public:
         Point3 orig;
         Vector3 dir;
         double time;
+        mutable double tMin;
         mutable double tMax;
     };
 

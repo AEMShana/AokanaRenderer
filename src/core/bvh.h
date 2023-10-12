@@ -15,8 +15,8 @@ namespace Asuka {
         BVHNode(const std::vector<std::shared_ptr<Shape>>& src_objects,
             size_t start, size_t end, double time0, double time1);
 
-        virtual bool hit(const Ray& ray, double t_min = 0, double t_max = inf) const override;
-        virtual bool hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
+        virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
+        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
         virtual Bounds3 WorldBound() const override;
 

@@ -6,7 +6,7 @@
 
 namespace Asuka {
 
-    bool Sphere::hit(const Ray& ray, double t_min, double t_max) const {
+    bool Sphere::Intersect(const Ray& ray, double t_min, double t_max) const {
         Vector3 oc = ray.origin() - center;
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -15,7 +15,7 @@ namespace Asuka {
         return (discriminant > 0);
     }
 
-    bool Sphere::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool Sphere::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
         Vector3 oc = ray.origin() - center;
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -37,7 +37,6 @@ namespace Asuka {
         Normal3 outward_normal = Normal3((hit_point.p - center) / radius);
         hit_point.set_face_normal(ray, outward_normal);
         get_sphere_uv(outward_normal, hit_point.uv.x, hit_point.uv.y);
-        hit_point.material = material;
 
         return true;
     }
@@ -68,7 +67,7 @@ namespace Asuka {
         v = theta / pi;
     }
 
-    bool Triangle::hit(const Ray& ray, double t_min, double t_max) const {
+    bool Triangle::Intersect(const Ray& ray, double t_min, double t_max) const {
         // Moller Trumbore Algorithm
         // o + t * d = (1 - p1 - p2) * a + p1 * b + p2 * c 
         auto e1 = b - a;
@@ -88,7 +87,7 @@ namespace Asuka {
         return true;
     }
 
-    bool Triangle::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool Triangle::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
         // Moller Trumbore Algorithm
         // o + t * d = (1 - p1 - p2) * a + p1 * b + p2 * c 
         // a -> b -> c  clock-wise is front face
@@ -111,7 +110,6 @@ namespace Asuka {
         hit_point.p = ray.at(t);
         hit_point.uv.x = p0 * u_a + p1 * u_b + p2 * u_c;
         hit_point.uv.y = p0 * v_a + p1 * v_b + p2 * v_c;
-        hit_point.material = material;
         Normal3 outward_normal = Normal3(Normalize(Cross(b - a, c - a)));
         hit_point.set_face_normal(ray, outward_normal);
 
@@ -144,6 +142,7 @@ namespace Asuka {
         return Bounds3(p_min, p_max);
     }
 
+
     // Bounds3 Triangle::object_bound() const {
     //     Point3 p_min(
     //         std::min({ a.x, b.x, c.x }) - 0.0001,
@@ -173,19 +172,19 @@ namespace Asuka {
     //     return Bounds3(p_min, p_max);
     // }
 
-    bool ShapeList::hit(const Ray& ray, double t_min, double t_max) const {
+    bool ShapeList::Intersect(const Ray& ray, double t_min, double t_max) const {
         for (const auto& shape : shapes) {
-            if (shape->hit(ray, t_min, t_max)) return true;
+            if (shape->Intersect(ray, t_min, t_max)) return true;
         }
         return false;
     }
 
-    bool ShapeList::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool ShapeList::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
         double closest_so_far = t_max;
         bool hit_anything = false;
 
         for (const auto& shape : shapes) {
-            if (shape->hitP(ray, hit_point, t_min, closest_so_far)) {
+            if (shape->IntersectP(ray, hit_point, t_min, closest_so_far)) {
                 hit_anything = true;
                 closest_so_far = hit_point.time;
             }

@@ -4,6 +4,7 @@
 #include "ray.h"
 #include "material.h"
 #include "shape.h"
+#include "primitive.h"
 
 namespace Asuka {
     class Material;
@@ -29,12 +30,17 @@ namespace Asuka {
     class SurfaceInteraction : public Interaction {
     public:
         SurfaceInteraction() {}
-        SurfaceInteraction(const Point3& p, const Normal3& n, const Point2& uv, double time, bool front_face/*, const Shape* shape*/) :
-            Interaction(p, n, time, front_face), uv(uv)/*, shape(shape)*/ {}
+        SurfaceInteraction(
+            const Point3& p, const Normal3& n, const Point2& uv, 
+            double time, bool front_face,
+            const Primitive *primitive,
+            const Material *material) :
+            Interaction(p, n, time, front_face), 
+            uv(uv), primitive(primitive), material(material) {}
 
     public:
         Point2 uv;
-        // const Shape* shape = nullptr;
-        std::shared_ptr<Material> material;
+        const Primitive* primitive;
+        const Material* material;
     };
 }

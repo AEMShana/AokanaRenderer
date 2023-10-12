@@ -137,6 +137,11 @@ namespace Asuka {
             return y;
         }
 
+        double u() const { return x; }
+        double& u() { return x; }
+        double v() const { return y; }
+        double& v() { return y; }
+
         Point2 operator+(const Point2& p) const {
             return Point2(x + p.x, y + p.y);
         }
