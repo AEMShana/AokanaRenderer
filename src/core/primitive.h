@@ -49,7 +49,7 @@ namespace Asuka {
 
         void AddPrimitive(const std::shared_ptr<Primitive>& primitive);
         void AddPrimitives(const std::vector<std::shared_ptr<Primitive>>& primitive_list);
-        void LoadObj(const std::string& filepath, const std::shared_ptr<Material>& material);
+        void AddObj(const std::string& filepath, const std::shared_ptr<Material>& material, bool filp_x_axis = true);
 
     public:
         std::vector<std::shared_ptr<Primitive>> primitives;

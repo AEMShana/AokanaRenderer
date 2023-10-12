@@ -270,7 +270,7 @@ namespace Asuka {
             auto aggregate = std::make_shared<Aggregate>();
 
             auto material = std::make_shared<Lambertian>(Color(1.0, 0.1, 0.1));
-            aggregate->LoadObj("./assets/models/bunny/bunny2.obj", material);
+            aggregate->AddObj("./assets/models/bunny/bunny2.obj", material);
 
             double aspect_ratio = 16.0 / 9.0;
             Point3 lookfrom(1, 1.2239, 3.3532);
@@ -286,8 +286,39 @@ namespace Asuka {
 
             return Scene(aggregate, camera, background);
         }
-    }
 
+        Scene CornellBox() {
+            auto aggregate = std::make_shared<Aggregate>();
+
+            auto red_material = std::make_shared<Lambertian>(Color(1.0, 0.0, 0.0));
+            auto green_material = std::make_shared<Lambertian>(Color(0.0, 1.0, 0.0));
+            auto white_material = std::make_shared<Lambertian>(Color(1.0, 1.0, 1.0));
+            auto light_material = std::make_shared<DiffuseLight>(Color(15.0, 15.0, 15.0));
+
+            aggregate->AddObj("./assets/models/cornell_box/RedWall.obj", red_material);
+            aggregate->AddObj("./assets/models/cornell_box/GreenWall.obj", green_material);
+            aggregate->AddObj("./assets/models/cornell_box/WhiteWall.obj", white_material);
+            aggregate->AddObj("./assets/models/cornell_box/Floor.obj", white_material);
+            aggregate->AddObj("./assets/models/cornell_box/Ceiling.obj", white_material);
+            aggregate->AddObj("./assets/models/cornell_box/LargeBox.obj", white_material);
+            aggregate->AddObj("./assets/models/cornell_box/SmallBox.obj", white_material);
+            aggregate->AddObj("./assets/models/cornell_box/Light.obj", light_material);
+
+            double aspect_ratio = 16.0 / 9.0;
+            Point3 lookfrom(0, 0, 3.5);
+            Point3 lookat(0, 0, 0);
+            Vector3 vup(0, 1, 0);
+            double dist_to_focus = 10.0;
+            double aperture = 0.02;
+            Camera camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
+
+            Color background(0.0, 0.0, 0.0);
+
+            auto bvh_root = std::make_shared<BVHNode>(aggregate, 0, inf);
+
+            return Scene(bvh_root, camera, background);
+        }
+    }
 
 }
 
@@ -322,50 +353,6 @@ namespace Asuka {
 //     std::cout << "[INFO] Building BVH finished, took " << duration.count() << " ms." << std::endl;
 
 //     scene->background = Color(0.70, 0.80, 1.00);
-
-//     return scene;
-// }
-
-// std::shared_ptr<Scene> cornell_box_scene() {
-//     std::shared_ptr<ShapeList> objects = std::make_shared<ShapeList>();
-
-//     auto red = std::make_shared<Lambertian>(Color(0.65, 0.05, 0.05));
-//     auto white = std::make_shared<Lambertian>(Color(0.73, 0.73, 0.73));
-//     auto green = std::make_shared<Lambertian>(Color(0.12, 0.45, 0.15));
-//     auto light = std::make_shared<DiffuseLight>(Color(15, 15, 15));
-
-//     objects->add(std::make_shared<Triangle>(Point3(555, 0, 0), Point3(555, 0, -555), Point3(555, 555, 0), green));
-//     objects->add(std::make_shared<Triangle>(Point3(555, 0, -555), Point3(555, 555, -555), Point3(555, 555, 0), green));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(0, 0, -555), Point3(0, 555, 0), red));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, -555), Point3(0, 555, -555), Point3(0, 555, 0), red));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(0, 0, -555), Point3(555, 0, -555), white));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, 0), Point3(555, 0, -555), Point3(555, 0, 0), white));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, -555), Point3(0, 555, -555), Point3(555, 555, -555), white));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 0, -555), Point3(555, 555, -555), Point3(555, 0, -555), white));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 555, 0), Point3(0, 555, -555), Point3(555, 555, -555), white));
-//     objects->add(std::make_shared<Triangle>(Point3(0, 555, 0), Point3(555, 555, -555), Point3(555, 555, 0), white));
-//     objects->add(std::make_shared<Triangle>(Point3(213, 555, -227), Point3(213, 555, -332), Point3(343, 555, -332), light));
-//     objects->add(std::make_shared<Triangle>(Point3(213, 555, -227), Point3(343, 555, -332), Point3(343, 555, -227), light));
-
-//     auto small_box = std::make_shared<ShapeList>();
-//     auto trans1 = Transform::Translate(50, 0, -200);
-
-//     small_box->add(std::make_shared<Triangle>(
-//         trans1.Apply(Point3(0, 0, 0)),
-//         trans1.Apply(Point3(165, 0, 0)),
-//         trans1.Apply(Point3(165, 165, 0)),
-//         white));
-//     small_box->add(std::make_shared<Triangle>(
-//         trans1.Apply(Point3(0, 0, 0)),
-//         trans1.Apply(Point3(165, 165, 0)),
-//         trans1.Apply(Point3(0, 165, 0)),
-//         white));
-//     objects->add(small_box);
-
-//     std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-//     scene->objects = objects;
-//     scene->bvh = std::make_shared<BVHNode>(objects, 0.0, 1.0);
-//     scene->background = Color(0, 0, 0);
 
 //     return scene;
 // }

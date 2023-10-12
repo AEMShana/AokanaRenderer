@@ -35,5 +35,6 @@ namespace Asuka {
         Scene EarthScene();
         Scene SimpleLightScene();
         Scene BunnyScene();
+        Scene CornellBox();
     }
 }

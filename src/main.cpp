@@ -24,8 +24,8 @@ void Render() {
         "3: earth_scene\n" <<
         "4: simple_light_scene\n" <<
         "5: bunny_scene\n" <<
-        "6: coffee_maker_scene\n" <<
-        "7: cornell_box_scene\n";
+        // "6: coffee_maker_scene\n" <<
+        "6: cornell_box_scene\n";
 
 
     std::cin >> scene_id;
@@ -47,6 +47,7 @@ void Render() {
     case 3: integrator.scene = std::make_shared<Scene>(SampleScene::EarthScene()); break;
     case 4: integrator.scene = std::make_shared<Scene>(SampleScene::SimpleLightScene()); break;
     case 5: integrator.scene = std::make_shared<Scene>(SampleScene::BunnyScene()); break;
+    case 6: integrator.scene = std::make_shared<Scene>(SampleScene::CornellBox()); break;
     }
 
 

@@ -86,7 +86,6 @@ namespace Asuka {
 
     Camera default_camera();
     Camera coffee_maker_scene_camera();
-    Camera cornell_box_scene_camera();
 }
 
 /*

@@ -77,26 +77,27 @@ namespace Asuka {
         }
     }
 
-    void Aggregate::LoadObj(const std::string& filepath, const std::shared_ptr<Material>& material) {
-        primitives.clear();
-
+    void Aggregate::AddObj(const std::string& filepath, const std::shared_ptr<Material>& material, bool filp_x_axis) {
         objl::Loader objLoader;
         objLoader.LoadFile(filepath);
+
+        double flip = 1.0;
+        if (filp_x_axis) flip = -1.0;
 
         for (auto& mesh : objLoader.LoadedMeshes) {
             for (int i = 2;i < mesh.Indices.size();i += 3) {
                 Point3 a(
-                    mesh.Vertices[mesh.Indices[i - 2]].Position.X,
+                    flip * mesh.Vertices[mesh.Indices[i - 2]].Position.X,
                     mesh.Vertices[mesh.Indices[i - 2]].Position.Y,
                     mesh.Vertices[mesh.Indices[i - 2]].Position.Z);
 
                 Point3 b(
-                    mesh.Vertices[mesh.Indices[i - 1]].Position.X,
+                    flip * mesh.Vertices[mesh.Indices[i - 1]].Position.X,
                     mesh.Vertices[mesh.Indices[i - 1]].Position.Y,
                     mesh.Vertices[mesh.Indices[i - 1]].Position.Z);
 
                 Point3 c(
-                    mesh.Vertices[mesh.Indices[i]].Position.X,
+                    flip * mesh.Vertices[mesh.Indices[i]].Position.X,
                     mesh.Vertices[mesh.Indices[i]].Position.Y,
                     mesh.Vertices[mesh.Indices[i]].Position.Z);
 

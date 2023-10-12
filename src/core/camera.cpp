@@ -23,15 +23,4 @@ namespace Asuka {
 
         return Camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
     }
-
-    Camera cornell_box_scene_camera() {
-        double aspect_ratio = 16.0 / 9.0;
-        Point3 lookfrom(278, 278, 800);
-        Point3 lookat(278, 278, 0);
-        Vector3 vup(0, 1, 0);
-        auto dist_to_focus = 10.0;
-        auto aperture = 0.05;
-
-        return Camera(lookfrom, lookat, vup, 40, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
-    }
 }
