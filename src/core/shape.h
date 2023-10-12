@@ -2,12 +2,15 @@
 
 #include <memory>
 
-#include "ray.h"
 #include "bounds.h"
 #include "interaction.h"
-#include "transform.h"
+// #include "transform.h"
 
 namespace Asuka {
+
+    class Material;
+    class SurfaceInteraction;
+
     class Shape {
     public:
         Shape() : reverse_orientation(false), transform_swaps_handedness(false) {}
@@ -20,7 +23,7 @@ namespace Asuka {
         virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const = 0;
         virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const = 0;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const = 0;
-        virtual Bounds3 WorldBound() const = 0;
+        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const = 0;
 
         // virtual Bounds3 object_bound() const = 0;   // 物体空间的边界框
         // virtual Bounds3 world_bound() const {       // 世界空间的边界框
@@ -53,7 +56,7 @@ namespace Asuka {
         virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound() const override;
+        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
 
         // virtual Bounds3 object_bound() const override;
 
@@ -83,7 +86,7 @@ namespace Asuka {
         virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound() const override;
+        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
 
         // virtual Bounds3 object_bound() const override;
         // virtual Bounds3 world_bound() const override;
@@ -107,11 +110,11 @@ namespace Asuka {
         virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
         virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound() const override;
+        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
 
         // virtual Bounds3 object_bound() const override;
 
-        void load_obj(const std::string& filepath, std::shared_ptr<Material> material);
+        // void load_obj(const std::string& filepath);
 
     public:
         std::vector<std::shared_ptr<Shape>> shapes;

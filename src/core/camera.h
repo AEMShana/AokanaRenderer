@@ -85,10 +85,6 @@ namespace Asuka {
     };
 
     Camera default_camera();
-    Camera random_ball_scene_camera();
-    Camera two_sphere_scene_camera();
-    Camera simple_light_scene_camera();
-    Camera bunny_scene_camera();
     Camera coffee_maker_scene_camera();
     Camera cornell_box_scene_camera();
 }
@@ -97,3 +93,6 @@ namespace Asuka {
 Asuka 渲染器使用左手坐标系，x轴向右，y轴向上，z轴向前
 图像使用uv坐标，左下角为坐标原点，u轴向右，v轴向上
 */
+
+// World Coord (x, y, z)    == Blender Coord (x, -z, y)
+// Blender Coord (x, y, z) == World Coord (x, z, -y)

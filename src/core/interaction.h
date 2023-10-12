@@ -3,10 +3,11 @@
 #include "vec.h"
 #include "ray.h"
 #include "material.h"
-#include "shape.h"
 #include "primitive.h"
 
 namespace Asuka {
+
+    class Primitive;
     class Material;
 
     class Interaction {
@@ -29,13 +30,13 @@ namespace Asuka {
 
     class SurfaceInteraction : public Interaction {
     public:
-        SurfaceInteraction() {}
+        SurfaceInteraction() : primitive(nullptr), material(nullptr) {}
         SurfaceInteraction(
-            const Point3& p, const Normal3& n, const Point2& uv, 
+            const Point3& p, const Normal3& n, const Point2& uv,
             double time, bool front_face,
-            const Primitive *primitive,
-            const Material *material) :
-            Interaction(p, n, time, front_face), 
+            const Primitive* primitive,
+            const Material* material) :
+            Interaction(p, n, time, front_face),
             uv(uv), primitive(primitive), material(material) {}
 
     public:

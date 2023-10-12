@@ -1,12 +1,11 @@
 #pragma once
 
-#include "ray.h"
-#include "vec.h"
-#include <memory>
 #include <limits>
 
+#include "ray.h"
+#include "vec.h"
+
 namespace Asuka {
-    class Shape;
 
     class Bounds3 {
     public:
@@ -90,9 +89,4 @@ namespace Asuka {
         Point3 pMin;
         Point3 pMax;
     };
-
-    bool box_compare(const std::shared_ptr<Shape> a, const std::shared_ptr<Shape> b, int axis);
-    bool box_x_compare(const std::shared_ptr<Shape> a, const std::shared_ptr<Shape> b);
-    bool box_y_compare(const std::shared_ptr<Shape> a, const std::shared_ptr<Shape> b);
-    bool box_z_compare(const std::shared_ptr<Shape> a, const std::shared_ptr<Shape> b);
 }

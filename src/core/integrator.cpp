@@ -27,19 +27,22 @@ namespace Asuka {
 
     Color SamplerIntegrator::Li(const Ray& ray, const Color& background, int depth) {
         if (depth <= 0) return Color(0, 0, 0);
-        SurfaceInteraction hit_point;
-        if (!scene->bvh->hitP(ray, hit_point)) return background;
+        SurfaceInteraction isect;
+        // if (!scene->bvh->hitP(ray, hit_point)) return background;
+        if (!scene->IntersectP(ray, isect)) return background;
         Ray scattered;
         Color attenuation;
-        Color emitted = hit_point.material->emitted(hit_point.uv.x, hit_point.uv.y, hit_point.p);
-        if (!hit_point.material->scatter(ray, hit_point, attenuation, scattered))
+        Color emitted = isect.material->emitted(isect.uv.u(), isect.uv.v(), isect.p);
+        if (!isect.material->scatter(ray, isect, attenuation, scattered))
             return emitted;
 
         return emitted + PairwiseMul(attenuation, Li(scattered, background, depth - 1));
     }
 
 
-    void SamplerIntegrator::Render(const Camera& camera) {
+    void SamplerIntegrator::Render() {
+        Camera& camera = scene->camera;
+
         auto start_time = std::chrono::system_clock::now();
 
         std::shared_ptr<Film> film = camera.film;
@@ -76,7 +79,9 @@ namespace Asuka {
 
     }
 
-    void SamplerIntegrator::RenderOneTile(const Camera& camera, const FilmTile& tile) {
+    void SamplerIntegrator::RenderOneTile(const FilmTile& tile) {
+        Camera& camera = scene->camera;
+
         std::shared_ptr<Film> film = camera.film;
 
         for (int j = tile.v_min; j <= tile.v_max;++j) {
@@ -98,7 +103,9 @@ namespace Asuka {
 
     }
 
-    void SamplerIntegrator::RenderWithMultithreading(const Camera& camera, bool enable_gui) {
+    void SamplerIntegrator::RenderWithMultithreading(bool enable_gui) {
+        Camera& camera = scene->camera;
+
         std::cout << "[INFO] Rendering start." << std::endl;
         auto start_time = std::chrono::system_clock::now();
 
@@ -115,7 +122,7 @@ namespace Asuka {
             for (const auto& tile : film->tiles) {
                 pool.push_task(
                     [&](int index) {
-                        RenderOneTile(camera, tile);
+                        RenderOneTile(tile);
                         flags[index] = 1;
                         printf("tile %d finish.\n", index);
                     },
@@ -194,7 +201,7 @@ namespace Asuka {
             for (const auto& tile : film->tiles) {
                 pool.push_task(
                     [&](int index) {
-                        RenderOneTile(camera, tile);
+                        RenderOneTile(tile);
                         printf("tile %d finish.\n", index);
                     },
                     tile_index++

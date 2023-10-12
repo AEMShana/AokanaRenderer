@@ -1,25 +1,39 @@
 #pragma once
 
-#include <vector>
 #include <memory>
-
-#include "shape.h"
-#include "bvh.h"
+#include "bounds.h"
+#include "primitive.h"
+#include "interaction.h"
+#include "camera.h"
 
 namespace Asuka {
+
     class Scene {
     public:
-        std::shared_ptr<Shape> objects;
-        std::shared_ptr<BVHNode> bvh;
+        Scene(const std::shared_ptr<Primitive>& aggregate, const Camera& camera, const Color& background) :
+            aggregate(aggregate),
+            world_bound(aggregate->WorldBound()),
+            camera(camera),
+            background(background) {}
+
+        const Bounds3& WorldBound() const { return world_bound; }
+        bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = inf) const;
+        bool IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min = 0.0001, double t_max = inf) const;
+
+    public:
+        Camera camera;
         Color background;
+    private:
+        std::shared_ptr<Primitive> aggregate;
+        Bounds3 world_bound;
     };
 
-    std::shared_ptr<Scene> random_ball_scene();
-    std::shared_ptr<Scene> two_spheres_scene();
-    std::shared_ptr<Scene> two_perlin_spheres_scene();
-    std::shared_ptr<Scene> earth_scene();
-    std::shared_ptr<Scene> simple_light_scene();
-    std::shared_ptr<Scene> bunny_scene();
-    std::shared_ptr<Scene> coffee_maker_scene();
-    std::shared_ptr<Scene> cornell_box_scene();
+    namespace SampleScene {
+        Scene RandomBallScene();
+        Scene TwoSpheresScene();
+        Scene TwoPerlinSpheresScene();
+        Scene EarthScene();
+        Scene SimpleLightScene();
+        Scene BunnyScene();
+    }
 }

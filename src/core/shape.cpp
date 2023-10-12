@@ -1,5 +1,5 @@
 #include "shape.h"
-#include "../obj_loader/OBJ_Loader.h"
+// #include "../obj_loader/OBJ_Loader.h"
 
 #include <algorithm>
 #include <string>
@@ -46,7 +46,7 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 Sphere::WorldBound() const {
+    Bounds3 Sphere::WorldBound(double time_0, double time_1) const {
         return Bounds3(
             center - Vector3(radius, radius, radius),
             center + Vector3(radius, radius, radius)
@@ -130,7 +130,7 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 Triangle::WorldBound() const {
+    Bounds3 Triangle::WorldBound(double time_0, double time_1) const {
         Point3 p_min(
             std::min({ a.x, b.x, c.x }) - 0.0001,
             std::min({ a.y, b.y, c.y }) - 0.0001,
@@ -205,7 +205,7 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 ShapeList::WorldBound() const {
+    Bounds3 ShapeList::WorldBound(double time_0, double time_1) const {
         Bounds3 result{};
         bool first_box = true;
         for (const auto& shape : shapes) {
@@ -215,28 +215,32 @@ namespace Asuka {
         return result;
     }
 
-    void ShapeList::load_obj(const std::string& filepath, std::shared_ptr<Material> material) {
-        objl::Loader objLoader;
-        objLoader.LoadFile(filepath);
-        for (auto& mesh : objLoader.LoadedMeshes) {
-            for (int i = 2;i < mesh.Indices.size();i += 3) {
-                Point3 a(
-                    mesh.Vertices[mesh.Indices[i - 2]].Position.X,
-                    mesh.Vertices[mesh.Indices[i - 2]].Position.Y,
-                    mesh.Vertices[mesh.Indices[i - 2]].Position.Z);
+    // void ShapeList::load_obj(const std::string& filepath) {
+    //     objl::Loader objLoader;
+    //     objLoader.LoadFile(filepath);
+    //     for (auto& mesh : objLoader.LoadedMeshes) {
+    //         for (int i = 2;i < mesh.Indices.size();i += 3) {
+    //             Point3 a(
+    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.X,
+    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.Y,
+    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.Z);
 
-                Point3 b(
-                    mesh.Vertices[mesh.Indices[i - 1]].Position.X,
-                    mesh.Vertices[mesh.Indices[i - 1]].Position.Y,
-                    mesh.Vertices[mesh.Indices[i - 1]].Position.Z);
+    //             Point3 b(
+    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.X,
+    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.Y,
+    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.Z);
 
-                Point3 c(
-                    mesh.Vertices[mesh.Indices[i]].Position.X,
-                    mesh.Vertices[mesh.Indices[i]].Position.Y,
-                    mesh.Vertices[mesh.Indices[i]].Position.Z);
+    //             Point3 c(
+    //                 mesh.Vertices[mesh.Indices[i]].Position.X,
+    //                 mesh.Vertices[mesh.Indices[i]].Position.Y,
+    //                 mesh.Vertices[mesh.Indices[i]].Position.Z);
 
-                shapes.push_back(std::make_shared<Triangle>(a, b, c, material));
-            }
-        }
-    }
+    //             shapes.push_back(std::make_shared<Triangle>(a, b, c));
+    //         }
+    //     }
+    // }
+
+
+
+
 }

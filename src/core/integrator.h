@@ -9,7 +9,7 @@ namespace Asuka {
     class Integrator {
     public:
         int max_depth = 5;
-        virtual void Render(const Camera& camera) = 0;
+        virtual void Render() = 0;
         virtual Color Li(const Ray& ray, const Color& background, int depth) = 0;
     };
 
@@ -19,8 +19,8 @@ namespace Asuka {
         std::shared_ptr<Sampler> sampler;
     public:
         virtual Color Li(const Ray& ray, const Color& background, int depth) override;
-        virtual void Render(const Camera& camera) override;
-        void RenderOneTile(const Camera& camera, const FilmTile& tile);
-        void RenderWithMultithreading(const Camera& camera, bool enable_gui = true);
+        virtual void Render() override;
+        void RenderOneTile(const FilmTile& tile);
+        void RenderWithMultithreading(bool enable_gui = true);
     };
 }

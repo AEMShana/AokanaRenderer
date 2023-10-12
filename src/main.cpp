@@ -36,21 +36,27 @@ void Render() {
     std::cout << "[INFO] please input samples per pixel (default = 10):" << std::endl;
     std::cin >> integrator.sampler->samples_per_pixel;
 
-    std::cout<<"[INFO] Display GUI? (0/1)"<<std::endl;
+    std::cout << "[INFO] Display GUI? (0/1)" << std::endl;
     int use_gui;
-    std::cin>>use_gui;
+    std::cin >> use_gui;
 
     switch (scene_id) {
-    case 0: integrator.scene = random_ball_scene(); break;
-    case 1: integrator.scene = two_spheres_scene(); break;
-    case 2: integrator.scene = two_perlin_spheres_scene(); break;
-    case 3: integrator.scene = earth_scene(); break;
-    case 4: integrator.scene = simple_light_scene(); camera = simple_light_scene_camera(); break;
-    case 5: integrator.scene = bunny_scene(); camera = bunny_scene_camera(); break;
-    case 6: integrator.scene = coffee_maker_scene(); camera = coffee_maker_scene_camera(); break;
-    case 7: integrator.scene = cornell_box_scene(); camera = cornell_box_scene_camera(); break;
-    default: integrator.scene = random_ball_scene(); break;
+    case 0: integrator.scene = std::make_shared<Scene>(SampleScene::RandomBallScene()); break;
+    case 1: integrator.scene = std::make_shared<Scene>(SampleScene::TwoSpheresScene()); break;
+    case 2: integrator.scene = std::make_shared<Scene>(SampleScene::TwoPerlinSpheresScene()); break;
+    case 3: integrator.scene = std::make_shared<Scene>(SampleScene::EarthScene()); break;
+    case 4: integrator.scene = std::make_shared<Scene>(SampleScene::SimpleLightScene()); break;
+    case 5: integrator.scene = std::make_shared<Scene>(SampleScene::BunnyScene()); break;
     }
+
+
+    // switch (scene_id) {
+    // case 4: integrator.scene = simple_light_scene(); camera = simple_light_scene_camera(); break;
+    // case 5: integrator.scene = bunny_scene(); camera = bunny_scene_camera(); break;
+    // case 6: integrator.scene = coffee_maker_scene(); camera = coffee_maker_scene_camera(); break;
+    // case 7: integrator.scene = cornell_box_scene(); camera = cornell_box_scene_camera(); break;
+    // default: integrator.scene = random_ball_scene(); break;
+    // }
 
 
 
@@ -69,8 +75,8 @@ void Render() {
     // integrator.scene->objects = shapeList;
 
     // integrator.Render(camera);
-    integrator.RenderWithMultithreading(camera, use_gui);
-    camera.save_image("./outputs/result.png");
+    integrator.RenderWithMultithreading(use_gui);
+    integrator.scene->camera.save_image("./outputs/result.png");
 }
 
 

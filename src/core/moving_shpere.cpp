@@ -6,7 +6,7 @@ namespace Asuka {
         return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0);
     }
 
-    bool MovingSphere::hit(const Ray& ray, double t_min, double t_max) const {
+    bool MovingSphere::Intersect(const Ray& ray, double t_min, double t_max) const {
         Vector3 oc = ray.origin() - center(ray.time);
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -16,7 +16,7 @@ namespace Asuka {
     }
 
 
-    bool MovingSphere::hitP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool MovingSphere::IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min, double t_max) const {
         Vector3 oc = ray.origin() - center(ray.time);
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -33,11 +33,10 @@ namespace Asuka {
             if (root < t_min || t_max < root) return false;
         }
 
-        hit_point.time = root;
-        hit_point.p = ray.at(hit_point.time);
-        Normal3 outward_normal = Normal3(hit_point.p - center(ray.time)) / radius;
-        hit_point.set_face_normal(ray, outward_normal);
-        hit_point.material = material;
+        isect.time = root;
+        isect.p = ray.at(isect.time);
+        Normal3 outward_normal = Normal3(isect.p - center(ray.time)) / radius;
+        isect.set_face_normal(ray, outward_normal);
 
         return true;
     }
@@ -49,11 +48,9 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 MovingSphere::WorldBound() const {
-        double _time0 = 0.0;
-        double _time1 = 0.0;
-        Bounds3 box0(center(_time0) - Vector3(radius, radius, radius), center(_time0) + Vector3(radius, radius, radius));
-        Bounds3 box1(center(_time1) - Vector3(radius, radius, radius), center(_time1) + Vector3(radius, radius, radius));
+    Bounds3 MovingSphere::WorldBound(double time_0, double time_1) const {
+        Bounds3 box0(center(time_0) - Vector3(radius, radius, radius), center(time_0) + Vector3(radius, radius, radius));
+        Bounds3 box1(center(time_1) - Vector3(radius, radius, radius), center(time_1) + Vector3(radius, radius, radius));
         return Bounds3::merge(box0, box1);
     }
 }

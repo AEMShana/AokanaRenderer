@@ -1,10 +1,11 @@
 #pragma once
 
 #include "ray.h"
-// #include "interaction.h"
+#include "interaction.h"
 #include "texture.h"
 
 namespace Asuka {
+
     class SurfaceInteraction;
 
     class Material {
