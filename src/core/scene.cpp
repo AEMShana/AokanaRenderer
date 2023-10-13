@@ -314,7 +314,7 @@ namespace Asuka {
 
             Color background(0.0, 0.0, 0.0);
 
-            auto bvh_root = std::make_shared<BVHNode>(aggregate, 0, inf);
+            auto bvh_root = std::make_shared<BVHNode>(aggregate, 0, 1.0);
 
             return Scene(bvh_root, camera, background);
         }

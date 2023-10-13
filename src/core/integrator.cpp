@@ -8,27 +8,9 @@
 
 namespace Asuka {
 
-    // Color SamplerIntegrator::Li(const Ray& ray, int depth) {
-    //     if (depth <= 0) return Color(0, 0, 0);
-
-    //     SurfaceInteraction hit_point;
-    //     if (scene->bvh->hitP(ray, hit_point)) {
-    //         Ray scattered;
-    //         Color attenuation;
-    //         if (hit_point.material->scatter(ray, hit_point, attenuation, scattered))
-    //             return attenuation * Li(scattered, depth - 1);
-    //         return Color(0, 0, 0);
-    //     }
-
-    //     vec3 unit_dir = normalize(ray.dir);
-    //     double t = 0.5 * (unit_dir.y() + 1.0);
-    //     return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
-    // }
-
     Color SamplerIntegrator::Li(const Ray& ray, const Color& background, int depth) {
         if (depth <= 0) return Color(0, 0, 0);
         SurfaceInteraction isect;
-        // if (!scene->bvh->hitP(ray, hit_point)) return background;
         if (!scene->IntersectP(ray, isect)) return background;
         Ray scattered;
         Color attenuation;
@@ -84,8 +66,8 @@ namespace Asuka {
 
         std::shared_ptr<Film> film = camera.film;
 
-        for (int j = tile.v_min; j <= tile.v_max;++j) {
-            for (int i = tile.u_min;i <= tile.u_max;++i) {
+        for (int j = static_cast<int>(tile.v_min); j <= tile.v_max;++j) {
+            for (int i = static_cast<int>(tile.u_min);i <= tile.u_max;++i) {
                 Color radiance;
                 auto samples = sampler->sample();
                 for (auto& sample : samples) {
@@ -149,18 +131,10 @@ namespace Asuka {
                         auto v_min = static_cast<int>(film->tiles[i].v_min);
                         auto u_max = static_cast<int>(film->tiles[i].u_max);
                         auto v_max = static_cast<int>(film->tiles[i].v_max);
-                        int num = (u_max - u_min + 1) * (v_max - v_min + 1);
 
-                        // assert(u_max - u_min + 1 == film->tile_size);
-                        // assert(v_max - v_min + 1 == film->tile_size);
-
-                        int tile_width = u_max - u_min + 1;
-                        int tile_height = v_max - v_min + 1;
-
-                        // std::vector<unsigned char> image_data(num * 3);
                         std::vector<unsigned char> image_data;
                         for (int v = v_min, j = 0;v <= v_max;++v, ++j) {
-                            for (int u = u_min, i = 0;u <= u_max;++u, ++i) {
+                            for (int u = u_min;u <= u_max;++u) {
                                 image_data.push_back(film->data[(v * film->image_width + u) * 3 + 0]);
                                 image_data.push_back(film->data[(v * film->image_width + u) * 3 + 1]);
                                 image_data.push_back(film->data[(v * film->image_width + u) * 3 + 2]);
@@ -170,15 +144,6 @@ namespace Asuka {
                                 (*data)[(v * film->image_width + u) * 3 + 2] = film->data[(v * film->image_width + u) * 3 + 2];
                             }
                         }
-                        // std::cout << u_min << " : " << v_min << " : " << u_max << " : " << v_max << std::endl;
-                        // image->modify_subimage(
-                        //     u_min,
-                        //     v_min,
-                        //     u_max,
-                        //     v_max,
-                        //     image_data);
-                        // flags[i] = 2;
-                        // break;
                     }
                 }
 

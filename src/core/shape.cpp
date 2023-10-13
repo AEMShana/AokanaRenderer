@@ -46,7 +46,7 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 Sphere::WorldBound(double time_0, double time_1) const {
+    Bounds3 Sphere::WorldBound(double time0, double time1) const {
         return Bounds3(
             center - Vector3(radius, radius, radius),
             center + Vector3(radius, radius, radius)
@@ -130,7 +130,7 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 Triangle::WorldBound(double time_0, double time_1) const {
+    Bounds3 Triangle::WorldBound(double time0, double time1) const {
         Point3 p_min(
             std::min({ a.x, b.x, c.x }) - 0.0001,
             std::min({ a.y, b.y, c.y }) - 0.0001,
@@ -171,76 +171,5 @@ namespace Asuka {
 
     //     return Bounds3(p_min, p_max);
     // }
-
-    bool ShapeList::Intersect(const Ray& ray, double t_min, double t_max) const {
-        for (const auto& shape : shapes) {
-            if (shape->Intersect(ray, t_min, t_max)) return true;
-        }
-        return false;
-    }
-
-    bool ShapeList::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
-        double closest_so_far = t_max;
-        bool hit_anything = false;
-
-        for (const auto& shape : shapes) {
-            if (shape->IntersectP(ray, hit_point, t_min, closest_so_far)) {
-                hit_anything = true;
-                closest_so_far = hit_point.time;
-            }
-        }
-        return hit_anything;
-    }
-
-    bool ShapeList::bounding_box(double time0, double time1, Bounds3& output_box) const {
-        if (shapes.empty()) return false;
-        Bounds3 temp_box;
-        bool first_box = true;
-
-        for (const auto& shape : shapes) {
-            if (!shape->bounding_box(time0, time1, temp_box)) return false;
-            output_box = first_box ? temp_box : Bounds3::merge(output_box, temp_box);
-            first_box = false;
-        }
-        return true;
-    }
-
-    Bounds3 ShapeList::WorldBound(double time_0, double time_1) const {
-        Bounds3 result{};
-        bool first_box = true;
-        for (const auto& shape : shapes) {
-            result = first_box ? shape->WorldBound() : Bounds3::merge(result, shape->WorldBound());
-            first_box = false;
-        }
-        return result;
-    }
-
-    // void ShapeList::load_obj(const std::string& filepath) {
-    //     objl::Loader objLoader;
-    //     objLoader.LoadFile(filepath);
-    //     for (auto& mesh : objLoader.LoadedMeshes) {
-    //         for (int i = 2;i < mesh.Indices.size();i += 3) {
-    //             Point3 a(
-    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.X,
-    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.Y,
-    //                 mesh.Vertices[mesh.Indices[i - 2]].Position.Z);
-
-    //             Point3 b(
-    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.X,
-    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.Y,
-    //                 mesh.Vertices[mesh.Indices[i - 1]].Position.Z);
-
-    //             Point3 c(
-    //                 mesh.Vertices[mesh.Indices[i]].Position.X,
-    //                 mesh.Vertices[mesh.Indices[i]].Position.Y,
-    //                 mesh.Vertices[mesh.Indices[i]].Position.Z);
-
-    //             shapes.push_back(std::make_shared<Triangle>(a, b, c));
-    //         }
-    //     }
-    // }
-
-
-
 
 }

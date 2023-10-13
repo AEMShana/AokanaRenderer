@@ -16,8 +16,8 @@ namespace Asuka {
         return shape->Intersect(ray, t_min, t_max);
     }
 
-    Bounds3 GeometricPrimitive::WorldBound(double time_0, double time_1) const {
-        return shape->WorldBound(time_0, time_1);
+    Bounds3 GeometricPrimitive::WorldBound(double time0, double time1) const {
+        return shape->WorldBound(time0, time1);
     }
 
     const Material* GeometricPrimitive::GetMaterial() const {
@@ -54,7 +54,7 @@ namespace Asuka {
         return result;
     }
 
-    Bounds3 Aggregate::WorldBound(double time_0, double time_1) const {
+    Bounds3 Aggregate::WorldBound(double time0, double time1) const {
         if (primitives.empty()) {
             throw std::runtime_error("Primitives is empty!");
         }

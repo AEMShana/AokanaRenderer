@@ -27,7 +27,7 @@ namespace Asuka {
     //     return true;
     // }
 
-    Bounds3 BVHNode::WorldBound(double time_0, double time_1) const {
+    Bounds3 BVHNode::WorldBound(double , double time_1) const {
         return box;
     }
 

@@ -48,9 +48,9 @@ namespace Asuka {
         return true;
     }
 
-    Bounds3 MovingSphere::WorldBound(double time_0, double time_1) const {
-        Bounds3 box0(center(time_0) - Vector3(radius, radius, radius), center(time_0) + Vector3(radius, radius, radius));
-        Bounds3 box1(center(time_1) - Vector3(radius, radius, radius), center(time_1) + Vector3(radius, radius, radius));
+    Bounds3 MovingSphere::WorldBound(double time0, double time1) const {
+        Bounds3 box0(center(time0) - Vector3(radius, radius, radius), center(time0) + Vector3(radius, radius, radius));
+        Bounds3 box1(center(time1) - Vector3(radius, radius, radius), center(time1) + Vector3(radius, radius, radius));
         return Bounds3::merge(box0, box1);
     }
 }

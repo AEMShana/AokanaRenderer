@@ -20,10 +20,10 @@ namespace Asuka {
         //     reverse_orientation(reverse_orientation),
         //     transform_swaps_handedness(object_to_world->SwapsHandedness()) {}
 
-        virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const = 0;
-        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const = 0;
+        virtual bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = 1.0) const = 0;
+        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = 1.0) const = 0;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const = 0;
-        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const = 0;
+        virtual Bounds3 WorldBound(double time0 = 0.0001, double time1 = 1.0) const = 0;
 
         // virtual Bounds3 object_bound() const = 0;   // 物体空间的边界框
         // virtual Bounds3 world_bound() const {       // 世界空间的边界框
@@ -53,10 +53,10 @@ namespace Asuka {
         //     Shape(object_to_world, world_to_object, reverse_orientation),
         //     center(center), radius(radius), material(m) {}
 
-        virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
-        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0, double t_max = inf) const override;
+        virtual bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = 1.0) const override;
+        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = 1.0) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
+        virtual Bounds3 WorldBound(double time0 = 0.0001, double time1 = 1.0) const override;
 
         // virtual Bounds3 object_bound() const override;
 
@@ -83,10 +83,10 @@ namespace Asuka {
         //     Shape(object_to_world, world_to_object, reverse_orientation),
         //     a(_a), b(_b), c(_c), material(m) {}
 
-        virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
-        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
+        virtual bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = 1.0) const override;
+        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = 1.0) const override;
         virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
+        virtual Bounds3 WorldBound(double time0 = 0.0001, double time1 = 1.0) const override;
 
         // virtual Bounds3 object_bound() const override;
         // virtual Bounds3 world_bound() const override;
@@ -99,24 +99,4 @@ namespace Asuka {
         double u_c, v_c;
     };
 
-    class ShapeList : public Shape {
-    public:
-        ShapeList() = default;
-        ShapeList(std::shared_ptr<Shape> shape) { add(shape); }
-
-        void clean() { shapes.clear(); }
-        void add(std::shared_ptr<Shape> shape) { shapes.push_back(shape); }
-
-        virtual bool Intersect(const Ray& ray, double t_min = 0, double t_max = inf) const override;
-        virtual bool IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min = 0.0001, double t_max = inf) const override;
-        virtual bool bounding_box(double time0, double time1, Bounds3& output_box) const override;
-        virtual Bounds3 WorldBound(double time_0 = 0, double time_1 = inf) const override;
-
-        // virtual Bounds3 object_bound() const override;
-
-        // void load_obj(const std::string& filepath);
-
-    public:
-        std::vector<std::shared_ptr<Shape>> shapes;
-    };
 }
