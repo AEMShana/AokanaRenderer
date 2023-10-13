@@ -31,17 +31,17 @@ namespace Asuka {
         return box;
     }
 
-    bool BVHNode::Intersect(const Ray& ray, Interval ray_t) const {
-        if (!box.Intersect(ray, ray_t)) return false;
-        if (left->Intersect(ray, ray_t)) return true;
-        if (right->Intersect(ray, ray_t)) return true;
+    bool BVHNode::Intersect(const Ray& ray, double t_min, double t_max) const {
+        if (!box.hit(ray, t_min, t_max)) return false;
+        if (left->Intersect(ray, t_min, t_max)) return true;
+        if (right->Intersect(ray, t_min, t_max)) return true;
         return false;
     }
 
-    bool BVHNode::IntersectP(const Ray& ray, SurfaceInteraction& isect, Interval ray_t) const {
-        if (!box.Intersect(ray, ray_t)) return false;
-        bool hit_left = left->IntersectP(ray, isect, ray_t);
-        bool hit_right = right->IntersectP(ray, isect, Interval(t_min, hit_left ? isect.time : t_max));
+    bool BVHNode::IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min, double t_max) const {
+        if (!box.hit(ray, t_min, t_max)) return false;
+        bool hit_left = left->IntersectP(ray, isect, t_min, t_max);
+        bool hit_right = right->IntersectP(ray, isect, t_min, hit_left ? isect.time : t_max);
         return hit_left || hit_right;
     }
 

@@ -2,7 +2,6 @@
 
 #include <limits>
 
-#include "interval.h"
 #include "ray.h"
 #include "vec.h"
 
@@ -77,7 +76,7 @@ namespace Asuka {
             *radius = inside(*center, *this) ? Distance(*center, pMax) : 0;
         }
 
-        bool Intersect(const Ray& r, Interval ray_t) const;
+        bool hit(const Ray& r, double t_min, double t_max) const;
 
         static Bounds3 merge(const Bounds3& b1, const Bounds3& b2);
         static Bounds3 merge(const Bounds3& b, const Point3& p);
