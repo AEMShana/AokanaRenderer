@@ -6,7 +6,7 @@
 
 namespace Asuka {
 
-    bool Sphere::Intersect(const Ray& ray, double t_min, double t_max) const {
+    bool Sphere::Intersect(const Ray& ray, Interval ray_t) const {
         Vector3 oc = ray.origin() - center;
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -15,7 +15,7 @@ namespace Asuka {
         return (discriminant > 0);
     }
 
-    bool Sphere::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool Sphere::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, Interval ray_t) const {
         Vector3 oc = ray.origin() - center;
         double a = ray.direction().LengthSquare();
         double half_b = Dot(oc, ray.direction());
@@ -27,9 +27,9 @@ namespace Asuka {
         double sqrtd = sqrt(discriminant);
         double root = (-half_b - sqrtd) / a;
 
-        if (root < t_min || t_max < root) {
+        if (!ray_t.Surrounds(root)) {
             root = (-half_b + sqrtd) / a;
-            if (root < t_min || t_max < root) return false;
+            if (!ray_t.Surrounds(root)) return false;
         }
 
         hit_point.time = root;
@@ -67,7 +67,7 @@ namespace Asuka {
         v = theta / pi;
     }
 
-    bool Triangle::Intersect(const Ray& ray, double t_min, double t_max) const {
+    bool Triangle::Intersect(const Ray& ray, Interval ray_t) const {
         // Moller Trumbore Algorithm
         // o + t * d = (1 - p1 - p2) * a + p1 * b + p2 * c 
         auto e1 = b - a;
@@ -81,13 +81,13 @@ namespace Asuka {
         auto p2 = div * Dot(s2, ray.direction());
         auto p0 = 1.0 - p1 - p2;
 
-        if (t < t_min || t > t_max) return false;
+        if (!ray_t.Surrounds(t)) return false;
         if (p0 < 0 || p0 > 1 || p1 < 0 || p1 > 1 || p2 < 0 || p2 > 1) return false;
 
         return true;
     }
 
-    bool Triangle::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
+    bool Triangle::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, Interval ray_t) const {
         // Moller Trumbore Algorithm
         // o + t * d = (1 - p1 - p2) * a + p1 * b + p2 * c 
         // a -> b -> c  clock-wise is front face
@@ -103,7 +103,7 @@ namespace Asuka {
         auto p2 = div * Dot(s2, ray.direction());
         auto p0 = 1.0 - p1 - p2;
 
-        if (t < t_min || t > t_max) return false;
+        if (!ray_t.Surrounds(t)) return false;
         if (p0 < 0 || p0 > 1 || p1 < 0 || p1 > 1 || p2 < 0 || p2 > 1) return false;
 
         hit_point.time = t;
@@ -172,19 +172,19 @@ namespace Asuka {
     //     return Bounds3(p_min, p_max);
     // }
 
-    bool ShapeList::Intersect(const Ray& ray, double t_min, double t_max) const {
+    bool ShapeList::Intersect(const Ray& ray, Interval ray_t) const {
         for (const auto& shape : shapes) {
-            if (shape->Intersect(ray, t_min, t_max)) return true;
+            if (shape->Intersect(ray, ray_t)) return true;
         }
         return false;
     }
 
-    bool ShapeList::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
-        double closest_so_far = t_max;
+    bool ShapeList::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, Interval ray_t) const {
+        double closest_so_far = ray_t.max;
         bool hit_anything = false;
 
         for (const auto& shape : shapes) {
-            if (shape->IntersectP(ray, hit_point, t_min, closest_so_far)) {
+            if (shape->IntersectP(ray, hit_point, Interval(ray_t.min, closest_so_far))) {
                 hit_anything = true;
                 closest_so_far = hit_point.time;
             }
