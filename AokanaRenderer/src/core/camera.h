@@ -39,7 +39,7 @@ namespace Aokana {
             double _time0,
             double _time1
         ) {
-            double theta = degree_to_radian(vfov);
+            double theta = Radians(vfov);
             double h = tan(theta / 2.0);
             double viewport_height = 2.0 * h;
             double viewport_width = aspect_ratio * viewport_height;
@@ -70,7 +70,7 @@ namespace Aokana {
             return Ray(
                 origin + offset,
                 lower_left_corner + sample.u * horizontal + sample.v * vertical - Vector3(origin) - offset,
-                random_double(time0, time1));
+                Random::RandomDouble(time0, time1));
         }
 
         Point3 position() const { return origin; }

@@ -72,7 +72,7 @@ namespace Aokana {
 
         static void permute(int* p, int n) {
             for (int i = n - 1;i > 0;--i) {
-                int target = random_int(0, i);
+                int target = Random::RandomInt(0, i);
                 int temp = p[i];
                 p[i] = p[target];
                 p[target] = temp;

@@ -7,9 +7,9 @@ namespace Aokana {
 
     class Ray {
     public:
-        Ray() : time(inf), tMax(inf) {}
-        Ray(const Point3& origin, const Vector3& direction, double time = 0.0, double tMin = 0.0, double tMax = inf) :
-            orig(origin), dir(Normalize(direction)), time(time), tMin(tMin), tMax(inf) {}
+        Ray() : time(0), tMin(0), tMax(INF) {}
+        Ray(const Point3& origin, const Vector3& direction, double time = 0.0, double tMin = 0.0, double tMax = INF) :
+            orig(origin), dir(Normalize(direction)), time(time), tMin(tMin), tMax(INF) {}
 
         Point3 origin() const { return orig; }
         Vector3 direction() const { return dir; }

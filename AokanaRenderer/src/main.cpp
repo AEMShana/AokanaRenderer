@@ -13,7 +13,7 @@ void Render() {
 
     integrator.max_depth = 5;
     integrator.sampler = std::make_shared<SimpleSampler>();
-    integrator.sampler->samples_per_pixel = 10;
+    integrator.sampler->samples_per_PIxel = 10;
 
     int scene_id = 0;
 
@@ -33,8 +33,8 @@ void Render() {
     std::cout << "[INFO] please input max depth (default = 5):" << std::endl;
     std::cin >> integrator.max_depth;
 
-    std::cout << "[INFO] please input samples per pixel (default = 10):" << std::endl;
-    std::cin >> integrator.sampler->samples_per_pixel;
+    std::cout << "[INFO] please input samples per PIxel (default = 10):" << std::endl;
+    std::cin >> integrator.sampler->samples_per_PIxel;
 
     std::cout << "[INFO] Display GUI? (0/1)" << std::endl;
     int use_gui;

@@ -29,7 +29,7 @@ namespace Aokana {
 
         std::shared_ptr<Film> film = camera.film;
 
-        const int total_pixel = film->image_width * film->image_height;
+        const int total_PIxel = film->image_width * film->image_height;
 
         for (int j = 0; j < film->image_height;++j) {
             for (int i = 0;i < film->image_width;++i) {
@@ -42,13 +42,13 @@ namespace Aokana {
                     Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
-                radiance /= static_cast<double>(sampler->samples_per_pixel);
+                radiance /= static_cast<double>(sampler->samples_per_PIxel);
                 radiance = Clamp(radiance);
                 film->write_color(radiance, i, j);
 
                 int index = j * film->image_width + i;
-                if ((index + 1) % (total_pixel / 20) == 0) {
-                    double progress = static_cast<double>(index + 1) / static_cast<double>(total_pixel);
+                if ((index + 1) % (total_PIxel / 20) == 0) {
+                    double progress = static_cast<double>(index + 1) / static_cast<double>(total_PIxel);
                     std::cout << "[INFO] Render Progress: " << static_cast<int>(progress * 100.0) << "%" << std::endl;
                 }
             }
@@ -77,7 +77,7 @@ namespace Aokana {
                     Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
-                radiance /= static_cast<double>(sampler->samples_per_pixel);
+                radiance /= static_cast<double>(sampler->samples_per_PIxel);
                 radiance = Clamp(radiance);
                 film->write_color(radiance, i, j);
             }

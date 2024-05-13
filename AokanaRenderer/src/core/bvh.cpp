@@ -53,7 +53,7 @@ namespace Aokana {
         size_t start, size_t end, double time0, double time1) {
 
         auto objects = src_objects;
-        int axis = random_int(0, 2);
+        int axis = Random::RandomInt(0, 2);
         auto comparator =
             (axis == 0) ? box_x_compare :
             (axis == 1) ? box_y_compare :

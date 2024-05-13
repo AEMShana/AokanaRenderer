@@ -46,7 +46,7 @@ namespace Aokana {
                 }
             }
         }
-        void write_color(Color pixel_color, int u, int v);
+        void write_color(Color PIxel_color, int u, int v);
         void save_image(std::string path) const;
     };
 }

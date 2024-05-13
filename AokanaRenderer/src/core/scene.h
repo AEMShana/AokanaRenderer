@@ -17,8 +17,8 @@ namespace Aokana {
             background(background) {}
 
         const Bounds3& WorldBound() const { return world_bound; }
-        bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = inf) const;
-        bool IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min = 0.0001, double t_max = inf) const;
+        bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = INF) const;
+        bool IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min = 0.0001, double t_max = INF) const;
 
     public:
         Camera camera;

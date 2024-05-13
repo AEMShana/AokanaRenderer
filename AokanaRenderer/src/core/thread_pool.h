@@ -122,7 +122,7 @@ namespace BS {
      * @brief A helper class to divide a range into blocks. Used by parallelize_loop() and push_loop().
      *
      * @tparam T1 The type of the first index in the range. Should be a signed or unsigned integer.
-     * @tparam T2 The type of the index after the last index in the range. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically inferred.
+     * @tparam T2 The type of the index after the last index in the range. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically INFerred.
      * @tparam T The common type of T1 and T2.
      */
     template <typename T1, typename T2, typename T = std::common_type_t<T1, T2>>
@@ -301,7 +301,7 @@ namespace BS {
          *
          * @tparam F The type of the function to loop through.
          * @tparam T1 The type of the first index in the loop. Should be a signed or unsigned integer.
-         * @tparam T2 The type of the index after the last index in the loop. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically inferred.
+         * @tparam T2 The type of the index after the last index in the loop. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically INFerred.
          * @tparam T The common type of T1 and T2.
          * @tparam R The return value of the loop function F (can be void).
          * @param first_index The first index in the loop.
@@ -362,7 +362,7 @@ namespace BS {
          *
          * @tparam F The type of the function to loop through.
          * @tparam T1 The type of the first index in the loop. Should be a signed or unsigned integer.
-         * @tparam T2 The type of the index after the last index in the loop. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically inferred.
+         * @tparam T2 The type of the index after the last index in the loop. Should be a signed or unsigned integer. If T1 is not the same as T2, a common type will be automatically INFerred.
          * @tparam T The common type of T1 and T2.
          * @param first_index The first index in the loop.
          * @param index_after_last The index after the last index in the loop. The loop will iterate from first_index to (index_after_last - 1) inclusive. In other words, it will be equivalent to "for (T i = first_index; i < index_after_last; ++i)". Note that if index_after_last == first_index, no blocks will be submitted.

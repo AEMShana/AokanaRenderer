@@ -69,30 +69,30 @@ namespace Aokana {
 
     Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m) {
         int indxc[4], indxr[4];
-        int ipiv[4] = { 0, 0, 0, 0 };
+        int iPIv[4] = { 0, 0, 0, 0 };
         double minv[4][4];
         memcpy(minv, m.mat, 4 * 4 * sizeof(double));
         for (int i = 0; i < 4; i++) {
             int irow = 0, icol = 0;
             double big = 0.f;
-            // Choose pivot
+            // Choose PIvot
             for (int j = 0; j < 4; j++) {
-                if (ipiv[j] != 1) {
+                if (iPIv[j] != 1) {
                     for (int k = 0; k < 4; k++) {
-                        if (ipiv[k] == 0) {
+                        if (iPIv[k] == 0) {
                             if (std::abs(minv[j][k]) >= big) {
                                 big = static_cast<double>(std::abs(minv[j][k]));
                                 irow = j;
                                 icol = k;
                             }
                         }
-                        else if (ipiv[k] > 1)
+                        else if (iPIv[k] > 1)
                             std::cerr << "Singular matrix in MatrixInvert\n";
                     }
                 }
             }
-            ++ipiv[icol];
-            // Swap rows _irow_ and _icol_ for pivot
+            ++iPIv[icol];
+            // Swap rows _irow_ and _icol_ for PIvot
             if (irow != icol) {
                 for (int k = 0; k < 4; ++k)
                     std::swap(minv[irow][k], minv[icol][k]);
@@ -103,9 +103,9 @@ namespace Aokana {
                 std::cerr << "Singular matrix in MatrixInvert\n";
 
             // Set $m[icol][icol]$ to one by scaling row _icol_ appropriately
-            double pivinv = 1.0 / minv[icol][icol];
+            double PIvinv = 1.0 / minv[icol][icol];
             minv[icol][icol] = 1.0;
-            for (int j = 0; j < 4; j++) minv[icol][j] *= pivinv;
+            for (int j = 0; j < 4; j++) minv[icol][j] *= PIvinv;
 
             // Subtract this row from others to zero out their columns
             for (int j = 0; j < 4; j++) {

@@ -13,9 +13,9 @@ namespace Aokana {
     class Sampler {
     public:
         Sampler() = default;
-        Sampler(int spp) : samples_per_pixel(spp) {}
+        Sampler(int spp) : samples_per_PIxel(spp) {}
 
-        int samples_per_pixel = 20;
+        int samples_per_PIxel = 20;
         virtual std::vector<Sample> sample() const = 0;
     };
 

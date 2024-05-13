@@ -273,11 +273,11 @@ namespace Aokana {
         }
 
         static Vector3 Random() {
-            return Vector3(random_double(), random_double(), random_double());
+            return Vector3(Random::RandomDouble(), Random::RandomDouble(), Random::RandomDouble());
         }
 
         static Vector3 Random(double min, double max) {
-            return Vector3(random_double(min, max), random_double(min, max), random_double(min, max));
+            return Vector3(Random::RandomDouble(min, max), Random::RandomDouble(min, max), Random::RandomDouble(min, max));
         }
 
         static Vector3 RandomInUnitSphere() {
@@ -293,7 +293,7 @@ namespace Aokana {
 
         static Vector3 RandomInUnitDisk() {
             while (true) {
-                auto p = Vector3(random_double(-1, 1), random_double(-1, 1), 0);
+                auto p = Vector3(Random::RandomDouble(-1, 1), Random::RandomDouble(-1, 1), 0);
                 if (p.LengthSquare() >= 1) continue;
                 return p;
             }

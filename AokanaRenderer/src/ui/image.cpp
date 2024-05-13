@@ -124,10 +124,10 @@ namespace Aokana::UI {
         int subimage_width = x_max - x_min;
         int subimage_height = y_max - y_min;
 
-        // std::vector<unsigned char> red_pixels(subimage_width * subimage_height * 4, 0);
+        // std::vector<unsigned char> red_PIxels(subimage_width * subimage_height * 4, 0);
 
         // for (int i = 0; i < subimage_width * subimage_height; i++) {
-        //     red_pixels[i * 4] = 255;
+        //     red_PIxels[i * 4] = 255;
         // }
         glTexSubImage2D(GL_TEXTURE_2D, 0, x_min, y_min, subimage_width + 1, subimage_height + 1, GL_RGB, GL_UNSIGNED_BYTE, subimage_data.data());
     }

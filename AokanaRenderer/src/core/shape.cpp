@@ -62,9 +62,9 @@ namespace Aokana {
 
     void Sphere::get_sphere_uv(const Normal3& p, double& u, double& v) {
         double theta = std::acos(-p.y);
-        double phi = std::atan2(-p.z, p.x) + pi;
-        u = phi / (2.0 * pi);
-        v = theta / pi;
+        double phi = std::atan2(-p.z, p.x) + PI;
+        u = phi / (2.0 * PI);
+        v = theta / PI;
     }
 
     bool Triangle::Intersect(const Ray& ray, double t_min, double t_max) const {
