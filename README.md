@@ -1,4 +1,4 @@
-# AsukaRenderer
+# AokanaRenderer
 
 ## 架构 (模仿PBRT-v3编写)
 ![](images/arch.png)
