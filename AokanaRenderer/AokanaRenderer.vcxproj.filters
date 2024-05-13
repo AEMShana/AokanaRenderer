@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{90c4564d-ea16-4b16-9bc6-fe700b77270e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external">
+      <UniqueIdentifier>{6412c986-3ce5-4953-b73d-9fe61d7cf121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{92652c45-403d-4e5a-8a9e-e346cd1bb4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui">
+      <UniqueIdentifier>{1428392c-f2d4-411c-a6de-223e94509d15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\shaders">
+      <UniqueIdentifier>{50fd6537-209a-4474-93e8-7e4dab6096a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\shaders\ui_image_shader">
+      <UniqueIdentifier>{52093637-a23b-4fc2-9608-f562b851ab6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\argparse">
+      <UniqueIdentifier>{8e8ffc63-b98b-4377-a261-2f6e915a4f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\nlohmann">
+      <UniqueIdentifier>{e00a7da6-851d-4a4d-94d4-3a035c4266b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\external\obj_loader">
+      <UniqueIdentifier>{8be25a06-986c-4a63-81c1-14087f6d91cd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\bounds.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\bvh.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\camera.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\film.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\integrator.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\material.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\matrix.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\moving_shpere.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\primitive.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\sampler.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\scene.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\shape.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\texture.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\utils.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\image.cpp">
+      <Filter>src\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\ui.cpp">
+      <Filter>src\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\bounds.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\bvh.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\camera.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\film.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\integrator.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\interaction.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\material.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\matrix.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\moving_sphere.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\perlin.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\primitive.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\ray.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\sampler.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\scene.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\shape.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\spectrum.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\texture.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\thread_pool.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\transform.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\utils.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\vec.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\image.h">
+      <Filter>src\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\shader.h">
+      <Filter>src\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\ui.h">
+      <Filter>src\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\external\argparse\argparse.hpp">
+      <Filter>src\external\argparse</Filter>
+    </ClInclude>
+    <ClInclude Include="src\external\nlohmann\json.hpp">
+      <Filter>src\external\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="src\external\obj_loader\OBJ_Loader.h">
+      <Filter>src\external\obj_loader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\ui\shaders\ui_image_shader\ui_image_shader.fragment">
+      <Filter>src\ui\shaders\ui_image_shader</Filter>
+    </None>
+    <None Include="src\ui\shaders\ui_image_shader\ui_image_shader.vertex">
+      <Filter>src\ui\shaders\ui_image_shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
