@@ -4,7 +4,8 @@
 #include "../stb/stb_image_write.h"
 
 namespace Aokana {
-    void Film::write_color(Color PIxel_color, int u, int v) {
+
+    void Film::WriteColor(Color PIxel_color, int u, int v) {
         v = image_height - 1 - v;
         int index = (v * image_width + u) * 3;
 
@@ -22,7 +23,7 @@ namespace Aokana {
         data[index + 2] = static_cast<unsigned char>(255.99 * b);
     }
 
-    void Film::save_image(std::string path) const {
+    void Film::SaveImage(std::string path) const {
         std::cout << "[INFO] Film was successfully written to " << "\"" << path << "\"." << std::endl;
         stbi_write_png(path.c_str(), image_width, image_height, 3, data.data(), 0);
     }

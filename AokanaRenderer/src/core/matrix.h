@@ -32,8 +32,8 @@ namespace Aokana {
         Matrix4x4 Transpose() const;
         static Matrix4x4 Transpose(const Matrix4x4& m) { return m.Transpose(); }
 
-        double& at(int row, int col) { return mat[row][col]; }
-        double at(int row, int col) const { return mat[row][col]; }
+        double& At(int row, int col) { return mat[row][col]; }
+        double At(int row, int col) const { return mat[row][col]; }
 
         friend std::ostream& operator<<(std::ostream& out, const Matrix4x4& v);
     private:

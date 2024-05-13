@@ -2,7 +2,7 @@
 
 
 namespace Aokana {
-    Camera default_camera() {
+    Camera CreateDefaultCamera() {
         double aspect_ratio = 16.0 / 9.0;
         Point3 lookfrom(13, 2, -3);
         Point3 lookat(0, 0, 0);
@@ -13,7 +13,7 @@ namespace Aokana {
         return Camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
     }
 
-    Camera coffee_maker_scene_camera() {
+    Camera CreateCoffeeMakerSceneCamera() {
         double aspect_ratio = 16.0 / 9.0;
         Point3 lookfrom(1.5, 0.4, -0.5);
         Point3 lookat(0, 0.2, 0);

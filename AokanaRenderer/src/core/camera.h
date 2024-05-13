@@ -25,10 +25,10 @@ namespace Aokana {
             double _time0 = 0,
             double _time1 = 0
         ) {
-            set_parameters(cam_position, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, _time0, _time1);
+            SetParameters(cam_position, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, _time0, _time1);
         }
 
-        void set_parameters(
+        void SetParameters(
             Point3 cam_position,
             Point3 lookat,
             Vector3 vup,
@@ -60,11 +60,11 @@ namespace Aokana {
         }
 
 
-        void save_image(const std::string& path) const {
-            film->save_image(path);
+        void SaveImage(const std::string& path) const {
+            film->SaveImage(path);
         }
 
-        Ray get_ray(const Sample& sample) const {
+        Ray GetRay(const Sample& sample) const {
             Vector3 rd = lens_radius * Vector3::RandomInUnitDisk();
             Vector3 offset = u * rd.x + v * rd.y;
             return Ray(
@@ -84,8 +84,8 @@ namespace Aokana {
         double time0, time1;
     };
 
-    Camera default_camera();
-    Camera coffee_maker_scene_camera();
+    Camera CreateDefaultCamera();
+    Camera CreateCoffeeMakerSceneCamera();
 }
 
 /*

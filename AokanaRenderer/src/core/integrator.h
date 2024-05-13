@@ -6,6 +6,7 @@
 #include "sampler.h"
 
 namespace Aokana {
+
     class Integrator {
     public:
         int max_depth = 5;

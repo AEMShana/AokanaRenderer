@@ -17,10 +17,10 @@ namespace Aokana::UI {
         Image(int width, int height, const unsigned char* data);
         Image(const std::string& image_path);
         ~Image();
-        void create_mesh();
-        void create_texture(const unsigned char* data, unsigned int width, unsigned int height, unsigned int channels);
-        void draw();
-        void modify_subimage(int x_min, int y_min, int x_max, int y_max, const std::vector<unsigned char>& subimage_data);
+        void CreateMesh();
+        void CreateTexture(const unsigned char* data, unsigned int width, unsigned int height, unsigned int channels);
+        void Draw();
+        void ModifySubimage(int x_min, int y_min, int x_max, int y_max, const std::vector<unsigned char>& subimage_data);
     public:
         unsigned int texture;
         unsigned int VAO;

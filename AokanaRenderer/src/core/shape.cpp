@@ -7,18 +7,18 @@
 namespace Aokana {
 
     bool Sphere::Intersect(const Ray& ray, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center;
-        double a = ray.direction().LengthSquare();
-        double half_b = Dot(oc, ray.direction());
+        Vector3 oc = ray.origin - center;
+        double a = ray.direction.LengthSquare();
+        double half_b = Dot(oc, ray.direction);
         double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
         return (discriminant > 0);
     }
 
     bool Sphere::IntersectP(const Ray& ray, SurfaceInteraction& hit_point, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center;
-        double a = ray.direction().LengthSquare();
-        double half_b = Dot(oc, ray.direction());
+        Vector3 oc = ray.origin - center;
+        double a = ray.direction.LengthSquare();
+        double half_b = Dot(oc, ray.direction);
         double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
 
@@ -33,9 +33,9 @@ namespace Aokana {
         }
 
         hit_point.time = root;
-        hit_point.p = ray.at(hit_point.time);
+        hit_point.p = ray.At(hit_point.time);
         Normal3 outward_normal = Normal3((hit_point.p - center) / radius);
-        hit_point.set_face_normal(ray, outward_normal);
+        hit_point.SetFaceNormal(ray, outward_normal);
         get_sphere_uv(outward_normal, hit_point.uv.x, hit_point.uv.y);
 
         return true;
@@ -72,13 +72,13 @@ namespace Aokana {
         // o + t * d = (1 - p1 - p2) * a + p1 * b + p2 * c 
         auto e1 = b - a;
         auto e2 = c - a;
-        auto s = ray.origin() - a;
-        auto s1 = Cross(ray.direction(), e2);
+        auto s = ray.origin - a;
+        auto s1 = Cross(ray.direction, e2);
         auto s2 = Cross(s, e1);
         auto div = 1.0 / Dot(s1, e1);
         auto t = div * Dot(s2, e2);
         auto p1 = div * Dot(s1, s);
-        auto p2 = div * Dot(s2, ray.direction());
+        auto p2 = div * Dot(s2, ray.direction);
         auto p0 = 1.0 - p1 - p2;
 
         if (t < t_min || t > t_max) return false;
@@ -94,24 +94,24 @@ namespace Aokana {
 
         auto e1 = b - a;
         auto e2 = c - a;
-        auto s = ray.origin() - a;
-        auto s1 = Cross(ray.direction(), e2);
+        auto s = ray.origin - a;
+        auto s1 = Cross(ray.direction, e2);
         auto s2 = Cross(s, e1);
         auto div = 1.0 / Dot(s1, e1);
         auto t = div * Dot(s2, e2);
         auto p1 = div * Dot(s1, s);
-        auto p2 = div * Dot(s2, ray.direction());
+        auto p2 = div * Dot(s2, ray.direction);
         auto p0 = 1.0 - p1 - p2;
 
         if (t < t_min || t > t_max) return false;
         if (p0 < 0 || p0 > 1 || p1 < 0 || p1 > 1 || p2 < 0 || p2 > 1) return false;
 
         hit_point.time = t;
-        hit_point.p = ray.at(t);
+        hit_point.p = ray.At(t);
         hit_point.uv.x = p0 * u_a + p1 * u_b + p2 * u_c;
         hit_point.uv.y = p0 * v_a + p1 * v_b + p2 * v_c;
         Normal3 outward_normal = Normal3(Normalize(Cross(b - a, c - a)));
-        hit_point.set_face_normal(ray, outward_normal);
+        hit_point.SetFaceNormal(ray, outward_normal);
 
         return true;
     }

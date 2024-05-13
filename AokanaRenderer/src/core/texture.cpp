@@ -17,7 +17,7 @@ namespace Aokana {
         bytes_per_scanline = bytes_per_pixel * width;
     }
 
-    Color ImageTexture::value(double u, double v, const Point3& p) const {
+    Color ImageTexture::Value(double u, double v, const Point3& p) const {
         // If we have no texture data, then return solid purple as a debugging aid.
         if (data == nullptr) return Color(1, 0, 1);
         u = Clamp(u, 0.0, 1.0);
@@ -29,9 +29,9 @@ namespace Aokana {
         if (i >= width) i = width - 1;
         if (j >= height) j = height - 1;
 
-        const auto Color_scale = 1.0 / 255.0;
+        const auto color_scale = 1.0 / 255.0;
         auto pixel = data + j * bytes_per_scanline + i * bytes_per_pixel;
 
-        return Color(Color_scale * pixel[0], Color_scale * pixel[1], Color_scale * pixel[2]);
+        return Color(color_scale * pixel[0], color_scale * pixel[1], color_scale * pixel[2]);
     }
 }

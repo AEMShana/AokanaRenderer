@@ -41,7 +41,7 @@ namespace Aokana {
     //     }
 
     //     Ray Apply(const Ray& ray) {
-    //         return Ray(Apply(ray.origin()), Apply(ray.direction()));
+    //         return Ray(Apply(ray.origin), Apply(ray.direction));
     //     }
 
     //     static Transform Identity() {

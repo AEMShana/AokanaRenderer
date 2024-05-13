@@ -4,23 +4,20 @@
 #include <sstream>
 
 namespace Aokana::UI {
-    void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+
+    void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
     }
 
-    void processInput(GLFWwindow* window) {
+    void ProcessInput(GLFWwindow* window) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
     }
 
-    void preview_render_result_with_ui() {
-
-
-
-
+    void PreviewRenderResultWithUI() {
     }
 
-    GLFWwindow* create_gui_window() {
+    GLFWwindow* CreateGUIWindow() {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -44,7 +41,7 @@ namespace Aokana::UI {
         return window;
     }
 
-    void draw_gui(GLFWwindow* window, std::shared_ptr<Image> image) {
+    void DrawGUI(GLFWwindow* window, std::shared_ptr<Image> image) {
         if (image == nullptr) return;
         // std::shared_ptr<Image> image = std::make_shared<Image>("F:/Project/AokanaRenderer/outputs/result.png");
         glViewport(0, 0, image->width, image->height);
@@ -52,12 +49,12 @@ namespace Aokana::UI {
         glfwSetWindowSize(window, image->width, image->height);
 
         while (!glfwWindowShouldClose(window)) {
-            processInput(window);
+            ProcessInput(window);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            image->draw();
+            image->Draw();
 
 
             glfwSwapBuffers(window);

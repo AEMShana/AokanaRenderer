@@ -11,8 +11,8 @@ namespace Aokana::UI {
 
         std::vector<unsigned char> image_data(width * height * channels, 0);
 
-        create_texture(image_data.data(), width, height, channels);
-        create_mesh();
+        CreateTexture(image_data.data(), width, height, channels);
+        CreateMesh();
         shader = std::make_shared<Shader>(
             "./src/ui/shaders/ui_image_shader/ui_image_shader.vertex",
             "./src/ui/shaders/ui_image_shader/ui_image_shader.fragment");
@@ -27,8 +27,8 @@ namespace Aokana::UI {
         this->channels = 3;
 
 
-        create_texture(data, width, height, channels);
-        create_mesh();
+        CreateTexture(data, width, height, channels);
+        CreateMesh();
         shader = std::make_shared<Shader>(
             "./src/ui/shaders/ui_image_shader/ui_image_shader.vertex",
             "./src/ui/shaders/ui_image_shader/ui_image_shader.fragment");
@@ -42,10 +42,10 @@ namespace Aokana::UI {
         stbi_set_flip_vertically_on_load(true);
         unsigned char* data = stbi_load(image_path.c_str(), &width, &height, &channels, 0);
 
-        create_texture(data, width, height, channels);
+        CreateTexture(data, width, height, channels);
         stbi_image_free(data);
 
-        create_mesh();
+        CreateMesh();
 
         // shader = std::make_shared<Shader>(
         //     "shaders/ui_image_shader/ui_image_shader.vertex",
@@ -65,7 +65,7 @@ namespace Aokana::UI {
         glDeleteBuffers(1, &EBO);
     }
 
-    void Image::create_mesh() {
+    void Image::CreateMesh() {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
@@ -89,7 +89,7 @@ namespace Aokana::UI {
         glEnableVertexAttribArray(2);
     }
 
-    void Image::create_texture(const unsigned char* data, unsigned int width, unsigned int height, unsigned int channels) {
+    void Image::CreateTexture(const unsigned char* data, unsigned int width, unsigned int height, unsigned int channels) {
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -105,7 +105,7 @@ namespace Aokana::UI {
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void Image::draw() {
+    void Image::Draw() {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         shader->use();
@@ -113,7 +113,7 @@ namespace Aokana::UI {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 
-    void Image::modify_subimage(int x_min, int y_min, int x_max, int y_max, const std::vector<unsigned char>& subimage_data) {
+    void Image::ModifySubimage(int x_min, int y_min, int x_max, int y_max, const std::vector<unsigned char>& subimage_data) {
         glBindTexture(GL_TEXTURE_2D, texture);
 
         x_min = std::max(0, std::min(x_min, width));

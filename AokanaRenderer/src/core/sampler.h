@@ -13,10 +13,10 @@ namespace Aokana {
     class Sampler {
     public:
         Sampler() = default;
-        Sampler(int spp) : samples_per_PIxel(spp) {}
+        Sampler(int spp) : samples_per_pixel(spp) {}
 
-        int samples_per_PIxel = 20;
-        virtual std::vector<Sample> sample() const = 0;
+        int samples_per_pixel = 20;
+        virtual std::vector<Sample> Sampling() const = 0;
     };
 
     class SimpleSampler : public Sampler {
@@ -24,7 +24,7 @@ namespace Aokana {
         SimpleSampler() = default;
         SimpleSampler(int spp) : Sampler(spp) {}
 
-        virtual std::vector<Sample> sample() const override;
+        virtual std::vector<Sample> Sampling() const override;
     };
 
 }

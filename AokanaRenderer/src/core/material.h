@@ -10,11 +10,11 @@ namespace Aokana {
 
     class Material {
     public:
-        virtual Color emitted(double u, double v, const Point3& p) const {
+        virtual Color Emitted(double u, double v, const Point3& p) const {
             return Color(0, 0, 0);
         }
 
-        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+        virtual bool Scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             Color& attenuation, Ray& scattered) const = 0;
     };
 
@@ -24,7 +24,7 @@ namespace Aokana {
         Lambertian(const Color& a) : albedo(std::make_shared<SolidColor>(a)) {}
         Lambertian(std::shared_ptr<Texture> a) : albedo(a) {}
 
-        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+        virtual bool Scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             Color& attenuation, Ray& scattered) const override;
     public:
         std::shared_ptr<Texture> albedo;
@@ -35,7 +35,7 @@ namespace Aokana {
     public:
         Metal(const Color& a, double f) :albedo(a), fuzz(f < 1 ? f : 1) {}
 
-        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+        virtual bool Scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             Color& attenuation, Ray& scattered) const override;
 
     public:
@@ -48,13 +48,13 @@ namespace Aokana {
     public:
         Dielectric(double index_of_refraction) : ir(index_of_refraction) {}
 
-        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+        virtual bool Scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             Color& attenuation, Ray& scattered) const override;
 
     public:
         double ir; // Index of Rafraction
     private:
-        static double reflectance(double consine, double ref_idx);
+        static double Reflectance(double consine, double ref_idx);
     };
 
     class DiffuseLight : public Material {
@@ -62,13 +62,13 @@ namespace Aokana {
         DiffuseLight(std::shared_ptr<Texture> tex) : emit(tex) {}
         DiffuseLight(Color c) : emit(std::make_shared<SolidColor>(c)) {}
 
-        virtual bool scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
+        virtual bool Scatter(const Ray& ray_in, const SurfaceInteraction& hit_point,
             Color& attenuation, Ray& scattered) const override {
             return false;
         }
 
-        virtual Color emitted(double u, double v, const Point3& p) const override {
-            return emit->value(u, v, p);
+        virtual Color Emitted(double u, double v, const Point3& p) const override {
+            return emit->Value(u, v, p);
         }
 
     public:

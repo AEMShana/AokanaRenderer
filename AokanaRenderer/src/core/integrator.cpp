@@ -14,8 +14,8 @@ namespace Aokana {
         if (!scene->IntersectP(ray, isect)) return background;
         Ray scattered;
         Color attenuation;
-        Color emitted = isect.material->emitted(isect.uv.u(), isect.uv.v(), isect.p);
-        if (!isect.material->scatter(ray, isect, attenuation, scattered))
+        Color emitted = isect.material->Emitted(isect.uv.u(), isect.uv.v(), isect.p);
+        if (!isect.material->Scatter(ray, isect, attenuation, scattered))
             return emitted;
 
         return emitted + PairwiseMul(attenuation, Li(scattered, background, depth - 1));
@@ -34,17 +34,17 @@ namespace Aokana {
         for (int j = 0; j < film->image_height;++j) {
             for (int i = 0;i < film->image_width;++i) {
                 Color radiance;
-                auto samples = sampler->sample();
+                auto samples = sampler->Sampling();
                 for (auto& sample : samples) {
                     sample.u = static_cast<double>(i + sample.u) / static_cast<double>(film->image_width - 1);
                     sample.v = static_cast<double>(j + sample.v) / static_cast<double>(film->image_height - 1);
-                    Ray ray = camera.get_ray(sample);
+                    Ray ray = camera.GetRay(sample);
                     Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
-                radiance /= static_cast<double>(sampler->samples_per_PIxel);
+                radiance /= static_cast<double>(sampler->samples_per_pixel);
                 radiance = Clamp(radiance);
-                film->write_color(radiance, i, j);
+                film->WriteColor(radiance, i, j);
 
                 int index = j * film->image_width + i;
                 if ((index + 1) % (total_PIxel / 20) == 0) {
@@ -69,17 +69,17 @@ namespace Aokana {
         for (int j = static_cast<int>(tile.v_min); j <= tile.v_max;++j) {
             for (int i = static_cast<int>(tile.u_min);i <= tile.u_max;++i) {
                 Color radiance;
-                auto samples = sampler->sample();
+                auto samples = sampler->Sampling();
                 for (auto& sample : samples) {
                     sample.u = static_cast<double>(i + sample.u) / static_cast<double>(film->image_width - 1);
                     sample.v = static_cast<double>(j + sample.v) / static_cast<double>(film->image_height - 1);
-                    Ray ray = camera.get_ray(sample);
+                    Ray ray = camera.GetRay(sample);
                     Color r = Li(ray, scene->background, max_depth);
                     radiance += r;
                 }
-                radiance /= static_cast<double>(sampler->samples_per_PIxel);
+                radiance /= static_cast<double>(sampler->samples_per_pixel);
                 radiance = Clamp(radiance);
-                film->write_color(radiance, i, j);
+                film->WriteColor(radiance, i, j);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Aokana {
         std::shared_ptr<Film> film = camera.film;
 
         if (enable_gui) {
-            GLFWwindow* window = UI::create_gui_window();
+            GLFWwindow* window = UI::CreateGUIWindow();
             std::shared_ptr<UI::Image> image = std::make_shared<UI::Image>(film->image_width, film->image_height);
 
             std::vector<int> flags(film->tiles.size());
@@ -151,7 +151,7 @@ namespace Aokana {
                     image = std::make_shared<UI::Image>(film->image_width, film->image_height, data->data());
                 }
 
-                image->draw();
+                image->Draw();
                 glfwSwapBuffers(window);
                 glfwPollEvents();
             }

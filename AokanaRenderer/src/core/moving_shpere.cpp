@@ -7,9 +7,9 @@ namespace Aokana {
     }
 
     bool MovingSphere::Intersect(const Ray& ray, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center(ray.time);
-        double a = ray.direction().LengthSquare();
-        double half_b = Dot(oc, ray.direction());
+        Vector3 oc = ray.origin - center(ray.time);
+        double a = ray.direction.LengthSquare();
+        double half_b = Dot(oc, ray.direction);
         double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
         return (discriminant > 0);
@@ -17,9 +17,9 @@ namespace Aokana {
 
 
     bool MovingSphere::IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min, double t_max) const {
-        Vector3 oc = ray.origin() - center(ray.time);
-        double a = ray.direction().LengthSquare();
-        double half_b = Dot(oc, ray.direction());
+        Vector3 oc = ray.origin - center(ray.time);
+        double a = ray.direction.LengthSquare();
+        double half_b = Dot(oc, ray.direction);
         double c = oc.LengthSquare() - radius * radius;
         double discriminant = half_b * half_b - a * c;
 
@@ -34,9 +34,9 @@ namespace Aokana {
         }
 
         isect.time = root;
-        isect.p = ray.at(isect.time);
+        isect.p = ray.At(isect.time);
         Normal3 outward_normal = Normal3(isect.p - center(ray.time)) / radius;
-        isect.set_face_normal(ray, outward_normal);
+        isect.SetFaceNormal(ray, outward_normal);
 
         return true;
     }
