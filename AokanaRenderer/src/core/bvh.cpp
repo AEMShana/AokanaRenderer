@@ -3,23 +3,23 @@
 
 namespace Aokana {
 
-    bool box_compare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b, int axis) {
+    bool BoxCompare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b, int axis) {
         Bounds3 box_a = a->WorldBound();
         Bounds3 box_b = b->WorldBound();
 
-        return box_a.min()[axis] < box_b.min()[axis];
+        return box_a.Min()[axis] < box_b.Min()[axis];
     }
 
-    bool box_x_compare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
-        return box_compare(a, b, 0);
+    bool BoxXCompare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
+        return BoxCompare(a, b, 0);
     }
 
-    bool box_y_compare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
-        return box_compare(a, b, 1);
+    bool BoxYCompare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
+        return BoxCompare(a, b, 1);
     }
 
-    bool box_z_compare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
-        return box_compare(a, b, 2);
+    bool BoxZCompare(const std::shared_ptr<Primitive>& a, const std::shared_ptr<Primitive>& b) {
+        return BoxCompare(a, b, 2);
     }
 
     // bool BVHNode::bounding_box(double time0, double time1, Bounds3& output_box) const {
@@ -32,14 +32,14 @@ namespace Aokana {
     }
 
     bool BVHNode::Intersect(const Ray& ray, double t_min, double t_max) const {
-        if (!box.hit(ray, t_min, t_max)) return false;
+        if (!box.Hit(ray, t_min, t_max)) return false;
         if (left->Intersect(ray, t_min, t_max)) return true;
         if (right->Intersect(ray, t_min, t_max)) return true;
         return false;
     }
 
     bool BVHNode::IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min, double t_max) const {
-        if (!box.hit(ray, t_min, t_max)) return false;
+        if (!box.Hit(ray, t_min, t_max)) return false;
         bool hit_left = left->IntersectP(ray, isect, t_min, t_max);
         bool hit_right = right->IntersectP(ray, isect, t_min, hit_left ? isect.time : t_max);
         return hit_left || hit_right;
@@ -55,9 +55,9 @@ namespace Aokana {
         auto objects = src_objects;
         int axis = Random::RandomInt(0, 2);
         auto comparator =
-            (axis == 0) ? box_x_compare :
-            (axis == 1) ? box_y_compare :
-            box_z_compare;
+            (axis == 0) ? BoxXCompare :
+            (axis == 1) ? BoxYCompare :
+            BoxZCompare;
 
         size_t object_num = end - start;
 
@@ -86,6 +86,6 @@ namespace Aokana {
         // if (!left->bounding_box(time0, time1, box_left) || !right->bounding_box(time0, time1, box_right))
         //     std::cerr << "[ERROR] No bounding box in bvh_node constructor.\n";
 
-        box = Bounds3::merge(box_left, box_right);
+        box = Bounds3::Merge(box_left, box_right);
     }
 }

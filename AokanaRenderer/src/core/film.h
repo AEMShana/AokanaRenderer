@@ -34,18 +34,7 @@ namespace Aokana {
             data = std::vector<unsigned char>(image_width * image_height * channels);
             DivideTiles();
         }
-        void DivideTiles() {
-            for (int i = 0;i < (image_width - 1) / tile_size + 1;++i) {
-                int u0 = tile_size * i;
-                int u1 = std::min(u0 + tile_size - 1, image_width - 1);
-                for (int j = 0;j < (image_height - 1) / tile_size + 1;++j) {
-                    int v0 = tile_size * j;
-                    int v1 = std::min(v0 + tile_size - 1, image_height - 1);
-                    FilmTile tile(u0, v0, u1, v1);
-                    tiles.push_back(tile);
-                }
-            }
-        }
+        void DivideTiles();
         void WriteColor(Color PIxel_color, int u, int v);
         void SaveImage(std::string path) const;
     };

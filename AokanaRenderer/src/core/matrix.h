@@ -4,6 +4,7 @@
 #include "vec.h"
 
 namespace Aokana {
+
     class Matrix4x4 {
     public:
         Matrix4x4();
@@ -21,19 +22,17 @@ namespace Aokana {
         Matrix4x4 operator*(const Matrix4x4& rhs) const;
         Point3 operator*(const Point3& rhs) const;
         Vector3 operator*(const Vector3& rhs) const;
-
-        static Matrix4x4 Identity();
-        static Matrix4x4 Zeros();
+        double& At(int row, int col) { return mat[row][col]; }
+        double At(int row, int col) const { return mat[row][col]; }
 
         Matrix4x4 Inv() const { return Inverse(*this); }
         Matrix4x4 Inverse() const { return Inverse(*this); }
-        static Matrix4x4 Inverse(const Matrix4x4& m);
-
         Matrix4x4 Transpose() const;
-        static Matrix4x4 Transpose(const Matrix4x4& m) { return m.Transpose(); }
 
-        double& At(int row, int col) { return mat[row][col]; }
-        double At(int row, int col) const { return mat[row][col]; }
+        static Matrix4x4 Identity();
+        static Matrix4x4 Zeros();
+        static Matrix4x4 Inverse(const Matrix4x4& m);
+        static Matrix4x4 Transpose(const Matrix4x4& m) { return m.Transpose(); }
 
         friend std::ostream& operator<<(std::ostream& out, const Matrix4x4& v);
     private:

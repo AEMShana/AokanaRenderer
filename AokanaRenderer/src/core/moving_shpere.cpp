@@ -44,13 +44,13 @@ namespace Aokana {
     bool MovingSphere::bounding_box(double _time0, double _time1, Bounds3& output_box) const {
         Bounds3 box0(center(_time0) - Vector3(radius, radius, radius), center(_time0) + Vector3(radius, radius, radius));
         Bounds3 box1(center(_time1) - Vector3(radius, radius, radius), center(_time1) + Vector3(radius, radius, radius));
-        output_box = Bounds3::merge(box0, box1);
+        output_box = Bounds3::Merge(box0, box1);
         return true;
     }
 
     Bounds3 MovingSphere::WorldBound(double time0, double time1) const {
         Bounds3 box0(center(time0) - Vector3(radius, radius, radius), center(time0) + Vector3(radius, radius, radius));
         Bounds3 box1(center(time1) - Vector3(radius, radius, radius), center(time1) + Vector3(radius, radius, radius));
-        return Bounds3::merge(box0, box1);
+        return Bounds3::Merge(box0, box1);
     }
 }

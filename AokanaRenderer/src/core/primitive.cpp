@@ -27,7 +27,7 @@ namespace Aokana {
     Aggregate::Aggregate(const std::vector<std::shared_ptr<Primitive>>& primitives) : primitives(primitives) {
         world_bound = primitives[0]->WorldBound();
         for (const auto& p : primitives) {
-            world_bound = Bounds3::merge(world_bound, p->WorldBound());
+            world_bound = Bounds3::Merge(world_bound, p->WorldBound());
         }
     }
 
@@ -67,13 +67,13 @@ namespace Aokana {
 
     void Aggregate::AddPrimitive(const std::shared_ptr<Primitive>& primitive) {
         primitives.push_back(primitive);
-        world_bound = Bounds3::merge(world_bound, primitive->WorldBound());
+        world_bound = Bounds3::Merge(world_bound, primitive->WorldBound());
     }
 
     void Aggregate::AddPrimitives(const std::vector<std::shared_ptr<Primitive>>& primitive_list) {
         primitives.insert(primitives.end(), primitive_list.begin(), primitive_list.end());
         for (const auto& p : primitive_list) {
-            world_bound = Bounds3::merge(world_bound, p->WorldBound());
+            world_bound = Bounds3::Merge(world_bound, p->WorldBound());
         }
     }
 

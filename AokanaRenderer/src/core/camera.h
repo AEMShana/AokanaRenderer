@@ -73,7 +73,7 @@ namespace Aokana {
                 Random::RandomDouble(time0, time1));
         }
 
-        Point3 position() const { return origin; }
+        Point3 Position() const { return origin; }
     private:
         Point3 origin;
         Vector3 horizontal;

@@ -14,7 +14,6 @@ namespace Aokana {
     public:
         virtual bool Intersect(const Ray& ray, double t_min = 0.0001, double t_max = 1.0) const = 0;
         virtual bool IntersectP(const Ray& ray, SurfaceInteraction& isect, double t_min = 0.0001, double t_max = 1.0) const = 0;
-
         virtual Bounds3 WorldBound(double time0 = 0.0001, double time1 = 1.0) const = 0;
         virtual const Material* GetMaterial() const = 0;
     };
