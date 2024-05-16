@@ -7,8 +7,8 @@ namespace Aokana {
 
     class Matrix4x4 {
     public:
-        Matrix4x4();
-        Matrix4x4(double mat[4][4]);
+        Matrix4x4(); // 初始化为单位矩阵
+        Matrix4x4(const double mat[4][4]);
         Matrix4x4(
             double m00, double m01, double m02, double m03,
             double m10, double m11, double m12, double m13,
@@ -19,11 +19,16 @@ namespace Aokana {
         double operator()(int x, int y) const { return mat[x][y]; }
         double& operator()(int x, int y) { return mat[x][y]; }
 
+        Matrix4x4 operator+(const Matrix4x4& rhs) const;
+        Matrix4x4& operator+=(const Matrix4x4& rhs);
         Matrix4x4 operator*(const Matrix4x4& rhs) const;
+        Matrix4x4 operator/(double rhs) const;
+        Matrix4x4& operator/=(double rhs);
         Point3 operator*(const Point3& rhs) const;
         Vector3 operator*(const Vector3& rhs) const;
         double& At(int row, int col) { return mat[row][col]; }
         double At(int row, int col) const { return mat[row][col]; }
+        bool IsIdentity() const;
 
         Matrix4x4 Inv() const { return Inverse(*this); }
         Matrix4x4 Inverse() const { return Inverse(*this); }

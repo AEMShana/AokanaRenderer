@@ -5,11 +5,30 @@ namespace Aokana {
     Matrix4x4::Matrix4x4() {
         for (int i = 0;i < 4;++i)
             for (int j = 0;j < 4;++j)
-                mat[i][j] = (i == j) ? 1.0 : 0.0f;
+                mat[i][j] = (i == j) ? 1.0 : 0.0;
     }
 
-    Matrix4x4::Matrix4x4(double mat[4][4]) {
+    Matrix4x4::Matrix4x4(const double mat[4][4]) {
         memcpy(this->mat, mat, 16 * sizeof(double));
+    }
+
+    Matrix4x4 Matrix4x4::operator+(const Matrix4x4& rhs) const {
+        auto res = *this;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                res(i, j) += rhs(i, j);
+            }
+        }
+        return res;
+    }
+
+    Matrix4x4& Matrix4x4::operator+=(const Matrix4x4& rhs) {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                mat[i][j] += rhs(i, j);
+            }
+        }
+        return *this;
     }
 
     Matrix4x4 Matrix4x4::operator*(const Matrix4x4& rhs) const {
@@ -22,6 +41,25 @@ namespace Aokana {
             }
         }
         return res;
+    }
+
+    Matrix4x4 Matrix4x4::operator/(double rhs) const {
+        auto res = Matrix4x4::Zeros();
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                res(i, j) /= rhs;
+            }
+        }
+        return res;
+    }
+
+    Matrix4x4& Matrix4x4::operator/=(double rhs) {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                mat[i][j] /= rhs;
+            }
+        }
+        return *this;
     }
 
     Point3 Matrix4x4::operator*(const Point3& rhs) const {
@@ -51,11 +89,24 @@ namespace Aokana {
         return Vector3(temp[0], temp[1], temp[2]);
     }
 
+    bool Matrix4x4::IsIdentity() const {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                double value = (i == j) ? 1.0 : 0.0;
+                if (mat[i][j] != value) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     Matrix4x4 Matrix4x4::Identity() {
         Matrix4x4 res;
         for (int i = 0;i < 4;++i)
             for (int j = 0;j < 4;++j)
-                res.mat[i][j] = (i == j) ? 1.0 : 0.0f;
+                res.mat[i][j] = (i == j) ? 1.0 : 0.0;
         return res;
     }
 
@@ -63,7 +114,7 @@ namespace Aokana {
         Matrix4x4 res;
         for (int i = 0;i < 4;++i)
             for (int j = 0;j < 4;++j)
-                res.mat[i][j] = 0.0f;
+                res.mat[i][j] = 0.0;
         return res;
     }
 

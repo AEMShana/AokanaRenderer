@@ -6,155 +6,34 @@
 #include "ray.h"
 
 namespace Aokana {
-    // class Transform {
-    // public:
-    //     Transform() = default;
-    //     Transform(const Matrix4x4& _m) : m(_m), mInv(_m.Inv()) {}
-    //     Transform(const Matrix4x4& _m, const Matrix4x4& _mInv) : m(_m), mInv(_mInv) {}
 
-    //     Transform inv() const { return Transform(mInv, m); }
+	class Transform {
+	public:
+		Transform() = default;
+		Transform(const Matrix4x4& matrix) : matrix(matrix), inv_matrix(matrix.Inverse()) {}
+		Transform(const Matrix4x4& matrix, const Matrix4x4& inv_matrix) : matrix(matrix), inv_matrix(inv_matrix) {}
+		Transform(const double mat[4][4]) : Transform(Matrix4x4(mat)) {}
 
-    //     static Transform Inv(const Transform& t) { return t.inv(); }
+		const Matrix4x4& GetMatrix() const { return matrix; }
+		const Matrix4x4& GetInverseMatrix() const { return inv_matrix; }
+		Transform Inverse() const { return Inverse(*this); }
+		Transform Transpose() const { return Transpose(*this); }
+		bool IsIdentity() const { return matrix.IsIdentity(); }
 
-    //     Transform operator*(const Transform& rhs) const {
-    //         return Transform(this->m * rhs.m, rhs.mInv * this->mInv);
-    //     }
 
-    //     bool SwapsHandedness() const {
-    //         double det =
-    //             m(0, 0) * (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) -
-    //             m(0, 1) * (m(1, 0) * m(2, 2) - m(1, 2) * m(2, 0)) +
-    //             m(0, 2) * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0));
-    //         return det < 0;
-    //     }
+		static Transform Inverse(const Transform& transform);
+		static Transform Transpose(const Transform& transform);
+		static Transform Translate(Vector3 delta);
+		static Transform Translate(double x, double y, double z) { return Translate(Vector3(x, y, z)); }
+		static Transform Scale(Vector3 scale);
+		static Transform Scale(double x, double y, double z) { return Scale(x, y, z); }
 
-    //     Point3 Apply(const Point3& p) {
-    //         return m * p;
-    //     }
 
-    //     Vector3 Apply(const Vector3& v) {
-    //         return m * v;
-    //     }
+	private:
+		Matrix4x4 matrix;
+		Matrix4x4 inv_matrix;
+	};
 
-    //     Bounds3 Apply(const Bounds3& b) {
-    //         return Bounds3(m * b.min(), m * b.max());
-    //     }
 
-    //     Ray Apply(const Ray& ray) {
-    //         return Ray(Apply(ray.origin), Apply(ray.direction));
-    //     }
 
-    //     static Transform Identity() {
-    //         return Transform();
-    //     }
-
-    //     static Transform Translate(double x, double y, double z) {
-    //         Transform trans;
-
-    //         trans.m = Matrix4x4(
-    //             1.0, 0.0, 0.0, x,
-    //             0.0, 1.0, 0.0, y,
-    //             0.0, 0.0, 1.0, z,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-
-    //         trans.mInv = Matrix4x4(
-    //             1.0, 0.0, 0.0, -x,
-    //             0.0, 1.0, 0.0, -y,
-    //             0.0, 0.0, 1.0, -z,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-
-    //         return trans;
-    //     }
-
-    //     static Transform Translate(const Vector3& v) {
-    //         return Translate(v.x, v.y, v.z);
-    //     }
-
-    //     static Transform Scale(double x, double y, double z) {
-    //         Transform trans;
-
-    //         trans.m = Matrix4x4(
-    //             x, 0.0, 0.0, 0.0,
-    //             0.0, y, 0.0, 0.0,
-    //             0.0, 0.0, z, 0.0,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-
-    //         trans.mInv = Matrix4x4(
-    //             1.0 / x, 0.0, 0.0, 0.0,
-    //             0.0, 1.0 / y, 0.0, 0.0,
-    //             0.0, 0.0, 1.0 / z, 0.0,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-
-    //         return trans;
-    //     }
-
-    //     static Transform Scale(const Vector3& v) {
-    //         return Scale(v.x, v.y, v.z);
-    //     }
-
-    //     static Transform RotateX(double degree) {
-    //         Transform trans;
-    //         double theta = degree_to_radian(degree);
-    //         double c = cos(theta);
-    //         double s = sin(theta);
-    //         trans.m = Matrix4x4(
-    //             1.0, 0.0, 0.0, 0.0,
-    //             0.0, c, -s, 0.0,
-    //             0.0, s, c, 0.0,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-    //         trans.mInv = trans.m.Transpose();
-
-    //         return trans;
-    //     }
-
-    //     static Transform RotateY(double degree) {
-    //         Transform trans;
-    //         double theta = degree_to_radian(degree);
-    //         double c = cos(theta);
-    //         double s = sin(theta);
-    //         trans.m = Matrix4x4(
-    //             c, 0.0, s, 0.0,
-    //             0.0, 1.0, 0.0, 0.0,
-    //             -s, 0.0, c, 0.0,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-    //         trans.mInv = trans.m.Transpose();
-
-    //         return trans;
-    //     }
-
-    //     static Transform RotateZ(double degree) {
-    //         Transform trans;
-    //         double theta = degree_to_radian(degree);
-    //         double c = cos(theta);
-    //         double s = sin(theta);
-    //         trans.m = Matrix4x4(
-    //             c, -s, 0.0, 0.0,
-    //             s, c, 0.0, 0.0,
-    //             0.0, 0.0, 1.0, 0.0,
-    //             0.0, 0.0, 0.0, 1.0
-    //         );
-    //         trans.mInv = trans.m.Transpose();
-
-    //         return trans;
-    //     }
-
-    //     static Transform Rotate(double x_degree, double y_degree, double z_degree) {
-    //         return Transform::RotateX(x_degree) * Transform::RotateY(y_degree) * Transform::RotateZ(z_degree);
-    //     }
-
-    //     static Transform Rotate(const Vector3& v) {
-    //         return Rotate(v.x, v.y, v.z);
-    //     }
-
-    // private:
-    //     Matrix4x4 m;
-    //     Matrix4x4 mInv;
-
-    // };
 }
