@@ -27,6 +27,9 @@ namespace Aokana {
 		static Transform Translate(double x, double y, double z) { return Translate(Vector3(x, y, z)); }
 		static Transform Scale(Vector3 scale);
 		static Transform Scale(double x, double y, double z) { return Scale(x, y, z); }
+		static Transform RotateX(double degree);
+		static Transform RotateY(double degree);
+		static Transform RotateZ(double degree);
 
 
 	private:

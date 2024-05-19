@@ -48,5 +48,41 @@ namespace Aokana {
 		return Transform(matrix, inv_matrix);
 	}
 
+	Transform Transform::RotateX(double degree) {
+		double sin_theta = std::sin(Radians(degree));
+		double cos_theta = std::cos(Radians(degree));
+		Matrix4x4 mat(
+			1, 0, 0, 0,
+			0, cos_theta, -sin_theta, 0,
+			0, sin_theta, cos_theta, 0,
+			0, 0, 0, 1
+		);
+		return Transform(mat, mat.Transpose());
+	}
+
+	Transform Transform::RotateY(double degree) {
+		double sin_theta = std::sin(Radians(degree));
+		double cos_theta = std::cos(Radians(degree));
+		Matrix4x4 mat(
+			cos_theta, 0, sin_theta, 0,
+			0, 1, 0, 0,
+			-sin_theta, 0, cos_theta, 0,
+			0, 0, 0, 1
+		);
+		return Transform(mat, mat.Transpose());
+	}
+
+	Transform Transform::RotateZ(double degree) {
+		double sin_theta = std::sin(Radians(degree));
+		double cos_theta = std::cos(Radians(degree));
+		Matrix4x4 mat(
+			cos_theta, -sin_theta, 0, 0,
+			sin_theta, cos_theta, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		);
+		return Transform(mat, mat.Transpose());
+	}
+
 }
 
