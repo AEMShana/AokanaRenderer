@@ -84,5 +84,31 @@ namespace Aokana {
 		return Transform(mat, mat.Transpose());
 	}
 
+	Transform Transform::Rotate(double sin_theta, double cos_theta, Vector3 axis) {
+		Vector3 a = Normalize(axis);
+		Matrix4x4 mat{};
+		mat(0, 0) = a.x * a.x + (1 - a.x * a.x) * cos_theta;
+		mat(0, 1) = a.x * a.y * (1 - cos_theta) - a.z * sin_theta;
+		mat(0, 2) = a.x * a.z * (1 - cos_theta) + a.y * sin_theta;
+		mat(0, 3) = 0;
+	
+		mat(1, 0) = a.x * a.y * (1 - cos_theta) + a.z * sin_theta;
+		mat(1, 1) = a.y * a.y + (1 - a.y * a.y) * cos_theta;
+		mat(1, 2) = a.y * a.z * (1 - cos_theta) - a.x * sin_theta;
+		mat(1, 3) = 0;
+	
+		mat(2, 0) = a.x * a.z * (1 - cos_theta) - a.y * sin_theta;
+		mat(2, 1) = a.y * a.z * (1 - cos_theta) + a.x * sin_theta;
+		mat(2, 2) = a.z * a.z + (1 - a.z * a.z) * cos_theta;
+		mat(2, 3) = 0;
+
+		return Transform(mat, mat.Transpose());
+	}
+
+	Transform Transform::Rotate(double degree, Vector3 axis) {
+		double sin_theta = std::sin(Radians(degree));
+		double cos_theta = std::cos(Radians(degree));
+		return Rotate(sin_theta, cos_theta, axis);
+	}
 }
 

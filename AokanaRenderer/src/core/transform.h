@@ -30,7 +30,8 @@ namespace Aokana {
 		static Transform RotateX(double degree);
 		static Transform RotateY(double degree);
 		static Transform RotateZ(double degree);
-
+		static Transform Rotate(double sin_theta, double cos_theta, Vector3 axis);
+		static Transform Rotate(double theta, Vector3 axis);
 
 	private:
 		Matrix4x4 matrix;
