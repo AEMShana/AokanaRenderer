@@ -28,6 +28,6 @@ namespace Aokana {
         }
     }
 
-    inline double SafeASin(double x) { return std::asin(Clamp(x, -1, 1)); }
-    inline double SafeACos(double x) { return std::acos(Clamp(x, -1, 1)); }
+    //inline double SafeASin(double x) { return std::asin(Clamp(x, -1, 1)); }
+    //inline double SafeACos(double x) { return std::acos(Clamp(x, -1, 1)); }
 }

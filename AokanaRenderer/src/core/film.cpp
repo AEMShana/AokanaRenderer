@@ -1,7 +1,7 @@
 #include "film.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../stb/stb_image_write.h"
+#include <stb_image_write.h>
 
 namespace Aokana {
 
@@ -18,14 +18,14 @@ namespace Aokana {
 		}
 	}
 
-	void Film::WriteColor(Color PIxel_color, int u, int v) {
+	void Film::WriteColor(Color pixel_color, int u, int v) {
 		v = image_height - 1 - v;
 		int index = (v * image_width + u) * 3;
 
 		// Divide the Color by the number of samples and gamma-correct for gamma=2.0.
-		double r = PIxel_color.x;
-		double g = PIxel_color.y;
-		double b = PIxel_color.z;
+		double r = pixel_color.x;
+		double g = pixel_color.y;
+		double b = pixel_color.z;
 
 		r = sqrt(r);
 		g = sqrt(g);
