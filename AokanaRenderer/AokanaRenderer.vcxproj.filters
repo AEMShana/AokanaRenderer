@@ -167,6 +167,9 @@
     <ClInclude Include="src\external\obj_loader\OBJ_Loader.h">
       <Filter>src\external\obj_loader</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\spherical_geometry.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\ui\shaders\ui_image_shader\ui_image_shader.fragment">

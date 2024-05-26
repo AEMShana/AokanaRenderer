@@ -72,7 +72,11 @@ namespace Aokana {
     class Triangle : public Shape {
     public:
         Triangle(const Point3& a, const Point3& b, const Point3& c) :
-            a(a), b(b), c(c) {}
+            a(a), b(b), c(c) {
+            u_a = v_a = 0;
+            u_b = v_b = 0;
+            u_c = v_c = 0;
+        }
 
         // Triangle(
         //     Point3 _a, Point3 _b, Point3 _c,
