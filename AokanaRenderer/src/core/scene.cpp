@@ -27,8 +27,8 @@ namespace Aokana {
 
             for (int a = -11; a < 11; a++) {
                 for (int b = -11; b < 11; b++) {
-                    auto choose_mat = Random::RandomDouble();
-                    Point3 center(a + 0.9 * Random::RandomDouble(), 0.2, b + 0.9 * Random::RandomDouble());
+                    auto choose_mat = RandomDoubleIn01();
+                    Point3 center(a + 0.9 * RandomDoubleIn01(), 0.2, b + 0.9 * RandomDoubleIn01());
 
                     if ((center - Point3(4, 0.2, 0)).Length() > 0.9) {
                         std::shared_ptr<Material> sphere_material;
@@ -37,7 +37,7 @@ namespace Aokana {
                             // diffuse
                             auto albedo = PairwiseMul(Color::Random(), Color::Random());
                             sphere_material = std::make_shared<Lambertian>(albedo);
-                            auto center2 = center + Vector3(0, Random::RandomDouble(0, 0.5), 0);
+                            auto center2 = center + Vector3(0, RandomDoubleInRange(0, 0.5), 0);
                             aggregate->AddPrimitive(
                                 std::make_shared<GeometricPrimitive>(
                                     std::make_shared<MovingSphere>(center, center2, 0.0, 1.0, 0.2),
@@ -48,7 +48,7 @@ namespace Aokana {
                         else if (choose_mat < 0.95) {
                             // metal
                             auto albedo = Color::Random(0.5, 1);
-                            auto fuzz = Random::RandomDouble(0, 0.5);
+                            auto fuzz = RandomDoubleInRange(0, 0.5);
                             sphere_material = std::make_shared<Metal>(albedo, fuzz);
                             aggregate->AddPrimitive(
                                 std::make_shared<GeometricPrimitive>(

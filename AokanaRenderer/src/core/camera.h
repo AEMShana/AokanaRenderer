@@ -70,7 +70,7 @@ namespace Aokana {
             return Ray(
                 origin + offset,
                 lower_left_corner + sample.u * horizontal + sample.v * vertical - Vector3(origin) - offset,
-                Random::RandomDouble(time0, time1));
+                RandomDoubleInRange(time0, time1));
         }
 
         Point3 Position() const { return origin; }

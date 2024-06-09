@@ -69,9 +69,6 @@
     <ClCompile Include="src\core\texture.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\utils.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\ui\image.cpp">
       <Filter>src\ui</Filter>
     </ClCompile>
@@ -143,9 +140,6 @@
     <ClInclude Include="src\core\transform.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\utils.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\vec.h">
       <Filter>src\core</Filter>
     </ClInclude>
@@ -168,6 +162,9 @@
       <Filter>src\external\obj_loader</Filter>
     </ClInclude>
     <ClInclude Include="src\core\spherical_geometry.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\utils.h">
       <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>

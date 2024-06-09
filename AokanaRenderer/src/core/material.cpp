@@ -36,7 +36,7 @@ namespace Aokana {
         bool cannot_refract = refraction_ratio * sin_theta > 1.0;
         Vector3 direction;
 
-        if (cannot_refract || Reflectance(cos_theta, refraction_ratio) > Random::RandomDouble()) direction = Reflect(unit_direction, hit_point.normal);
+        if (cannot_refract || Reflectance(cos_theta, refraction_ratio) > RandomDoubleIn01()) direction = Reflect(unit_direction, hit_point.normal);
         else direction = Refract(unit_direction, hit_point.normal, refraction_ratio);
 
         scattered = Ray(hit_point.p, direction, ray_in.time);

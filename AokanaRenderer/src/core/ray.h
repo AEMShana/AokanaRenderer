@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils.h"
+#include "math.h"
 #include "vec.h"
 
 namespace Aokana {

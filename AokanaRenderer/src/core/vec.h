@@ -273,11 +273,11 @@ namespace Aokana {
         }
 
         static Vector3 Random() {
-            return Vector3(Random::RandomDouble(), Random::RandomDouble(), Random::RandomDouble());
+            return Vector3(RandomDoubleIn01(), RandomDoubleIn01(), RandomDoubleIn01());
         }
 
         static Vector3 Random(double min, double max) {
-            return Vector3(Random::RandomDouble(min, max), Random::RandomDouble(min, max), Random::RandomDouble(min, max));
+            return Vector3(RandomDoubleInRange(min, max), RandomDoubleInRange(min, max), RandomDoubleInRange(min, max));
         }
 
         static Vector3 RandomInUnitSphere() {
@@ -293,7 +293,7 @@ namespace Aokana {
 
         static Vector3 RandomInUnitDisk() {
             while (true) {
-                auto p = Vector3(Random::RandomDouble(-1, 1), Random::RandomDouble(-1, 1), 0);
+                auto p = Vector3(RandomDoubleInRange(-1, 1), RandomDoubleInRange(-1, 1), 0);
                 if (p.LengthSquare() >= 1) continue;
                 return p;
             }
@@ -696,13 +696,6 @@ namespace Aokana {
     inline Normal3 FaceForward(const Normal3& n, const Vector3& v) {
         // 翻转法线n使其与给定向量v位于同一半球
         return (Dot(n, v) < 0) ? -n : n;
-    }
-
-
-    inline double Clamp(double x, double min = 0, double max = 1) {
-        if (x < min) return min;
-        if (x > max) return max;
-        return x;
     }
 
     inline Vector3 Clamp(Vector3 v, double min = 0, double max = 1) {
