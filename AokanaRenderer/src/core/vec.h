@@ -16,11 +16,6 @@ namespace Aokana {
 
     using Color = Vector3;
 
-
-    inline double Square(double value) {
-        return value * value;
-    }
-
     class Vector2 {
     public:
         Vector2() { x = y = 0; }
@@ -718,6 +713,16 @@ namespace Aokana {
         Vector3 r_out_perp = etai_over_etat * (uv + Vector3(cos_theta * n));
         Vector3 r_out_parallel = -std::sqrt(fabs(1.0 - r_out_perp.LengthSquare())) * Vector3(n);
         return r_out_perp + r_out_parallel;
+    }
+
+    // 计算向量 v1 和 v2 的夹角 (弧度制)，要求 v1 和 v2 是单位向量
+    inline double AngleBetween(const Vector3& v1, const Vector3& v2) {
+        // 夹角大于 90 度
+        if (Dot(v1, v2) < 0) {
+            return PI - 2.0 * SafeASin((v1 + v2).Length() * 0.5);
+        }
+        // 夹角小于 90 度
+        return 2.0 * SafeASin((v2 - v1).Length() * 0.5);
     }
 
     inline Vector3 Vector3::RandomUnitVector() {

@@ -5,7 +5,6 @@
 #include <random>
 
 namespace Aokana {
-
     const double INF = std::numeric_limits<double>::max();
     const double PI = acos(-1.0);
 
@@ -31,9 +30,10 @@ namespace Aokana {
         return x;
     }
 
+    inline double Square(double value) { return value * value; }
+
     inline double SafeASin(double x) { return std::asin(Clamp(x, -1.0, 1.0)); }
     inline double SafeACos(double x) { return std::acos(Clamp(x, -1.0, 1.0)); }
-
 
     inline double RandomDoubleInRange(double min, double max) {
         static std::uniform_real_distribution<double> distribution(min, max);
