@@ -175,4 +175,28 @@ namespace Aokana::SphericalGeometry {
 
         uint16_t x, y;
     };
+
+
+    // 将 [0, 1]^2 的正方形等面积映射到单位球面
+    inline Vector3 EqualAreaSquareToSphere(Point2 p) {
+        // [0, 1]^2 to [-1, 1]^2
+        double u = 2 * p.x - 1;
+        double v = 2 * p.y - 1;
+        double u_p = std::abs(u);
+        double v_p = std::abs(v);
+
+        double signed_distance = 1 - (u_p + v_p);
+        double d = std::abs(signed_distance);
+
+        double r = 1 - d;
+        double phi = (r == 0 ? 1 : (v_p - u_p) / r + 1) * PI / 4;
+
+        double z = std::copysign(1 - Square(r), signed_distance);
+        double cos_phi = std::copysign(std::cos(phi), u);
+        double sin_phi = std::copysign(std::sin(phi), v);
+
+        return Vector3(
+            cos_phi * r * SafeSqrt(2 - Square(r)),
+            sin_phi * r * SafeSqrt(2 - Square(r)), z);
+    }
 }

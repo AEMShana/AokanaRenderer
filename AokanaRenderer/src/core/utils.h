@@ -34,6 +34,7 @@ namespace Aokana {
 
     inline double SafeASin(double x) { return std::asin(Clamp(x, -1.0, 1.0)); }
     inline double SafeACos(double x) { return std::acos(Clamp(x, -1.0, 1.0)); }
+    inline double SafeSqrt(double x) { return std::sqrt(std::max(0.0, x)); }
 
     inline double RandomDoubleInRange(double min, double max) {
         static std::uniform_real_distribution<double> distribution(min, max);
