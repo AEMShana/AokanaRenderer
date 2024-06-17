@@ -34,7 +34,7 @@ namespace Aokana {
 		return d.x * d.y * d.z;
 	}
 
-	int Bounds3::MaximumExtent() const { // ·µ»Ø×î³¤ÖáµÄË÷Òı
+	int Bounds3::MaximumExtent() const { // è¿”å›æœ€é•¿è½´çš„ç´¢å¼•
 		auto d = Diagonal();
 		if (d.x > d.y && d.x > d.z) return 0;
 		if (d.y > d.z) return 1;

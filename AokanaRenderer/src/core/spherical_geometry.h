@@ -2,6 +2,8 @@
 
 #include "vec.h"
 #include "utils.h"
+#include "bounds.h"
+#include "transform.h"
 
 namespace Aokana::SphericalGeometry {
 
@@ -199,4 +201,83 @@ namespace Aokana::SphericalGeometry {
             cos_phi * r * SafeSqrt(2 - Square(r)),
             sin_phi * r * SafeSqrt(2 - Square(r)), z);
     }
+
+
+    // 方向圆锥
+    class DirectionCone {
+    public:
+        DirectionCone() = default;
+        DirectionCone(const Vector3& w, double cos_theta) : w(Normalize(w)), cos_theta(cos_theta) {}
+        explicit DirectionCone(const Vector3& w) : DirectionCone(w, 1) {}
+        bool IsEmpty() const { return cos_theta == std::numeric_limits<double>::max(); }
+
+        // 返回表示整个球面的方向圆锥
+        static DirectionCone EntireSphere() { return DirectionCone(Vector3(0, 0, 1), -1); }
+
+        // 判断方向向量 w 是否被圆锥 d 包含
+        static bool Inside(const DirectionCone& d, const Vector3& w) { return !d.IsEmpty() && Dot(d.w, Normalize(w)) >= d.cos_theta; }
+
+        // 给定包围盒 b 和点 p，获取从包围盒中心到点 p 的方向圆锥
+        static DirectionCone BoundSubtendedDirections(const Bounds3& b, const Point3& p) {
+            // 计算 b 的包围球
+            double radius{};
+            Point3 p_center;
+            b.BoundingSphere(&p_center, &radius);
+
+            // 如果 p 在包围球内，返回整个球面
+            if (DistanceSquare(p, p_center) < Square(radius)) {
+                return DirectionCone::EntireSphere();
+            }
+
+            // p 在包围球外，计算 p 到球心的连线和 p 和球面的切线的夹角作为方向圆锥的夹角 (Figure 3.22)
+            Vector3 w = Normalize(p_center - p);
+            double sin_2_theta = Square(radius) / DistanceSquare(p_center, p);
+            double cos_theta = SafeSqrt(1 - sin_2_theta);
+
+            return DirectionCone(w, cos_theta);
+        }
+
+        // 将两个方向圆锥合并
+        static DirectionCone Union(const DirectionCone& a, const DirectionCone& b) {
+            if (a.IsEmpty()) return b;
+            if (b.IsEmpty()) return a;
+
+            double theta_a = SafeACos(a.cos_theta);
+            double theta_b = SafeACos(b.cos_theta);
+            double theta_d = AngleBetween(a.w, b.w);
+
+            // b 在 a 内
+            if (std::min(theta_d + theta_b, PI) <= theta_a) {
+                return a;
+            }
+
+            // a 在 b 内
+            if (std::min(theta_d + theta_a, PI) <= theta_b) {
+                return b;
+            }
+
+            // a 和 b 互不包含
+            double theta_o = (theta_a + theta_d + theta_b) / 2;
+            if (theta_o >= PI) {
+                return DirectionCone::EntireSphere();
+            }
+
+            double theta_r = theta_o - theta_a; // a.w 和新的方向圆锥中心向量的夹角
+            Vector3 wr = Cross(a.w, b.w); // 正交于 a.w 和 b.w 的轴
+            if (wr.LengthSquare() == 0) {
+                return DirectionCone::EntireSphere();
+            }
+
+            // 通过将 a.w 绕 wr 旋转，得到新的方向圆锥的中心向量
+            Vector3 w = Transform::Rotate(Degrees(theta_r), wr).Apply(a.w);
+         
+            return DirectionCone(w, std::cos(theta_o));
+        }
+
+
+    public:
+        Vector3 w; // 单位方向向量
+        double cos_theta = std::numeric_limits<double>::max(); // 圆锥的边缘到 w 的夹角的余弦值
+    };
+
 }

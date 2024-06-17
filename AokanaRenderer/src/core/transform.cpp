@@ -1,6 +1,9 @@
 #include "transform.h"
 
 namespace Aokana {
+	Vector3 Transform::Apply(const Vector3& v) const {
+		return matrix * v;
+	}
 
 	Transform Aokana::Transform::Inverse(const Transform& transform) {
 		return Transform(transform.GetInverseMatrix(), transform.GetMatrix());

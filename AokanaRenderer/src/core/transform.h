@@ -20,6 +20,7 @@ namespace Aokana {
 		Transform Transpose() const { return Transpose(*this); }
 		bool IsIdentity() const { return matrix.IsIdentity(); }
 
+		Vector3 Apply(const Vector3& v) const;
 
 		static Transform Inverse(const Transform& transform);
 		static Transform Transpose(const Transform& transform);

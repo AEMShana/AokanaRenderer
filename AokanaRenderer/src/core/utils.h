@@ -12,6 +12,10 @@ namespace Aokana {
         return degree * PI / 180.0;
     }
 
+    inline double Degrees(double radians) {
+        return (radians * 180) / PI;
+    }
+
     inline int Clamp(int x, int min, int max) {
         if (x < min) return min;
         if (x > max) return max;

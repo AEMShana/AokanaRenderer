@@ -7,7 +7,7 @@ namespace Aokana {
 
     class Matrix4x4 {
     public:
-        Matrix4x4(); // 初始化为单位矩阵
+        Matrix4x4(); // 鍒濆鍖栦负鍗曚綅鐭╅樀
         Matrix4x4(const double mat[4][4]);
         Matrix4x4(
             double m00, double m01, double m02, double m03,
