@@ -57,4 +57,23 @@ namespace Aokana {
         static std::mt19937 generator;
         return distribution(generator);
     }
+
+    // 在长为 length 的数组中寻找一段区间, 使得 pred(arr[i]) 为 true, pred(arr[i + 1]) 为 false, 返回 i 
+    // 返回的 i 被 clamp 在 [0, length - 2] 之内
+    // 若没有一个 i 使得 pred(arr[i]) 为 true, 则返回 0
+    // 若没有一个 i 使得 pred(arr[i]) 为 false, 则返回 length - 2
+    template<typename Predicate>
+    size_t FindInterval(int length, const Predicate& pred) {
+        assert(length >= 2);
+        int l = 0;
+        int r = length - 2;
+        int res = 0;
+        // 二分查找
+        while (l <= r) {
+            int mid = (l + r) >> 1;
+            if (pred(mid) == true) { res = mid; l = mid + 1; }
+            else { r = mid - 1; }
+        }
+        return Clamp(res, 0, length - 2);
+    }
 }
