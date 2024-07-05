@@ -3,6 +3,7 @@
 #include <cmath>
 #include <limits>
 #include <random>
+#include <cassert>
 
 namespace Aokana {
     const double INF = std::numeric_limits<double>::max();

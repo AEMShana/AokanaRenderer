@@ -97,5 +97,39 @@ namespace Aokana {
         std::vector<double> values;
     };
 
+    /// <summary>
+    /// 计算黑体辐射
+    /// </summary>
+    /// <param name="lambda">波长, 以纳米为单位</param>
+    /// <param name="temperature">温度, 以开尔文为单位</param>
+    /// <returns></returns>
+    double Blackbody(double lambda, double temperature) {
+        if (temperature < 0) {
+            return 0;
+        }
+        const double c = 299792458.f;       // 光速
+        const double h = 6.62606957e-34f;   // 普朗克常数
+        const double kb = 1.3806488e-23f;   // 玻尔兹曼常数
+        double l = lambda * 1e-9; // 上面3个常数中用到了以米为单位, 要先将波长转化为米来计算
+        double le = (2 * h * c * c) / (std::pow(l, 5) * (std::exp((h * c) / (l * kb * temperature)) - 1)); // 普朗克定律
+        return le;
+    }
+
+    class BlackbodySpectrum {
+    public:
+        BlackbodySpectrum(double temperature) : temperature{ temperature } {
+            double lambda_max = 2.8977721e-3f / temperature; // 维恩位移定律, 计算当前温度下, 最大光谱分布值所对应的波长
+            normalization_factor = 1 / Blackbody(lambda_max * 1e9, temperature);
+            // 因为随着黑体的温度升高, 黑体辐射出的能量增长的非常快, 我们使用当前温度下最大的光谱分布值作为归一化系数
+        }
+
+        double operator()(double lambda) const {
+            return Blackbody(lambda, temperature) * normalization_factor;
+        }
+
+    private:
+        double temperature;
+        double normalization_factor;
+    };
 
 }
