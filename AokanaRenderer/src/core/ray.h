@@ -2,6 +2,7 @@
 
 #include "math.h"
 #include "vec.h"
+#include "spectrum.h"
 
 namespace Aokana {
 

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <optional>
 
 #include "ray.h"
 #include "utils.h"
@@ -86,6 +87,27 @@ namespace Aokana {
 
     Camera CreateDefaultCamera();
     Camera CreateCoffeeMakerSceneCamera();
+
+
+    class CameraRay {
+    public:
+        Ray ray;
+        SampledSpectrum weight;
+        // TODO
+    };
+
+    struct CameraSample {
+        Point2 film_point; // 光线所对应的胶片上的点
+        Point2 lens_point; // 光线所对应的镜头上的点
+        double time{ 0 };  // 采样的时刻
+        double filter_weight{ 1 };
+    };
+
+    class CameraV2 {
+    public:
+        std::optional<CameraRay> GenerateRay(CameraSample sample, SampledSpectrum& lambda) const;
+    
+    };
 }
 
 /*

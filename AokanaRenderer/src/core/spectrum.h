@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <span>
+#include <array>
 #include <cassert>
 #include "utils.h"
 #include "vec.h"
@@ -103,7 +104,7 @@ namespace Aokana {
     /// <param name="lambda">波长, 以纳米为单位</param>
     /// <param name="temperature">温度, 以开尔文为单位</param>
     /// <returns></returns>
-    double Blackbody(double lambda, double temperature) {
+    inline double Blackbody(double lambda, double temperature) {
         if (temperature < 0) {
             return 0;
         }
@@ -130,6 +131,182 @@ namespace Aokana {
     private:
         double temperature;
         double normalization_factor;
+    };
+
+    static constexpr int N_SPECTRUM_SAMPLES = 4; // 对于每个光谱采样4个样本
+
+    class SampledSpectrum {
+    public:
+        SampledSpectrum() { values.fill(0); }
+        explicit SampledSpectrum(double c) { values.fill(c); }
+        SampledSpectrum(std::span<const double> v) {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] = v[i];
+            }
+        }
+        double operator[](int i) const { return values[i]; }
+        double& operator[](int i) { return values[i]; }
+        bool operator==(const SampledSpectrum& s) const { return values == s.values; }
+        bool operator!=(const SampledSpectrum& s) const { return values != s.values; }
+
+        bool HasNaNs() const {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                if (std::isnan(values[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // 判断是否全零
+        explicit operator bool() const {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                if (values[i] != 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        SampledSpectrum operator+(const SampledSpectrum& s) const {
+            SampledSpectrum ret = *this;
+            return ret += s;
+        }
+
+        SampledSpectrum& operator+=(const SampledSpectrum& s) {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] += s.values[i];
+            }
+            return *this;
+        }
+
+        SampledSpectrum operator-(const SampledSpectrum& s) const {
+            SampledSpectrum ret = *this;
+            return ret -= s;
+        }
+
+        SampledSpectrum& operator-=(const SampledSpectrum& s) {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] -= s.values[i];
+            }
+            return *this;
+        }
+
+        friend SampledSpectrum operator-(double a, const SampledSpectrum& s) {
+            //DCHECK(!IsNaN(a));
+            assert(std::isnan(a) == false);
+            SampledSpectrum ret;
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                ret.values[i] = a - s.values[i];
+            }
+            return ret;
+        }
+
+        SampledSpectrum operator*(const SampledSpectrum& s) const {
+            SampledSpectrum ret = *this;
+            return ret *= s;
+        }
+
+        SampledSpectrum& operator*=(const SampledSpectrum& s) {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] *= s.values[i];
+            }
+            return *this;
+        }
+
+        SampledSpectrum operator*(double a) const {
+            //DCHECK(!IsNaN(a));
+            assert(std::isnan(a) == false);
+            SampledSpectrum ret = *this;
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                ret.values[i] *= a;
+            }
+            return ret;
+        }
+
+        SampledSpectrum& operator*=(double a) {
+            //DCHECK(!IsNaN(a));
+            assert(std::isnan(a) == false);
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] *= a;
+            }
+            return *this;
+        }
+
+        friend SampledSpectrum operator*(double a, const SampledSpectrum& s) { return s * a; }
+
+        SampledSpectrum operator/(const SampledSpectrum& s) const {
+            SampledSpectrum ret = *this;
+            return ret /= s;
+        }
+
+        SampledSpectrum& operator/=(const SampledSpectrum& s) {
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                //DCHECK_NE(0, s.values[i]);
+                assert(s.values[i] != 0);
+                values[i] /= s.values[i];
+            }
+            return *this;
+        }
+
+        SampledSpectrum operator/(double a) const {
+            SampledSpectrum ret = *this;
+            return ret /= a;
+        }
+
+        SampledSpectrum& operator/=(double a) {
+            //DCHECK_NE(a, 0);
+            //DCHECK(!IsNaN(a));
+            assert(a != 0);
+            assert(std::isnan(a) == false);
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                values[i] /= a;
+            }
+            return *this;
+        }
+
+        SampledSpectrum operator-() const {
+            SampledSpectrum ret;
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                ret.values[i] = -values[i];
+            }
+            return ret;
+        }
+
+        SampledSpectrum SafeDiv(SampledSpectrum a, SampledSpectrum b) {
+            SampledSpectrum r{};
+            for (int i = 0; i < N_SPECTRUM_SAMPLES; ++i) {
+                r[i] = (b[i] != 0) ? a[i] / b[i] : 0.;
+            }
+            return r;
+        }
+
+        double MinComponentValue() const {
+            double m = values[0];
+            for (int i = 1; i < N_SPECTRUM_SAMPLES; ++i) {
+                m = std::min(m, values[i]);
+            }
+            return m;
+        }
+
+        double MaxComponentValue() const {
+            double m = values[0];
+            for (int i = 1; i < N_SPECTRUM_SAMPLES; ++i) {
+                m = std::max(m, values[i]);
+            }
+            return m;
+        }
+
+        double Average() const {
+            double sum = values[0];
+            for (int i = 1; i < N_SPECTRUM_SAMPLES; ++i) {
+                sum += values[i];
+            }
+            return sum / N_SPECTRUM_SAMPLES;
+        }
+
+    private:
+        std::array<double, N_SPECTRUM_SAMPLES> values;
     };
 
 }
