@@ -166,9 +166,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\bounds.h" />
+    <ClInclude Include="src\core\buffer_cache.h" />
     <ClInclude Include="src\core\bvh.h" />
     <ClInclude Include="src\core\camera.h" />
     <ClInclude Include="src\core\film.h" />
+    <ClInclude Include="src\core\hash.h" />
     <ClInclude Include="src\core\integrator.h" />
     <ClInclude Include="src\core\interaction.h" />
     <ClInclude Include="src\core\material.h" />
