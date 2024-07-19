@@ -19,8 +19,10 @@ namespace Aokana {
 		Transform Inverse() const { return Inverse(*this); }
 		Transform Transpose() const { return Transpose(*this); }
 		bool IsIdentity() const { return matrix.IsIdentity(); }
+		bool SwapsHandedness() const;
 
 		Vector3 Apply(const Vector3& v) const;
+		Point3 Apply(const Point3& p) const;
 
 		static Transform Inverse(const Transform& transform);
 		static Transform Transpose(const Transform& transform);

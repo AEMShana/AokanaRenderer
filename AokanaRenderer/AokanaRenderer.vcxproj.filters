@@ -179,6 +179,9 @@
     <ClInclude Include="src\core\hash.h">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\check.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\ui\shaders\ui_image_shader\ui_image_shader.fragment">

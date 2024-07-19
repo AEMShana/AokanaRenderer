@@ -1,6 +1,7 @@
 #pragma once
 #include "vec.h"
 #include "transform.h"
+#include "buffer_cache.h"
 
 namespace Aokana {
 
@@ -10,10 +11,7 @@ namespace Aokana {
 			const Transform& render_from_object, bool reverse_orientation,
 			std::vector<int> indices, std::vector<Point3> p,
 			std::vector<Vector3> s, std::vector<Normal3> n,
-			std::vector<Point2> uv, std::vector<int> face_indices) :
-			triangle_count(indices.size() / 3), vertex_count(p.size()) {
-			// TODO
-		}
+			std::vector<Point2> uv, std::vector<int> face_indices);
 
 
 	public:
