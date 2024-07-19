@@ -81,6 +81,9 @@
     <ClCompile Include="src\core\transform.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\triangle.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\bounds.h">
@@ -165,6 +168,9 @@
       <Filter>src\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\utils.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\triangle.h">
       <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>

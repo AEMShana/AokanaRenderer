@@ -159,6 +159,7 @@
     <ClCompile Include="src\core\shape.cpp" />
     <ClCompile Include="src\core\texture.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
+    <ClCompile Include="src\core\triangle.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ui\image.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\core\integrator.h" />
     <ClInclude Include="src\core\interaction.h" />
     <ClInclude Include="src\core\material.h" />
+    <ClInclude Include="src\core\triangle.h" />
     <ClInclude Include="src\core\utils.h" />
     <ClInclude Include="src\core\matrix.h" />
     <ClInclude Include="src\core\moving_sphere.h" />
